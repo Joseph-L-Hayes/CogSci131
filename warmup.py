@@ -45,3 +45,18 @@ x = np.linspace(1, 100, 1000)
 y = harmonic(x)
 plt.plot(x, y)
 plt.show()
+
+#finished, check scaling
+
+#problem 4
+def histoPlot(numSamples, func):
+    x = np.random.normal(0, 1, numSamples)
+    plt.hist(func(x), numSamples // 10)
+    plt.show()
+
+histoPlot(10000, np.sin)
+#finished
+
+
+
+#end
