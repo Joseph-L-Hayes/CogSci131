@@ -27,14 +27,21 @@ plt.show()
 #could be smoother? Needs better scaling
 
 #problem 3a
+"""returns the harmonic of n"""
+def harmonic(n):
+    return 1 / (n + 1)
 
-"""returns the harmonic series some up to n"""
+"""returns the harmonic series sum up to n"""
 def harmonicSum(n):
     total = 0
-    for i in range(1,n+1):
-        total = total + 1 / (i + 1)
+    for i in n:
+        total = total + harmonic(i)
 
     return total
 #finished
 
 #problem 3b
+x = np.linspace(1, 100, 1000)
+y = harmonic(x)
+plt.plot(x, y)
+plt.show()
