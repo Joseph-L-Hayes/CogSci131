@@ -27,3 +27,11 @@ plt.show()
 #could be smoother? Needs better scaling
 
 #problem 3a
+
+"""returns the harmonic series some up to n"""
+def harmonicSum(n):
+    total = 0
+    for i in range(1,n+1):
+        total = t + 1 / (i + 1)
+
+    return total
