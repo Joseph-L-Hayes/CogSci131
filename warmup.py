@@ -27,9 +27,9 @@ plt.show()
 #could be smoother? Needs better scaling
 
 #problem 3a
-"""returns the harmonic of n"""
-def harmonic(n):
-    return 1 / (n + 1)
+"""returns the harmonic of k"""
+def harmonic(k):
+    return 1 / (k + 1)
 
 """returns the harmonic series sum up to n"""
 def harmonicSum(n):
