@@ -1,84 +1,125 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import math
-
-#problem 1
-
-def xPowSin(x):
-    return np.sin(pow(2,x))
-
-
-x = np.linspace(-1, 10, 10000)
-y = xPowSin(x)
-
-plt.plot(x, y)
-plt.ylim(-1.25, 1.25)
-plt.show()
-
-#problem 2
-x = np.linspace(0, 100, 10000)
-g = xPowSin(x) / (xPowSin(x + 0.1))
-
-plt.ylim(-100, 100)
-plt.xlim(0, 200)
-
-plt.plot(g, 'red')
-plt.show()
-#could be smoother? Needs better scaling
-
-#problem 3a
-"""returns the harmonic of k"""
-def harmonic(k):
-    return 1 / (k + 1)
-
-"""returns the harmonic series sum up to n"""
-def harmonicSum(n):
-    total = 0
-    for i in n:
-        total = total + harmonic(i)
-
-    return total
-#finished
-
-#problem 3b
-x = np.linspace(1, 100, 1000)
-y = harmonic(x)
-plt.plot(x, y)
-plt.show()
-
-#finished, check scaling
-
-"""plots a histogram of func with sample type of numSamples"""
-def histoPlot(func, sampleType, mean=0, stdev=1, numSamples=None, scale=None):
-    x = sampleType(mean, stdev, numSamples)
-
-    if numSamples != None and scale != None:
-        plt.hist(func(x), numSamples // scale)
-
-    plt.show()
-
-#problem 4
-histoPlot(np.sin, np.random.normal, 0, 1, 10000, 10)
-#finished
-
-#problem 5
-histoPlot(np.exp, np.random.uniform, 0, 1.5 + .01, 10000, 100)
-#check graph shape!
+#
+# #problem 1
+#
+# def xPowSin(x):
+#     return np.sin(pow(2,x))
+#
+#
+# x = np.linspace(-1, 10, 10000)
+# y = xPowSin(x)
+#
+# plt.plot(x, y)
+# plt.ylim(-1.25, 1.25)
+# plt.show()
+#
+# #problem 2
+# x = np.linspace(0, 100, 10000)
+# g = xPowSin(x) / (xPowSin(x + 0.1))
+#
+# plt.ylim(-100, 100)
+# plt.xlim(0, 200)
+#
+# plt.plot(g, 'red')
+# plt.show()
+# #could be smoother? Needs better scaling
+#
+# #problem 3a
+# """returns the harmonic of k"""
+# def harmonic(k):
+#     return 1 / (k + 1)
+#
+# """returns the harmonic series sum up to n"""
+# def harmonicSum(n):
+#     total = 0
+#     for i in n:
+#         total = total + harmonic(i)
+#
+#     return total
+# #finished
+#
+# #problem 3b
+# x = np.linspace(1, 100, 1000)
+# y = harmonic(x)
+# plt.plot(x, y)
+# plt.show()
+#
+# #finished, check scaling
+#
+# """plots a histogram of func with sample type of numSamples"""
+# def histoPlot(func, sampleType, mean=0, stdev=1, numSamples=None, scale=None):
+#     x = sampleType(mean, stdev, numSamples)
+#
+#     if numSamples != None and scale != None:
+#         plt.hist(func(x), numSamples // scale)
+#
+#     plt.show()
+#
+# #problem 4
+# histoPlot(np.sin, np.random.normal, 0, 1, 10000, 10)
+# #finished
+#
+# #problem 5
+# histoPlot(np.exp, np.random.uniform, 0, 1.5 + .01, 10000, 100)
+# #check graph shape!
 
 #problem 6
-def getDiff(array):
+def getDiff(array): #may need to rewrite
     for i in range(len(array) -  1):
+        # print("orig:",array[i])
         array[i] = array[i + 1] - array[i]
-
+        # print("diff:",array[i])
+        # if (x + array[i]) == array[i + 1]:
+        #     print('TRUE!!!!!!')
     return array
 
+x = np.array([[1, 3, 6, 10], [0, 5, 6, 8]]) #testing only
+print(getDiff(x)) #testing only
+
+
+def is_sorted(a):
+    for i in range(a.size-1):
+         if a[i+1] < a[i] :
+               return False
+    return True
+
 def adjHistoPlot(x=1000):
-    sample = np.sort(np.random.normal(0, 1, x))
-    plt.hist(getDiff(sample))
+    sample = np.random.normal(0, 1, x)
+    sample = np.sort(sample)
+
+    diffSample = getDiff(sample)
+    # print(is_sorted(diffSample))
+
+    # plt.hist(diffSample, x)
+    plt.hist(np.diff(sample), x) #testing only
+    plt.xlim(0, .05)
     plt.show()
 
 adjHistoPlot(1000)
 
+
+
+
+# def getBins(array):
+#     n = len(array)
+#     # print(n)
+#     intRange = np.amax(array) - np.amin(array)
+#     ints = np.sqrt(n)
+#     # print(ints)
+#     # print(intRange/ints)
+#     bins = np.arange(np.amin(array), np.amax(array), intRange / ints).tolist()
+#     print(bins)
+#     print(len(bins))
+#
+#     return bins
+
+#readjust all histoplots using
+    # n = number of observations = 100
+    # Range = maximum value – minimum value = 91 – 1 = 90
+    # # of intervals =  √n = √100 = 10
+    # Width of intervals =  Range / (# of intervals) = 90/10 = 9
 
 
 
