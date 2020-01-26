@@ -67,12 +67,15 @@ histoPlot(np.exp, np.random.uniform, 0, 1.5 + .01, 10000, 100)
 
 #problem 6
 def getDiff(array):
-    diffArray = np.array(1)
-    return diffArray
+    for i in range(len(array) -  1):
+        array[i] = array[i + 1] - array[i]
+
+    return array
 
 def adjHistoPlot(x=1000):
     sample = np.sort(np.random.normal(0, 1, x))
     plt.hist(getDiff(sample))
+    plt.show()
 
 adjHistoPlot(1000)
 
