@@ -48,14 +48,27 @@ plt.show()
 
 #finished, check scaling
 
-#problem 4
-def histoPlot(numSamples, func):
-    x = np.random.normal(0, 1, numSamples)
-    plt.hist(func(x), numSamples // 10)
+def histoPlot(func, sampleType, mean, stdev, numSamples=None, scale=None):
+    x = sampleType(mean, stdev, numSamples)
+    print(x)
+    if numSamples != None and scale != None:
+        plt.hist(func(x), numSamples // scale)
+    else:
+        plt.hist(func(x), 10000 // 100)
     plt.show()
 
-histoPlot(10000, np.sin)
+#problem 4
+histoPlot(np.sin, np.random.normal, 0, 1, 10000, 10)
 #finished
+
+#problem 5
+histoPlot(np.exp, np.random.uniform, 0, 1.5 + .01, 10000)
+#check graph shape!
+
+#problem 6
+
+
+
 
 
 
