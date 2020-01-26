@@ -51,11 +51,10 @@ plt.show()
 """plots a histogram of func with sample type of numSamples"""
 def histoPlot(func, sampleType, mean=0, stdev=1, numSamples=None, scale=None):
     x = sampleType(mean, stdev, numSamples)
-    print(x)
+
     if numSamples != None and scale != None:
         plt.hist(func(x), numSamples // scale)
-    # else:
-    #     plt.hist(func(x), 10000 // 100)
+
     plt.show()
 
 #problem 4
@@ -67,8 +66,15 @@ histoPlot(np.exp, np.random.uniform, 0, 1.5 + .01, 10000, 100)
 #check graph shape!
 
 #problem 6
+def getDiff(array):
+    diffArray = np.array(1)
+    return diffArray
 
+def adjHistoPlot(x=1000):
+    sample = np.sort(np.random.normal(0, 1, x))
+    plt.hist(getDiff(sample))
 
+adjHistoPlot(1000)
 
 
 
