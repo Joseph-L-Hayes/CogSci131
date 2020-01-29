@@ -67,39 +67,27 @@ import math
 
 #problem 6a
 def getDiff(array): #may need to rewrite
-    for i in range(len(array) -  1):
-        # print("orig:",array[i])
+    for i in range(len(array) - 1):
         array[i] = array[i + 1] - array[i]
-        # print("diff:",array[i])
-        # if (x + array[i]) == array[i + 1]:
-        #     print('TRUE!!!!!!')
+
     return array
 
-# x = np.array([[1, 3, 6, 10], [0, 5, 6, 8]]) #testing only
-# print(getDiff(x)) #testing only
-
-
-def is_sorted(a):
-    for i in range(a.size-1):
-         if a[i+1] < a[i] :
-               return False
-    return True
 
 def adjHistoPlot(n=1000):
     sample = np.random.normal(0, 1, n)
-    sample = np.sort(sample)
+    sample1 = np.sort(sample)
+    sample2 = np.ndarray.copy(sample1)
 
-    # diffSample = getDiff(sample)
-    # print(is_sorted(diffSample))
+    bins = n
 
-    plt.hist(getDiff(sample), n)
+    plt.hist(getDiff(sample1), bins)
     plt.title('getDiff')
     plt.xlabel('n')
     plt.ylabel('y')
     plt.xlim(0, .05)
-    plt.show()
+    # plt.show()
 
-    plt.hist(np.diff(sample), n) #testing only
+    plt.hist(np.diff(sample2), bins) #testing only
     plt.title('np.diff')
     plt.xlim(0, .05)
     plt.show()
@@ -121,6 +109,12 @@ adjHistoPlot(1000)
 #     print(len(bins))
 #
 #     return bins
+
+# def is_sorted(a):
+#     for i in range(a.size-1):
+#          if a[i+1] < a[i] :
+#                return False
+#     return True
 
 #readjust all histoplots using
     # n = number of observations = 100
