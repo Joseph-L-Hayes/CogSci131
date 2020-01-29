@@ -65,7 +65,7 @@ import math
 # histoPlot(np.exp, np.random.uniform, 0, 1.5 + .01, 10000, 100)
 # #check graph shape!
 
-#problem 6
+#problem 6a
 def getDiff(array): #may need to rewrite
     for i in range(len(array) -  1):
         # print("orig:",array[i])
@@ -75,8 +75,8 @@ def getDiff(array): #may need to rewrite
         #     print('TRUE!!!!!!')
     return array
 
-x = np.array([[1, 3, 6, 10], [0, 5, 6, 8]]) #testing only
-print(getDiff(x)) #testing only
+# x = np.array([[1, 3, 6, 10], [0, 5, 6, 8]]) #testing only
+# print(getDiff(x)) #testing only
 
 
 def is_sorted(a):
@@ -85,15 +85,22 @@ def is_sorted(a):
                return False
     return True
 
-def adjHistoPlot(x=1000):
-    sample = np.random.normal(0, 1, x)
+def adjHistoPlot(n=1000):
+    sample = np.random.normal(0, 1, n)
     sample = np.sort(sample)
 
-    diffSample = getDiff(sample)
+    # diffSample = getDiff(sample)
     # print(is_sorted(diffSample))
 
-    # plt.hist(diffSample, x)
-    plt.hist(np.diff(sample), x) #testing only
+    plt.hist(getDiff(sample), n)
+    plt.title('getDiff')
+    plt.xlabel('n')
+    plt.ylabel('y')
+    plt.xlim(0, .05)
+    plt.show()
+
+    plt.hist(np.diff(sample), n) #testing only
+    plt.title('np.diff')
     plt.xlim(0, .05)
     plt.show()
 
