@@ -47,23 +47,23 @@ import math
 # plt.show()
 #
 # #finished, check scaling
-#
-# """plots a histogram of func with sample type of numSamples"""
-# def histoPlot(func, sampleType, mean=0, stdev=1, numSamples=None, scale=None):
-#     x = sampleType(mean, stdev, numSamples)
-#
-#     if numSamples != None and scale != None:
-#         plt.hist(func(x), numSamples // scale)
-#
-#     plt.show()
-#
-# #problem 4
-# histoPlot(np.sin, np.random.normal, 0, 1, 10000, 10)
-# #finished
-#
-# #problem 5
-# histoPlot(np.exp, np.random.uniform, 0, 1.5 + .01, 10000, 100)
-# #check graph shape!
+
+"""plots a histogram of func with sample type of numSamples"""
+def histoPlot(func, sampleType, mean=0, stdev=1, numSamples=None, scale=None):
+    x = sampleType(mean, stdev, numSamples)
+
+    if numSamples != None and scale != None:
+        plt.hist(func(x), numSamples // scale)
+
+    plt.show()
+
+#problem 4
+histoPlot(np.sin, np.random.normal, 0, 1, 10000, 100)
+#finished
+
+#problem 5
+histoPlot(np.exp, np.random.uniform, 0, 1.5, 10000, 100)
+#check graph shape!
 
 #problem 6a
 def getDiff(array): #may need to rewrite
@@ -81,26 +81,24 @@ def adjHistoPlot(n=1000):
 
     diffArray = getDiff(sample)
 
-    plt.hist(diffArray, n // 10)
+    plt.hist(diffArray, n)
     plt.title('Differences Between Normally Distributed Samples')
     plt.xlabel('differences between samples after sorting')
     plt.ylabel('frequency')
     plt.xlim(0, .05)
     plt.show()
 
-    return sample, diffArray
+    return diffArray
 
-sorted, diffArr = adjHistoPlot(1000)
+diffArr = adjHistoPlot(1000)
 #most samples have a difference of less than .01 between them
 
 #problem 6b Plot the position in the sorted array (first, second, etc.) vs the difference computed in 6a.
-plt.plot(np.where(sorted), diffArr)
-
-
-
-
-
-
-
+x = np.arange(999)
+plt.plot(x, diffArr, color='red')
+plt.title("Differences between indices of sorted array")
+plt.xlabel('index')
+plt.ylabel('difference: arr[i + 1] - arr[i]')
+plt.show()
 
 #end
