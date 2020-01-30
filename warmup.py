@@ -77,57 +77,29 @@ def getDiff(array): #may need to rewrite
 
 def adjHistoPlot(n=1000):
     sample = np.random.normal(0, 1, n)
-    sample1 = np.sort(sample)
-    sample2 = np.ndarray.copy(sample1)
+    sample = np.sort(sample)
 
-    bins = n
+    diffArray = getDiff(sample)
 
-    diffArray = getDiff(sample1)
-
-    plt.hist(diffArray, bins)
-    plt.title('getDiff')
-    plt.xlabel('n')
-    plt.ylabel('y')
-    plt.xlim(0, .05)
-    test = np.diff(sample2)
-    print('np.diff: ', test)
-    print('myDiff: ', diffArray)
-    plt.show()
-
-    plt.hist(test, bins, color='red') #testing only
-    plt.title('np.diff')
+    plt.hist(diffArray, n // 10)
+    plt.title('Differences Between Normally Distributed Samples')
+    plt.xlabel('differences between samples after sorting')
+    plt.ylabel('frequency')
     plt.xlim(0, .05)
     plt.show()
 
-adjHistoPlot(1000)
+    return sample, diffArray
+
+sorted, diffArr = adjHistoPlot(1000)
+#most samples have a difference of less than .01 between them
+
+#problem 6b Plot the position in the sorted array (first, second, etc.) vs the difference computed in 6a.
+plt.plot(np.where(sorted), diffArr)
 
 
 
 
-# def getBins(array):
-#     n = len(array)
-#     # print(n)
-#     intRange = np.amax(array) - np.amin(array)
-#     ints = np.sqrt(n)
-#     # print(ints)
-#     # print(intRange/ints)
-#     bins = np.arange(np.amin(array), np.amax(array), intRange / ints).tolist()
-#     print(bins)
-#     print(len(bins))
-#
-#     return bins
 
-# def is_sorted(a):
-#     for i in range(a.size-1):
-#          if a[i+1] < a[i] :
-#                return False
-#     return True
-
-#readjust all histoplots using
-    # n = number of observations = 100
-    # Range = maximum value – minimum value = 91 – 1 = 90
-    # # of intervals =  √n = √100 = 10
-    # Width of intervals =  Range / (# of intervals) = 90/10 = 9
 
 
 
