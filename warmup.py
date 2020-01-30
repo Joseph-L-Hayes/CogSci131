@@ -68,7 +68,9 @@ import math
 #problem 6a
 def getDiff(array): #may need to rewrite
     for i in range(len(array) - 1):
-        array[i] = array[i + 1] - array[i]
+        array[i] = abs(array[i + 1] - array[i])
+
+    array = np.delete(array, 999) #
 
     return array
 
@@ -80,14 +82,19 @@ def adjHistoPlot(n=1000):
 
     bins = n
 
-    plt.hist(getDiff(sample1), bins)
+    diffArray = getDiff(sample1)
+
+    plt.hist(diffArray, bins)
     plt.title('getDiff')
     plt.xlabel('n')
     plt.ylabel('y')
     plt.xlim(0, .05)
-    # plt.show()
+    test = np.diff(sample2)
+    print('np.diff: ', test)
+    print('myDiff: ', diffArray)
+    plt.show()
 
-    plt.hist(np.diff(sample2), bins) #testing only
+    plt.hist(test, bins, color='red') #testing only
     plt.title('np.diff')
     plt.xlim(0, .05)
     plt.show()
