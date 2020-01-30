@@ -17,6 +17,7 @@ plt.xlabel('x')
 plt.ylabel('y(x)')
 plt.plot(x, y)
 plt.ylim(-1.25, 1.25)
+# plt.savefig('one_plot.pdf')
 plt.show()
 
 #problem 2
@@ -26,12 +27,12 @@ g = xPowSin(x) / (xPowSin(x + 0.1))
 plt.title('2. g(x) = sin(2^x) / sin(2^x+.01)')
 plt.xlabel('x')
 plt.ylabel('g(x)')
-# plt.ylim(-50, 50)
 
 plt.plot(g, 'red')
+# plt.savefig('two_plot.pdf')
 plt.show()
 
-#
+
 #problem 3a
 """returns the harmonic of k"""
 def harmonic(k):
@@ -44,7 +45,6 @@ def harmonicSum(n):
         total = total + harmonic(i)
 
     return total
-#finished
 
 #problem 3b
 x = np.linspace(1, 100, 1000)
@@ -53,7 +53,9 @@ plt.title('3. Harmonic sum of n=1 to 100')
 plt.xlabel('n')
 plt.ylabel('1/1+i')
 plt.plot(x, y)
+# plt.savefig('three_b_plot.pdf')
 plt.show()
+
 
 #finished, check scaling
 
@@ -64,13 +66,14 @@ def histoPlot(func, sampleType, mean=0, stdev=1, numSamples=None, scale=None):
     if numSamples != None and scale != None:
         plt.hist(func(x), numSamples // scale)
 
-    plt.show()
 
 #problem 4
 plt.title('4. Sin(x) from standard normal distribution')
 plt.xlabel('x')
 plt.ylabel('sin(x)')
 histoPlot(np.sin, np.random.normal, 0, 1, 10000, 100)
+# plt.savefig('four_plot.pdf')
+plt.show()
 
 
 #problem 5
@@ -78,6 +81,7 @@ plt.title('5. Exponential of uniform distribution [0, 1.5]')
 plt.xlabel('x')
 plt.ylabel('e^x')
 histoPlot(np.exp, np.random.uniform, 0, 1.5, 10000, 100)
+# plt.savefig('five_plot.pdf')
 
 
 #problem 6a
@@ -101,6 +105,7 @@ def adjHistoPlot(n=1000):
     plt.xlabel('differences between samples after sorting')
     plt.ylabel('frequency')
     plt.xlim(0, .05)
+    # plt.savefig('six_a_plot.pdf')
     plt.show()
 
     return diffArray
@@ -114,6 +119,7 @@ plt.plot(x, diffArr, color='red')
 plt.title("6b. Differences between indices of sorted array")
 plt.xlabel('index')
 plt.ylabel('difference: arr[i + 1] - arr[i]')
+# plt.savefig('six_b_plot.pdf')
 plt.show()
 
 #end
