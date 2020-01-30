@@ -1,3 +1,5 @@
+"""written by Joseph Hayes for UC Berkeley CogSci 131, Spring 2020"""
+
 import numpy as np
 import matplotlib.pyplot as plt
 import math
@@ -10,20 +12,25 @@ def xPowSin(x):
 x = np.linspace(-1, 10, 10000)
 y = xPowSin(x)
 
+plt.title('1. y(x) = sin(2^x)')
+plt.xlabel('x')
+plt.ylabel('y(x)')
 plt.plot(x, y)
 plt.ylim(-1.25, 1.25)
 plt.show()
 
 #problem 2
-x = np.linspace(0, 100, 10000)
+x = np.linspace(0, 100, 500)
 g = xPowSin(x) / (xPowSin(x + 0.1))
 
-plt.ylim(-100, 100)
-plt.xlim(0, 200)
+plt.title('2. g(x) = sin(2^x) / sin(2^x+.01)')
+plt.xlabel('x')
+plt.ylabel('g(x)')
+# plt.ylim(-50, 50)
 
 plt.plot(g, 'red')
 plt.show()
-# #could be smoother? Needs better scaling
+
 #
 #problem 3a
 """returns the harmonic of k"""
@@ -42,7 +49,7 @@ def harmonicSum(n):
 #problem 3b
 x = np.linspace(1, 100, 1000)
 y = harmonic(x)
-plt.title('Harmonic sum of n=1 to 100')
+plt.title('3. Harmonic sum of n=1 to 100')
 plt.xlabel('n')
 plt.ylabel('1/1+i')
 plt.plot(x, y)
@@ -60,14 +67,14 @@ def histoPlot(func, sampleType, mean=0, stdev=1, numSamples=None, scale=None):
     plt.show()
 
 #problem 4
-plt.title('sin from standard normal distribution')
+plt.title('4. Sin(x) from standard normal distribution')
 plt.xlabel('x')
 plt.ylabel('sin(x)')
 histoPlot(np.sin, np.random.normal, 0, 1, 10000, 100)
 
 
 #problem 5
-plt.title('Exponential of uniform distribution [0, 1.5]')
+plt.title('5. Exponential of uniform distribution [0, 1.5]')
 plt.xlabel('x')
 plt.ylabel('e^x')
 histoPlot(np.exp, np.random.uniform, 0, 1.5, 10000, 100)
@@ -90,7 +97,7 @@ def adjHistoPlot(n=1000):
     diffArray = getDiff(sample)
 
     plt.hist(diffArray, n)
-    plt.title('Differences Between Normally Distributed Samples')
+    plt.title('6a. Differences Between Normally Distributed Samples')
     plt.xlabel('differences between samples after sorting')
     plt.ylabel('frequency')
     plt.xlim(0, .05)
@@ -104,7 +111,7 @@ diffArr = adjHistoPlot(1000)
 #problem 6b Plot the position in the sorted array (first, second, etc.) vs the difference computed in 6a.
 x = np.arange(999)
 plt.plot(x, diffArr, color='red')
-plt.title("Differences between indices of sorted array")
+plt.title("6b. Differences between indices of sorted array")
 plt.xlabel('index')
 plt.ylabel('difference: arr[i + 1] - arr[i]')
 plt.show()
