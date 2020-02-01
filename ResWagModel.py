@@ -9,7 +9,7 @@ def RescorlaWagner(associationStr, t, salience=0.5, learnRate=0.1):
     ([0.2, 0.24], array([1]), 0.24)
 
     >>> RescorlaWagner(.5, 10, .5, .1)
-    ([.5, ], array([1]), last)
+    ([0.5, 0.525, 0.5488, 0.5714, 0.5928, 0.6132, 0.6325, 0.6509, 0.6684, 0.685, 0.7008], array([ 1,  2,  3,  4,  5,  6,  7,  8,  9, 10]), 0.7008)
 
     """
     Vs = [associationStr]
@@ -17,13 +17,10 @@ def RescorlaWagner(associationStr, t, salience=0.5, learnRate=0.1):
 
     for trial in trials:
         associationStr += salience * learnRate * (1 - associationStr)
-        associationStr = round(associationStr, 2)
+        associationStr = round(associationStr, 4)
         Vs.append(associationStr)
 
     return Vs, trials, associationStr
-
-
-doctest.testmod()
 
 
 #end
