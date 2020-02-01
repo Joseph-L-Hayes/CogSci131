@@ -1,5 +1,7 @@
+"""Written by Joseph Hayes for UC Berkeley CogSci 131, Spring 2020"""
+
 import numpy as np
-import matplotlib as plt
+import matplotlib.pyplot as plt
 import doctest
 from decimal import *
 
@@ -22,6 +24,19 @@ def RescorlaWagner(associationStr, t, salience=0.5, learnRate=0.1):
 
     return Vs, trials
 
+
+#Problem 1a
+Vs1, trials = RescorlaWagner(.05, 20, .5, .1)
+Vs2 = RescorlaWagner(.5, 20, .5, .1)
+
+# plt.figure()
+plt.plot(Vs1, trials)
+plt.plot(Vs2, trials)
+
+plt.xlabel("")
+plt.ylabel("")
+plt.title("")
+plt.show()
 
 
 

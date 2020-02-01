@@ -1,4 +1,4 @@
-"""written by Joseph Hayes for UC Berkeley CogSci 131, Spring 2020"""
+"""Written by Joseph Hayes for UC Berkeley CogSci 131, Spring 2020"""
 
 import numpy as np
 import matplotlib.pyplot as plt
