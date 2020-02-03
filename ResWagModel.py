@@ -45,6 +45,7 @@ plt.ylim(0, 1)
 plt.grid()
 plt.savefig("1a.pdf")
 # plt.show()
+#end problem 1a
 
 #Problem 1b
 def manyTrials(initStr, limit, t=1, salience=0.5, learnRate=0.1):
@@ -57,5 +58,52 @@ def manyTrials(initStr, limit, t=1, salience=0.5, learnRate=0.1):
 
 print(manyTrials(0.05, .8))
 """It will take 32 trials to reach Vlight = 0.8 if the initial association is 0.05"""
+#end problem 1b
 
+#Problem 1c uppose that it takes a 13 trials for a buzzer’s association with food to exceed 0.8
+# starting from an initial association of 0.0. What is the salience? Show your work/code (it is acceptable
+# to solve numerically).
+
+#many trials = 13, assoc = .8, assume learnRate = .1 (?)
+
+#iV(t) += salience * learnRate * (1 - V(t+1))
+
+# .8 = salience * .1 * (1 - V(t+1))
+
+#.8 / (1 - V(t+1)) = salience * .1
+
+#.8 / (.1 - .1V(t+1)) = salience
+
+#SKIP FOR NOW
+
+#Problem 2
+def RescorlaWagnerBlock(initStrBlock, initStrTarget=0, t, salience=0.5, learnRate=0.1):
+    """ Returns the association strength of a stimulant after t time steps and the association
+    strength of a blocking stimulant.
+    """
+    Vs = []
+    trials = np.arange(1, t + 1)
+
+    for trial in trials:
+        assocStr = round(initStrTarget, 4)
+        Vs.append(assocStr)
+        assocStr += salience * learnRate * (1 - (assocStr + initStrBlock)
+
+    return Vs, trials
+
+Vs, trials = RescorlaWagnerBlock(0.8, 0, 20, 0.2, 0.1) #double check blocking behavior in function
+
+plt.figure()
+plt.plot(trials, Vs, label='TEST')
+
+plt.xlabel("Trials")
+plt.ylabel("Association Strength")
+plt.title("Association Strength of a Bell to Food after Light Association")
+plt.legend(loc='lower right')
+plt.xticks(np.arange(min(trials1), max(trials1) + 1))
+
+plt.ylim(0, 1)
+plt.grid()
+plt.savefig("2.pdf")
+plt.show()
 #end
