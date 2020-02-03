@@ -43,7 +43,7 @@ plt.xticks(np.arange(min(trials1), max(trials1) + 1))
 
 plt.ylim(0, 1)
 plt.grid()
-plt.savefig("1a.pdf")
+plt.savefig("assignment2_1a.pdf")
 # plt.show()
 #end problem 1a
 
@@ -56,7 +56,7 @@ def manyTrials(initStr, limit, t=1, salience=0.5, learnRate=0.1):
         initStr += salience * learnRate * (1 - initStr)
         return manyTrials(initStr, limit, t + 1)
 
-print(manyTrials(0.05, .8))
+manyTrials(0.05, .8)
 """It will take 32 trials to reach Vlight = 0.8 if the initial association is 0.05"""
 #end problem 1b
 
@@ -77,33 +77,34 @@ print(manyTrials(0.05, .8))
 #SKIP FOR NOW
 
 #Problem 2
-def RescorlaWagnerBlock(initStrBlock, initStrTarget=0, t, salience=0.5, learnRate=0.1):
-    """ Returns the association strength of a stimulant after t time steps and the association
-    strength of a blocking stimulant.
-    """
-    Vs = []
+def RescorlaWagnerBlock(initStrBlock, initStrTarget=0, t=20, targetSalience=0.5, learnRate=0.1):
+    Vs =[]
     trials = np.arange(1, t + 1)
+    assocStr = initStrTarget
 
     for trial in trials:
-        assocStr = round(initStrTarget, 4)
+        # assocStr = round(assocStr, 4)
         Vs.append(assocStr)
-        assocStr += salience * learnRate * (1 - (assocStr + initStrBlock)
+        assocStr += targetSalience * learnRate * (1 - (assocStr + initStrBlock))
 
     return Vs, trials
 
-Vs, trials = RescorlaWagnerBlock(0.8, 0, 20, 0.2, 0.1) #double check blocking behavior in function
+
+Vs1, trials = RescorlaWagnerBlock(0.8, 0, 20, 0.2, 0.1) #double check blocking behavior in function
 
 plt.figure()
-plt.plot(trials, Vs, label='TEST')
+plt.plot(trials, Vs1, label='Bell', color='red')
 
 plt.xlabel("Trials")
 plt.ylabel("Association Strength")
 plt.title("Association Strength of a Bell to Food after Light Association")
 plt.legend(loc='lower right')
-plt.xticks(np.arange(min(trials1), max(trials1) + 1))
+plt.xticks(np.arange(min(trials), max(trials) + 1))
 
-plt.ylim(0, 1)
+plt.ylim(0, max(Vs1) + (max(Vs1) / 3))
 plt.grid()
-plt.savefig("2.pdf")
+plt.savefig("assignment2_2.pdf")
 plt.show()
+
+#end Problem 2
 #end
