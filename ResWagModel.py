@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import doctest
 from decimal import *
 
-def RescorlaWagner(initStr, t, salience=0.5, learnRate=0.1):
+def RescorlaWagner(initStr, t, salience=0.5, learnRate=0.1, extinct=1):
     """ Returns the association strength of a stimulant after t time steps
     >>> RescorlaWagner(0.2, 2, .5, .1)
     ([0.2, 0.24], array([1, 2]))
@@ -16,16 +16,15 @@ def RescorlaWagner(initStr, t, salience=0.5, learnRate=0.1):
     """
     Vs = []
     trials = np.arange(1, t + 1)
-    # trials = list(range(1, t + 1))
 
     for trial in trials:
         initStr = round(initStr, 4)
         Vs.append(initStr)
-        initStr += salience * learnRate * (1 - initStr)
+        initStr += salience * learnRate * abs(extinct - initStr)
 
     return Vs, trials
 
-# doctest.testmod()
+doctest.testmod()
 
 #Problem 1a
 Vs1, trials1 = RescorlaWagner(0.05, 20, 0.5, 0.1)
@@ -44,7 +43,6 @@ plt.xticks(np.arange(min(trials1), max(trials1) + 1))
 plt.ylim(0, 1)
 plt.grid()
 plt.savefig("assignment2_1a.pdf")
-# plt.show()
 #end problem 1a
 
 #Problem 1b
@@ -56,7 +54,7 @@ def manyTrials(initStr, limit, t=1, salience=0.5, learnRate=0.1):
         initStr += salience * learnRate * (1 - initStr)
         return manyTrials(initStr, limit, t + 1)
 
-manyTrials(0.05, .8)
+print(manyTrials(0.05, .8))
 """It will take 32 trials to reach Vlight = 0.8 if the initial association is 0.05"""
 #end problem 1b
 
@@ -105,6 +103,27 @@ plt.ylim(0, max(Vs1) + (max(Vs1) / 3))
 plt.grid()
 plt.savefig("assignment2_2.pdf")
 plt.show()
-
 #end Problem 2
+
+#Problem 3a
+# Suppose you repeatedly alternate trials, pairing a bell and food and a bell and no food.
+# If you do this for a long time, what will the association strength be? Make a plot of what
+# happens and provide an intuitive explanation for why.
+
+#combine learning and extinction
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #end
