@@ -102,7 +102,7 @@ plt.xticks(np.arange(min(trials), max(trials) + 1))
 plt.ylim(0, max(Vs1) + (max(Vs1) / 3))
 plt.grid()
 plt.savefig("assignment2_2.pdf")
-plt.show()
+# plt.show()
 #end Problem 2
 
 #Problem 3a
@@ -111,11 +111,43 @@ plt.show()
 # happens and provide an intuitive explanation for why.
 
 #combine learning and extinction
+Vs3 = []
+n = 2 #experimenting...
+t = 0
+learn, junk = RescorlaWagner(0.5, n, 0.5, 0.1, 1)
+learnValue = learn[len(learn) - 1]
+Vs3.append(learnValue)
+extinct = []
 
+while t <= 10:
 
+    extinct, list2 = RescorlaWagner(learn[1], n, 0.5, 0.1, 0)
+    # extinctValue = extinct[len(learn) - 1]
 
+    learn, list2 = RescorlaWagner(extinct[1], n, 0.5, 0.1, 1)
+    # learnValue = learn[len(learn) - 1]
 
+    Vs3.append(extinct[1])
+    Vs3.append(learn[1])
 
+    # print(learnValue, extinctValue)
+
+    t += 1
+
+xAxis = np.arange(1, len(Vs3) + 1)
+
+plt.figure()
+plt.plot(xAxis, Vs3, label='Alternate')
+plt.xlabel("Trials")
+plt.ylabel("Association Strength")
+plt.show()
+
+#I think this is incorrect. It should result in a straight line, ie no learning?
+#or maybe the learning is slowed due to the delay and "mixed message"?
+#do the math on paper and see if it works out, use initStr of 0.5
+# changing n=1 produced the expected result! STILL not sure, check list output of function
+# RegWag doesn't allow for subtraction... but should add smaller amounts each time?
+#FIGURE OUT ON PAPER, REVIEW EQUATION FOR EXTINCTION
 
 
 
