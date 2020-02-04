@@ -157,7 +157,9 @@ step with the pair (bell, no food). The net effect is no learning and no change 
 association strength. With a learning rate and salience of < 1 over many trials, we actually see a
 decrease in learning to the effect of the discount.  """
 
-####Possibly repeat code to show discounted graph
+####Double check 3a for proper behavior, approaches a limit?
+
+#Problem 3b
 
 
 
