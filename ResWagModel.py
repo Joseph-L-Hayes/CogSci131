@@ -160,6 +160,15 @@ decrease in learning to the effect of the discount.  """
 ####Double check 3a for proper behavior, approaches a limit?
 
 #Problem 3b
+# Suppose that, on a given trial, with probability P you pair a bell with food, and with
+# probability 1-P you pair a bell with no food. What will the association strength be after many trials of
+# this? Plot some examples. Provide a short intuitive explanation on Marr's computational level.
+
+
+#Problem 4
+# In the Rescorla-Wagner model, salience plays essentially the same role as learning
+# rate. In a sentence or two, describe why, psychologically, we think there are different factors here. In a
+# sentence or two, describe an experiment that would let you disentangle salience and learning rate.
 
 
 
