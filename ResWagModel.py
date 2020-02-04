@@ -121,7 +121,7 @@ n = 2
 t = 0
 salience = 0.5
 learnRate = 0.1
-learn, junk = RescorlaWagner(0.5, n, salience, learnRate, 1)
+learn, list = RescorlaWagner(0.5, n, salience, learnRate, 1)
 learnValue = learn[0]
 Vs3.append(learnValue)
 extinct = []
@@ -140,7 +140,8 @@ xAxis = np.arange(1, len(Vs3) + 1)
 plt.figure()
 plt.plot(xAxis, Vs3, label='Alternate')
 
-Vs3_mean = [((Vs3[x] + Vs3[x + 1]) / 2) for x in range(0, len(Vs3) - 1)]
+Vs3_mean = [((Vs3[x] + Vs3[x + 1]) / 2) for x in range(len(Vs3) - 1)]
+Vs3_mean += [(Vs3[len(Vs3) - 1] + Vs3[len(Vs3) - 2]) / 2] #fix
 
 plt.plot(xAxis, Vs3_mean, label='Mean')
 
