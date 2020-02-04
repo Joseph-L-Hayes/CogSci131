@@ -111,17 +111,16 @@ plt.savefig("assignment2_2.pdf")
 #end Problem 2
 
 #Problem 3a
-# Suppose you repeatedly alternate trials, pairing a bell and food and a bell and no food.
-# If you do this for a long time, what will the association strength be? Make a plot of what
-# happens and provide an intuitive explanation for why.
-
-#combine learning and extinction
 Vs3 = []
 n = 2
 t = 0
 salience = 0.5
 learnRate = 0.1
-learn, list = RescorlaWagner(0.5, n, salience, learnRate, 1)
+# salience = 1
+# learnRate = 1
+associationStr = 0.5
+
+learn, list = RescorlaWagner(associationStr, n, salience, learnRate, 1)
 learnValue = learn[0]
 Vs3.append(learnValue)
 extinct = []
@@ -136,19 +135,29 @@ while t <= 10:
     t += 1
 
 xAxis = np.arange(1, len(Vs3) + 1)
-Vs3_mean = [((Vs3[x] + Vs3[x + 1]) / 2) for x in range(len(Vs3) - 1)]
-Vs3_mean += [(Vs3[len(Vs3) - 1] + Vs3[len(Vs3) - 2]) / 2] #fix
+Vs3_mean = [((Vs3[x] + Vs3[x + 1]) / 2) for x in range(1, len(Vs3) - 1)]
+Vs3_mean += [(Vs3[len(Vs3) - 1] + Vs3[len(Vs3) - 2]) / 2] * 2
 
 plt.figure()
-plt.plot(xAxis, Vs3, label='Alternate')
+plt.plot(xAxis, Vs3, label='Alternating')
 plt.plot(xAxis, Vs3_mean, label='Mean')
 plt.xlabel("Trials")
 plt.ylabel("Association Strength")
+plt.title("Alternating Trials of Learning and Extinction, (salience=0.5 learnRate=0.1)")
+plt.legend(loc='lower right')
 plt.grid()
 plt.savefig("assignment2_3.pdf")
 plt.show()
 
+"""Problem 3a explanation: Pairing a bell and food is a learning process using the
+Rescorla-Wagner model and pairing a bell and no food is an extinction process. I've used
+a salience and learning rate of 1 so we don't get any discounting to show that the two equations
+cancel each other out. Whatever is learned from the pair (bell, food) is unlearned in the next
+step with the pair (bell, no food). The net effect is no learning and no change in
+association strength. With a learning rate and salience of < 1 over many trials, we actually see a
+decrease in learning to the effect of the discount.  """
 
+####Possibly repeat code to show discounted graph
 
 
 
