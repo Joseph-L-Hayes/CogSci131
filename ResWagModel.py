@@ -20,7 +20,12 @@ def RescorlaWagner(initStr, t, salience=0.5, learnRate=0.1, extinct=1):
     for trial in trials:
         initStr = round(initStr, 4)
         Vs.append(initStr)
-        initStr += salience * learnRate * abs(extinct - initStr)
+
+        if extinct == 1:
+            initStr += (salience * learnRate * (1 - initStr))
+        else:
+            initStr -= (salience * learnRate * initStr)
+
 
     return Vs, trials
 
@@ -112,25 +117,21 @@ plt.savefig("assignment2_2.pdf")
 
 #combine learning and extinction
 Vs3 = []
-n = 2 #experimenting...
+n = 2
 t = 0
-learn, junk = RescorlaWagner(0.5, n, 0.5, 0.1, 1)
-learnValue = learn[len(learn) - 1]
+salience = 0.5
+learnRate = 0.1
+learn, junk = RescorlaWagner(0.5, n, salience, learnRate, 1)
+learnValue = learn[0]
 Vs3.append(learnValue)
 extinct = []
 
 while t <= 10:
 
-    extinct, list2 = RescorlaWagner(learn[1], n, 0.5, 0.1, 0)
-    # extinctValue = extinct[len(learn) - 1]
-
-    learn, list2 = RescorlaWagner(extinct[1], n, 0.5, 0.1, 1)
-    # learnValue = learn[len(learn) - 1]
-
+    extinct, list2 = RescorlaWagner(learn[1], n, salience, learnRate, 0)
+    learn, list2 = RescorlaWagner(extinct[1], n, salience, learnRate, 1)
     Vs3.append(extinct[1])
     Vs3.append(learn[1])
-
-    # print(learnValue, extinctValue)
 
     t += 1
 
@@ -138,16 +139,18 @@ xAxis = np.arange(1, len(Vs3) + 1)
 
 plt.figure()
 plt.plot(xAxis, Vs3, label='Alternate')
+
+Vs3_mean = [((Vs3[x] + Vs3[x + 1]) / 2) for x in range(0, len(Vs3) - 1)]
+
+plt.plot(xAxis, Vs3_mean, label='Mean')
+
 plt.xlabel("Trials")
 plt.ylabel("Association Strength")
+plt.grid()
+plt.savefig("assignment2_3.pdf")
 plt.show()
 
-#I think this is incorrect. It should result in a straight line, ie no learning?
-#or maybe the learning is slowed due to the delay and "mixed message"?
-#do the math on paper and see if it works out, use initStr of 0.5
-# changing n=1 produced the expected result! STILL not sure, check list output of function
-# RegWag doesn't allow for subtraction... but should add smaller amounts each time?
-#FIGURE OUT ON PAPER, REVIEW EQUATION FOR EXTINCTION
+
 
 
 
