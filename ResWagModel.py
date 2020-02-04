@@ -136,15 +136,12 @@ while t <= 10:
     t += 1
 
 xAxis = np.arange(1, len(Vs3) + 1)
-
-plt.figure()
-plt.plot(xAxis, Vs3, label='Alternate')
-
 Vs3_mean = [((Vs3[x] + Vs3[x + 1]) / 2) for x in range(len(Vs3) - 1)]
 Vs3_mean += [(Vs3[len(Vs3) - 1] + Vs3[len(Vs3) - 2]) / 2] #fix
 
+plt.figure()
+plt.plot(xAxis, Vs3, label='Alternate')
 plt.plot(xAxis, Vs3_mean, label='Mean')
-
 plt.xlabel("Trials")
 plt.ylabel("Association Strength")
 plt.grid()
