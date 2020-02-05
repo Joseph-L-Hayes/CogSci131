@@ -138,18 +138,20 @@ while t <= 100:
 xAxis = np.arange(1, len(Vs3) + 1)
 Vs3_mean = [((Vs3[x] + Vs3[x + 1]) / 2) for x in range(1, len(Vs3) - 1)]
 Vs3_mean += [(Vs3[len(Vs3) - 1] + Vs3[len(Vs3) - 2]) / 2] * 2
+# absmean = [sum(Vs3) / (len(Vs3) - 1)] * (len(Vs3))
 
 plt.figure()
 plt.plot(xAxis, Vs3, label='Alternating')
 plt.plot(xAxis, Vs3_mean, label='Mean')
+# plt.plot(xAxis, absmean, label='Mean')
 plt.xlabel("Trials")
 plt.ylabel("Association Strength, initial=0.50")
 plt.title("Alternating Trials of Learning and Extinction (salience=0.5, learnRate=0.1)")
 plt.legend(loc='upper right')
 plt.grid()
-plt.close()
 # plt.savefig("assignment2_3_greater.pdf")
 # plt.show()
+plt.close()
 
 """ Problem 3a explanation: Pairing a bell and food is a learning process using the
 Rescorla-Wagner model and pairing a bell and no food is an extinction process. I've used
@@ -178,39 +180,46 @@ def coinFlip(p):
     x = random.random()
     return x < p
 
-# Vs4 = []
-# n = 2
-# t = 0
-# salience = 0.5
-# learnRate = 0.1
-# associationStr = [0.8]
-# p = 0.9
-#
-# while t <= 200:
-#     # print(extinct)
-#
-#     if coinFlip(p):
-#         associationStr, list2 = RescorlaWagner(associationStr[0], n, salience, learnRate, 1)
-#     else:
-#         associationStr, list2 = RescorlaWagner(associationStr[0], n, salience, learnRate, 0)
-#
-#     Vs4.append(associationStr[1])
-#
-#     t += 1
-#
-# xAxis = np.arange(1, len(Vs4) + 1)
-# Vs4_mean = [((Vs4[x] + Vs3[x + 1]) / 2) for x in range(1, len(Vs4) - 1)]
-# Vs4_mean += [(Vs4[len(Vs4) - 1] + Vs4[len(Vs4) - 2]) / 2] * 2
-#
-# plt.figure()
-# # plt.plot(xAxis, Vs4, label='Alternating')
-# plt.plot(xAxis, Vs4_mean, label='Mean')
-# plt.xlabel("Trials")
-# plt.ylabel("")
-# plt.title("PROB")
-# plt.legend(loc='upper right')
-# plt.grid()
-# plt.show()
+Vs4 = []
+n = 2
+t = 0
+salience = 0.5
+learnRate = 0.1
+associationStr = [0.5]
+p = 0.50
+
+while t <= 200:
+    if coinFlip(p):
+        associationStr, list2 = RescorlaWagner(associationStr[len(associationStr) - 1], n, salience, learnRate, 1)
+    else:
+        associationStr, list2 = RescorlaWagner(associationStr[len(associationStr) - 1], n, salience, learnRate, 0)
+    # print(associationStr)
+
+    Vs4.append(associationStr[1])
+
+    t += 1
+
+xAxis = np.arange(1, len(Vs4) + 1)
+Vs4_mean = [((Vs4[x] + Vs4[x + 1]) / 2) for x in range(1, len(Vs4) - 1)]
+Vs4_mean += [Vs4_mean[len(Vs4_mean) - 1]] * 2
+absmean = [sum(Vs4) / (len(Vs4) - 1)] * (len(Vs4))
+
+plt.figure()
+plt.plot(xAxis, Vs4, label='Alternating')
+plt.plot(xAxis, absmean, label='Mean')
+plt.xlabel("Trials")
+plt.ylabel("")
+plt.title("PROB")
+plt.legend(loc='upper right')
+plt.grid()
+# plt.savefig("prob_trial_abs.pdf")
+plt.show()
+
+"""Using random probability allows us to see the effects of the Rescorla-Wagner model
+and how it can reflect learning in an organism in a natural environment. Over a long
+enough time period, the frequency of (bell, food) will approach the probability of
+the pairing occuring regardless of the initial association strength. Using Marr's computational
+level, this shows that  """
 
 """#Problem 4
 # In the Rescorla-Wagner model, salience plays essentially the same role as learning
