@@ -116,16 +116,14 @@ n = 2
 t = 0
 salience = 0.5
 learnRate = 0.1
-# salience = 1
-# learnRate = 1
-associationStr = 0.5
+associationStr = 0.8
 
 learn, list = RescorlaWagner(associationStr, n, salience, learnRate, 1)
 learnValue = learn[0]
 Vs3.append(learnValue)
 extinct = []
 
-while t <= 10:
+while t <= 100:
 
     extinct, list2 = RescorlaWagner(learn[1], n, salience, learnRate, 0)
     learn, list2 = RescorlaWagner(extinct[1], n, salience, learnRate, 1)
@@ -142,20 +140,26 @@ plt.figure()
 plt.plot(xAxis, Vs3, label='Alternating')
 plt.plot(xAxis, Vs3_mean, label='Mean')
 plt.xlabel("Trials")
-plt.ylabel("Association Strength")
-plt.title("Alternating Trials of Learning and Extinction, (salience=0.5 learnRate=0.1)")
-plt.legend(loc='lower right')
+plt.ylabel("Association Strength, initial=0.50")
+plt.title("Alternating Trials of Learning and Extinction (salience=0.5, learnRate=0.1)")
+plt.legend(loc='upper right')
 plt.grid()
-plt.savefig("assignment2_3.pdf")
+plt.savefig("assignment2_3_greater.pdf")
 plt.show()
 
-"""Problem 3a explanation: Pairing a bell and food is a learning process using the
+""" Problem 3a explanation: Pairing a bell and food is a learning process using the
 Rescorla-Wagner model and pairing a bell and no food is an extinction process. I've used
 a salience and learning rate of 1 so we don't get any discounting to show that the two equations
 cancel each other out. Whatever is learned from the pair (bell, food) is unlearned in the next
-step with the pair (bell, no food). The net effect is no learning and no change in
-association strength. With a learning rate and salience of < 1 over many trials, we actually see a
-decrease in learning to the effect of the discount.  """
+step with the pair (bell, no food).
+
+For initial strengths >= .50, the association strength over
+a long period of time decays approaching 0.50.
+For initial strengths < 0.50, the strength grows approaching 0.50.
+
+Using the Rescorla-Wagner model with alternating trials, the association strength always
+approaches 0.50 which is the frequency or (in this case) probability of the trials. The
+organism will expect food 50% of the time, it would be a coin flip.
 
 ####Double check 3a for proper behavior, approaches a limit?
 
@@ -163,12 +167,16 @@ decrease in learning to the effect of the discount.  """
 # Suppose that, on a given trial, with probability P you pair a bell with food, and with
 # probability 1-P you pair a bell with no food. What will the association strength be after many trials of
 # this? Plot some examples. Provide a short intuitive explanation on Marr's computational level.
+"""
+#create random number generator function
+def randomNumber():
+    return 0
 
-
-#Problem 4
+"""#Problem 4
 # In the Rescorla-Wagner model, salience plays essentially the same role as learning
 # rate. In a sentence or two, describe why, psychologically, we think there are different factors here. In a
 # sentence or two, describe an experiment that would let you disentangle salience and learning rate.
+"""
 
 
 
@@ -177,6 +185,5 @@ decrease in learning to the effect of the discount.  """
 
 
 
-
-
+"""FINISH 1C """
 #end
