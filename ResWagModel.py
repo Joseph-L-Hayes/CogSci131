@@ -213,7 +213,8 @@ plt.title("PROB")
 plt.legend(loc='upper right')
 plt.grid()
 # plt.savefig("prob_trial_abs.pdf")
-plt.show()
+# plt.show()
+plt.close()
 
 """Using random probability allows us to see the effects of the Rescorla-Wagner model
 and how it can reflect learning in an organism in a natural environment. Over a long
