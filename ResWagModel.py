@@ -4,6 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import doctest
 from decimal import *
+import random
 
 def RescorlaWagner(initStr, t, salience=0.5, learnRate=0.1, extinct=1):
     """ Returns the association strength of a stimulant after t time steps
@@ -47,7 +48,8 @@ plt.xticks(np.arange(min(trials1), max(trials1) + 1))
 
 plt.ylim(0, 1)
 plt.grid()
-plt.savefig("assignment2_1a.pdf")
+# plt.savefig("assignment2_1a.pdf")
+plt.close()
 #end problem 1a
 
 #Problem 1b
@@ -106,8 +108,9 @@ plt.xticks(np.arange(min(trials), max(trials) + 1))
 
 plt.ylim(0, max(Vs1) + (max(Vs1) / 3))
 plt.grid()
-plt.savefig("assignment2_2.pdf")
+# plt.savefig("assignment2_2.pdf")
 # plt.show()
+plt.close()
 #end Problem 2
 
 #Problem 3a
@@ -144,8 +147,9 @@ plt.ylabel("Association Strength, initial=0.50")
 plt.title("Alternating Trials of Learning and Extinction (salience=0.5, learnRate=0.1)")
 plt.legend(loc='upper right')
 plt.grid()
-plt.savefig("assignment2_3_greater.pdf")
-plt.show()
+plt.close()
+# plt.savefig("assignment2_3_greater.pdf")
+# plt.show()
 
 """ Problem 3a explanation: Pairing a bell and food is a learning process using the
 Rescorla-Wagner model and pairing a bell and no food is an extinction process. I've used
@@ -169,8 +173,44 @@ organism will expect food 50% of the time, it would be a coin flip.
 # this? Plot some examples. Provide a short intuitive explanation on Marr's computational level.
 """
 #create random number generator function
-def randomNumber():
-    return 0
+def coinFlip(p):
+    """returns True if random number is less than p and False if equal or greater than p """
+    x = random.random()
+    return x < p
+
+# Vs4 = []
+# n = 2
+# t = 0
+# salience = 0.5
+# learnRate = 0.1
+# associationStr = [0.8]
+# p = 0.9
+#
+# while t <= 200:
+#     # print(extinct)
+#
+#     if coinFlip(p):
+#         associationStr, list2 = RescorlaWagner(associationStr[0], n, salience, learnRate, 1)
+#     else:
+#         associationStr, list2 = RescorlaWagner(associationStr[0], n, salience, learnRate, 0)
+#
+#     Vs4.append(associationStr[1])
+#
+#     t += 1
+#
+# xAxis = np.arange(1, len(Vs4) + 1)
+# Vs4_mean = [((Vs4[x] + Vs3[x + 1]) / 2) for x in range(1, len(Vs4) - 1)]
+# Vs4_mean += [(Vs4[len(Vs4) - 1] + Vs4[len(Vs4) - 2]) / 2] * 2
+#
+# plt.figure()
+# # plt.plot(xAxis, Vs4, label='Alternating')
+# plt.plot(xAxis, Vs4_mean, label='Mean')
+# plt.xlabel("Trials")
+# plt.ylabel("")
+# plt.title("PROB")
+# plt.legend(loc='upper right')
+# plt.grid()
+# plt.show()
 
 """#Problem 4
 # In the Rescorla-Wagner model, salience plays essentially the same role as learning
