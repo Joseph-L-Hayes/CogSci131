@@ -203,16 +203,18 @@ xAxis = np.arange(1, len(Vs4) + 1)
 Vs4_mean = [((Vs4[x] + Vs4[x + 1]) / 2) for x in range(1, len(Vs4) - 1)]
 Vs4_mean += [Vs4_mean[len(Vs4_mean) - 1]] * 2
 absmean = [sum(Vs4) / (len(Vs4) - 1)] * (len(Vs4))
+prob = [p] * (len(Vs4))
 
 plt.figure()
 plt.plot(xAxis, Vs4, label='Alternating')
 plt.plot(xAxis, absmean, label='Mean')
+plt.plot(xAxis, prob, label='Probability')
 plt.xlabel("Trials")
-plt.ylabel("")
-plt.title("Alternating Trials of Learning (p) and Extinction (1 - p); (salience=0.5, learnRate=0.1)")
+plt.ylabel("Association Strength")
+plt.title("Alternating Trials of Learning (p=0.70) and Extinction (1 - p); (a=0.5, B=0.1)")
 plt.legend(loc='upper right')
 plt.grid()
-plt.savefig("prob_trial_abs.pdf")
+# plt.savefig("prob_trial_50.pdf")
 # plt.show()
 plt.close()
 
