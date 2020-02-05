@@ -209,10 +209,10 @@ plt.plot(xAxis, Vs4, label='Alternating')
 plt.plot(xAxis, absmean, label='Mean')
 plt.xlabel("Trials")
 plt.ylabel("")
-plt.title("PROB")
+plt.title("Alternating Trials of Learning (p) and Extinction (1 - p); (salience=0.5, learnRate=0.1)")
 plt.legend(loc='upper right')
 plt.grid()
-# plt.savefig("prob_trial_abs.pdf")
+plt.savefig("prob_trial_abs.pdf")
 # plt.show()
 plt.close()
 
@@ -220,7 +220,8 @@ plt.close()
 and how it can reflect learning in an organism in a natural environment. Over a long
 enough time period, the frequency of (bell, food) will approach the probability of
 the pairing occuring regardless of the initial association strength. Using Marr's computational
-level, this shows that  """
+level analysis, this shows that there is a correlation between the frequency of a pairing and the
+association strength of that pairing. """
 
 """#Problem 4
 # In the Rescorla-Wagner model, salience plays essentially the same role as learning
