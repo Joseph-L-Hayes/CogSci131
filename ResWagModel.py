@@ -30,7 +30,7 @@ def RescorlaWagner(initStr, t, salience=0.5, learnRate=0.1, extinct=1):
 
     return Vs, trials
 
-doctest.testmod()
+# doctest.testmod()
 
 #Problem 1a
 Vs1, trials1 = RescorlaWagner(0.05, 20, 0.5, 0.1)
@@ -49,7 +49,8 @@ plt.xticks(np.arange(min(trials1), max(trials1) + 1))
 plt.ylim(0, 1)
 plt.grid()
 # plt.savefig("assignment2_1a.pdf")
-plt.close()
+plt.show()
+# plt.close()
 #end problem 1a
 
 #Problem 1b
@@ -211,7 +212,7 @@ plt.plot(xAxis, absmean, label='Mean')
 plt.plot(xAxis, prob, label='Probability')
 plt.xlabel("Trials")
 plt.ylabel("Association Strength")
-plt.title("Alternating Trials of Learning (p=0.70) and Extinction (1 - p); (a=0.5, B=0.1)")
+plt.title("Alternating Trials of Learning (p=0.50) and Extinction (1 - p); (a=0.5, B=0.1)")
 plt.legend(loc='upper right')
 plt.grid()
 # plt.savefig("prob_trial_50.pdf")
@@ -223,12 +224,24 @@ and how it can reflect learning in an organism in a natural environment. Over a 
 enough time period, the frequency of (bell, food) will approach the probability of
 the pairing occuring regardless of the initial association strength. Using Marr's computational
 level analysis, this shows that there is a correlation between the frequency of a pairing and the
-association strength of that pairing. """
+association strength of that pairing. The benefit of using random probability is that we can
+see the model is not deterministic but will still increase association strength with (bell, food)
+pairings and decrease with (bell, no food) pairings.
+ """
 
 """#Problem 4
 # In the Rescorla-Wagner model, salience plays essentially the same role as learning
 # rate. In a sentence or two, describe why, psychologically, we think there are different factors here. In a
 # sentence or two, describe an experiment that would let you disentangle salience and learning rate.
+
+Salience, or the reward weight, reflects how inherently valuable the reward is to an
+organism. Learning rate effects how an organism can learn that new food with low salience
+can still provide sustenance.
+
+An experiment to disentangle salience and learning rate could involve only giving an animal
+access to food it has an aversion too (low salience). It may not eat the food at first because it
+doesn't like it but after a long enough period of time it may learn to eat the food
+because of a caloric/energy reward.
 """
 
 
