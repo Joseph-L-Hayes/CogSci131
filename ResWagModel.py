@@ -32,7 +32,10 @@ def RescorlaWagner(initStr, t, salience=0.5, learnRate=0.1, extinct=1):
 
 # doctest.testmod()
 
-#Problem 1a
+"""Problem 1a uppose that we repeatedly pair a light with food. Plot the association
+strength between light and food according to the Rescorla-Wagner model for for an
+initial association of 0.05 and for an initial association of 0.5. Plot 20 trials.
+"""
 Vs1, trials1 = RescorlaWagner(0.05, 20, 0.5, 0.1)
 Vs2, trials2 = RescorlaWagner(0.5, 20, 0.5, 0.1)
 
@@ -49,11 +52,12 @@ plt.xticks(np.arange(min(trials1), max(trials1) + 1))
 plt.ylim(0, 1)
 plt.grid()
 # plt.savefig("assignment2_1a.pdf")
-plt.show()
+# plt.show()
 # plt.close()
 #end problem 1a
 
-#Problem 1b
+"""Problem 1b How many trials will it take to reach Vlight =0.8 if the initial association is 0.05? """
+
 def manyTrials(initStr, limit, t=1, salience=0.5, learnRate=0.1):
 
     if initStr >= limit:
@@ -66,23 +70,34 @@ print(manyTrials(0.05, .8))
 """It will take 32 trials to reach Vlight = 0.8 if the initial association is 0.05"""
 #end problem 1b
 
-#Problem 1c uppose that it takes a 13 trials for a buzzer’s association with food to exceed 0.8
-# starting from an initial association of 0.0. What is the salience? Show your work/code (it is acceptable
-# to solve numerically).
+"""Problem 1c suppose that it takes a 13 trials for a buzzer’s association with food to exceed 0.8
+starting from an initial association of 0.0. What is the salience? Show your work/code (it is acceptable
+to solve numerically)."""
 
-#many trials = 13, assoc = .8, assume learnRate = .1 (?)
+def findSalience(assocStr, trials=13, salience=0.1, learningRate=0.1):
+    """This function returns the salience required to reach an association strength
+    in a given number of trials and a fixed learning rate."""
 
-#iV(t) += salience * learnRate * (1 - V(t+1))
+    for i in range(1, trials + 1):
+        assocStr += (salience * learningRate) * (1 - assocStr)
 
-# .8 = salience * .1 * (1 - V(t+1))
+    if assocStr >= 0.8:
+        return assocStr, salience
+    else:
+        return findSalience(0, 13, salience + 0.002, 0.1)
 
-#.8 / (1 - V(t+1)) = salience * .1
+result, salience = findSalience(0.0)
+print("assocStr:", result, "salience:", salience)
 
-#.8 / (.1 - .1V(t+1)) = salience
+""" It would take a salience = 1.166 to obtain an association strength of 0.8 in
+only 13 trials """
+#end problem 1c
 
-#SKIP FOR NOW
+"""Problem 2 Suppose that you begin with an association of a light and food of 0.8. Now, you want
+to teach a new association between a bell and food, while the light is present (thus you pair light, food,
+bell all together). Plot the association strength between bell and food as a function of the number of
+trials when αbell =0.2 """
 
-#Problem 2
 def RescorlaWagnerBlock(initStrBlock, initStrTarget=0, t=20, targetSalience=0.5, learnRate=0.1):
     Vs =[]
     trials = np.arange(1, t + 1)
@@ -240,7 +255,7 @@ can still provide sustenance.
 
 An experiment to disentangle salience and learning rate could involve only giving an animal
 access to food it has an aversion too (low salience). It may not eat the food at first because it
-doesn't like it but after a long enough period of time it may learn to eat the food
+doesn't like it but after a long enough period it may learn to eat the food
 because of a caloric/energy reward.
 """
 
