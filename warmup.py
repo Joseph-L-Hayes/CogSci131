@@ -18,7 +18,7 @@ plt.ylabel('y(x)')
 plt.plot(x, y)
 plt.ylim(-1.25, 1.25)
 # plt.savefig('one_plot.pdf')
-plt.show()
+# plt.show()
 
 #problem 2
 x = np.linspace(0, 100, 500)
@@ -30,9 +30,9 @@ plt.ylabel('g(x)')
 
 plt.plot(g, 'red')
 # plt.savefig('two_plot.pdf')
-plt.show()
+# plt.show()
 
-
+plt.close()
 #problem 3a
 """returns the harmonic of k"""
 def harmonic(k):
@@ -40,20 +40,22 @@ def harmonic(k):
 
 """returns the harmonic series sum up to n"""
 def harmonicSum(n):
+    list = []
     total = 0
     for i in n:
-        total = total + harmonic(i)
+        total += harmonic(i)
+        list += [total]
 
-    return total
+    return list
 
 #problem 3b
-x = np.linspace(1, 100, 1000)
-y = harmonic(x)
+x = list(range(1, 101))
+y = harmonicSum(x)
 plt.title('3. Harmonic sum of n=1 to 100')
 plt.xlabel('n')
-plt.ylabel('1/1+i')
+plt.ylabel('Sum of 1/(1+i)')
 plt.plot(x, y)
-# plt.savefig('three_b_plot.pdf')
+plt.savefig('three_b_plot.pdf')
 plt.show()
 
 
@@ -73,7 +75,7 @@ plt.xlabel('x')
 plt.ylabel('sin(x)')
 histoPlot(np.sin, np.random.normal, 0, 1, 10000, 100)
 # plt.savefig('four_plot.pdf')
-plt.show()
+# plt.show()
 
 
 #problem 5
@@ -106,7 +108,7 @@ def adjHistoPlot(n=1000):
     plt.ylabel('frequency')
     plt.xlim(0, .05)
     # plt.savefig('six_a_plot.pdf')
-    plt.show()
+    # plt.show()
 
     return diffArray
 
@@ -120,6 +122,6 @@ plt.title("6b. Differences between indices of sorted array")
 plt.xlabel('index')
 plt.ylabel('difference: arr[i + 1] - arr[i]')
 # plt.savefig('six_b_plot.pdf')
-plt.show()
+# plt.show()
 
 #end
