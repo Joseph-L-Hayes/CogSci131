@@ -57,9 +57,7 @@ plt.ylabel('Sum of 1/(1+i)')
 plt.plot(x, y)
 plt.savefig('three_b_plot.pdf')
 plt.show()
-
-
-#finished, check scaling
+#end 3b
 
 """plots a histogram of func with sample type of numSamples"""
 def histoPlot(func, sampleType, mean=0, stdev=1, numSamples=None, scale=None):
