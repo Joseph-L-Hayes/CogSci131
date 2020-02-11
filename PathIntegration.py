@@ -7,19 +7,19 @@ import matplotlib.cm as cmx
 import math
 
 
-# 1a. [5pts, HELP] Suppose that an ant wandered randomly by taking steps (x,y), one per
+# Problem 1a: Suppose that an ant wandered randomly by taking steps (x,y), one per
 # second, where at each ant step, x and y each come from a normal distribution with a mean
 # of 0 and a standard deviation of 1.0mm (assume this for all questions below). Plot
 # a trace of the ant’s path over the course of an hour.
 
 def getColorList(colors):
+    """Color gradient function created with the help of:
+    https://stackoverflow.com/questions/12487060/matplotlib-color-according-to-class-labels/12487355
+    by user https://stackoverflow.com/users/2444213/salomonvh """
     cmap = plt.cm.jet
-    # extract all colors from the .jet map
     cmaplist = [cmap(i) for i in range(cmap.N)]
-    # create the new map
     cmap = cmap.from_list('Custom cmap', cmaplist, cmap.N)
 
-    # define the bins and normalize
     bounds = np.linspace(0, colors, colors + 1)
     norm = mpl.colors.BoundaryNorm(bounds, cmap.N)
     scalarMap = cmx.ScalarMappable(norm=norm,cmap=cmap)
@@ -42,7 +42,6 @@ def antRandomPath(randomFunction=np.random.normal, mean=0.0, stdev=1.0, step=1, 
     # colors = getColorList(time)
 
     for a in xAxis:
-        # print(a)
         # color = colors[a - 1]
         dx = randomFunction(mean, stdev)
         dy = randomFunction(mean, stdev)
@@ -59,32 +58,25 @@ def antRandomPath(randomFunction=np.random.normal, mean=0.0, stdev=1.0, step=1, 
         if x1 < minX:
             minX = x1
 
-    # limit = np.amax(dataPoints) * scale
-    # print(limit)
-    # plt.ylim(min(-1 * limit, limit) - 1, max(-1 * limit, limit) + 1)
-    # plt.xlim(min(-1 * limit, limit) - 1, max(-1 * limit, limit) + 1)
-
-    # limit = max(maxX, maxY)
-    # print(limit)
     minX *= scale
     minY *= scale
     plt.ylim(min(minY, minX) - 1, max(abs(maxY), abs(maxX)) + 1)
     plt.xlim(min(minY, minX) - 1, max(abs(maxY), abs(maxX)) + 1)
 
-
     x, y = dataPoints.T
-    # dx, dy = vectors.T
-    # plt.plot(x, y)
     plt.text(0, 0, 'nest')
     plt.text(x1, y1, 'end')
-    # plt.scatter(x, y, cmap=cmap)
-    # plt.scatter(x, y, c=y)
-    # plt.scatter(x, y, s=5, c=y) s is the radius of the scatter point, c=y creates a gradient
+    plt.title('Graph of a random wandering ant, one step/second, for one hour')
+    plt.xlabel('Horizontal distance from the next in mm')
+    plt.ylabel('Vertical distance from the next in mm')
+    plt.scatter(0, 0, color='black')
+    plt.scatter(x1, y1, color='black')
     plt.grid()
     plt.show()
-
-    return dataPoints
+    plt.savefig('assignment3_1a.pdf')
 
 antRandomPath()
+#end problem 1a
+
 
 #end
