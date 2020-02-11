@@ -29,9 +29,7 @@ def getColorList(colors):
 
     return list
 
-
-
-def antRandomPath(randomFunction=np.random.normal, mean=0.0, stdev=1.0, step=1, time=3600, scale=1, color='red'):
+def antRandomPath(randomFunction=np.random.normal, mean=0.0, stdev=1.0, step=1, time=3600, scale=1, color='red', plot=True):
     nest = [0, 0]
     dataPoints = np.array([nest])
     # vectors = np.array([nest])
@@ -45,10 +43,15 @@ def antRandomPath(randomFunction=np.random.normal, mean=0.0, stdev=1.0, step=1, 
         # color = colors[a - 1]
         dx = randomFunction(mean, stdev)
         dy = randomFunction(mean, stdev)
-        plt.arrow(x=x1 * scale, y=y1 * scale, dx=dx * scale, dy=dy * scale, length_includes_head=True, head_width=.1, color=color, rasterized=True)
+
+        if plot == True:
+            plt.arrow(x=x1 * scale, y=y1 * scale, dx=dx * scale, dy=dy * scale, length_includes_head=True, head_width=.1, color=color, rasterized=True)
+
         x1 += dx
         y1 += dy
+
         dataPoints = np.append(dataPoints, [[x1, y1]], axis=0)
+
         if x1 > maxX:
             maxX = x1
         if y1 > maxY:
@@ -58,25 +61,37 @@ def antRandomPath(randomFunction=np.random.normal, mean=0.0, stdev=1.0, step=1, 
         if x1 < minX:
             minX = x1
 
-    minX *= scale
-    minY *= scale
-    plt.ylim(min(minY, minX) - 1, max(abs(maxY), abs(maxX)) + 1)
-    plt.xlim(min(minY, minX) - 1, max(abs(maxY), abs(maxX)) + 1)
+    if plot == True:
+        minX *= scale
+        minY *= scale
+        plt.ylim(min(minY, minX) - 1, max(abs(maxY), abs(maxX)) + 1)
+        plt.xlim(min(minY, minX) - 1, max(abs(maxY), abs(maxX)) + 1)
 
-    x, y = dataPoints.T
-    plt.text(0, 0, 'nest')
-    plt.text(x1, y1, 'end')
-    plt.title('Graph of a random wandering ant, one step/second, for one hour')
-    plt.xlabel('Horizontal distance from the next in mm')
-    plt.ylabel('Vertical distance from the next in mm')
-    plt.scatter(0, 0, color='black')
-    plt.scatter(x1, y1, color='black')
-    plt.grid()
-    plt.show()
-    plt.savefig('assignment3_1a.pdf')
+        x, y = dataPoints.T
+        plt.text(0, 0, 'nest')
+        plt.text(x1, y1, 'end')
+        plt.title('Graph of a random wandering ant, one step/second, for one hour')
+        plt.xlabel('Horizontal distance from the next in mm')
+        plt.ylabel('Vertical distance from the next in mm')
+        plt.scatter(0, 0, color='black')
+        plt.scatter(x1, y1, color='black')
+        plt.grid()
+        plt.show()
+        # plt.savefig('assignment3_1a.pdf')
 
-antRandomPath()
+    return dataPoints
+
+antRandomPath(plot=False)
 #end problem 1a
 
+# Problem 1b: Let’s think about why ants need to perform path integration. Suppose that instead
+# of path integration, when an ant found food, it just continued to wander with
+# random steps until it got back to the nest. Using a simulation, estimate the probability
+# that an ant who finds food after 1 hour will make its way back to within 5mm of the nest
+# over the course of the next hour (note that if it comes within 5mm of a nest, it stops).
+# How many simulations do you need to run? Do the results show that this is a good strategy?
+# Why or why not?
+
+#ant looks for food for one hour
 
 #end
