@@ -29,17 +29,17 @@ def getColorList(colors):
 
     return list
 
-def antRandomPath(randomFunction=np.random.normal, mean=0.0, stdev=1.0, step=1, time=3600, scale=1, color='red', plot=True):
-    nest = [0, 0]
+def antRandomPath(randomFunction=np.random.normal, mean=0.0, stdev=1.0, step=1, time=3600, scale=1, color='red', plot=True, nest=[0,0]):
+    # nest = [0, 0]
     dataPoints = np.array([nest])
     # vectors = np.array([nest])
-    xAxis = list(range(1, time + 1, step))
+    timeAxis = list(range(1, time + 1, step))
     x1, y1 = nest
     maxX, maxY = x1, y1
     minX, minY = x1, y1
     # colors = getColorList(time)
 
-    for a in xAxis:
+    for a in timeAxis:
         # color = colors[a - 1]
         dx = randomFunction(mean, stdev)
         dy = randomFunction(mean, stdev)
@@ -68,18 +68,18 @@ def antRandomPath(randomFunction=np.random.normal, mean=0.0, stdev=1.0, step=1, 
         plt.xlim(min(minY, minX) - 1, max(abs(maxY), abs(maxX)) + 1)
 
         x, y = dataPoints.T
-        plt.text(0, 0, 'nest')
+        plt.text(nest[0], nest[1], 'nest')
         plt.text(x1, y1, 'end')
         plt.title('Graph of a random wandering ant, one step/second, for one hour')
         plt.xlabel('Horizontal distance from the next in mm')
         plt.ylabel('Vertical distance from the next in mm')
-        plt.scatter(0, 0, color='black')
+        plt.scatter(nest[0], nest[1], color='black')
         plt.scatter(x1, y1, color='black')
         plt.grid()
         plt.show()
         # plt.savefig('assignment3_1a.pdf')
 
-    return dataPoints
+    return (x1, y1)
 
 antRandomPath(plot=False)
 #end problem 1a
@@ -92,6 +92,12 @@ antRandomPath(plot=False)
 # How many simulations do you need to run? Do the results show that this is a good strategy?
 # Why or why not?
 
-#ant looks for food for one hour
+#ant looks for food for 3600 s, randomly wanders for another 3600 s looking for the nest
+#so integrate a start location in above function, no plot
+#run a loop using antRandomPath, take returned tuple as new start and run antRandomPath again
+#but with a check for distance from nest.
+
+#take a sufficient number of samples and remember to normalize (?)
+#can do 1=success, 0=failure. Take a percentage of successes over total
 
 #end
