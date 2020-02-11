@@ -34,7 +34,7 @@ def antRandomPath(randomFunction=np.random.normal, mean=0.0, stdev=1.0, step=1, 
         """ADD A TRACER FOR THE LARGEST X AN Y VALUES FOR SCALING"""
 
     limit = np.amax(dataPoints) * scale
-    print(limit)
+    # print(limit)
     plt.ylim(min(-1 * limit, limit) - 1, max(-1 * limit, limit) + 1)
     plt.xlim(min(-1 * limit, limit) - 1, max(-1 * limit, limit) + 1)
 
@@ -43,7 +43,7 @@ def antRandomPath(randomFunction=np.random.normal, mean=0.0, stdev=1.0, step=1, 
 
     x, y = dataPoints.T
     # dx, dy = vectors.T
-    # plt.plot(x, y)
+    plt.plot(x, y)
     plt.text(0, 0, 'nest')
     plt.text(x1, y1, 'end')
     # plt.scatter(x, y, cmap=cmap)
