@@ -41,22 +41,22 @@ class Assignment3():
         # vectors = np.array([nest])
         timeAxis = list(range(1, time + 1, step))
         x1, y1 = nest
+        shortestDist = 0
 
         if foodLoc is not None:
-            # print(nest, foodLoc)
             x1, y1 = foodLoc
-            # print("foodloc", (x1, y1))
+            shortestDist = Assignment3.distance(foodLoc[0], foodLoc[1], nest[0], nest[1])
 
         maxX, maxY = x1, y1
         minX, minY = x1, y1
         # colors = getColorList(time)
-        if track == True and foodLoc is not None:
+        if foodLoc is not None:
             plt.text(foodLoc[0], foodLoc[1], 'food')
             plt.scatter(foodLoc[0], foodLoc[1], color='black')
             color = 'blue'
-            nestDistance = Assignment3.distance(x1, y1, nest[0], nest[1])
-            if nestDistance <= 5.0:
-                return 1
+            # nestDistance = Assignment3.distance(x1, y1, nest[0], nest[1])
+            # if nestDistance <= 5.0:
+            #     return 1
 
         for a in timeAxis:
             # color = colors[a - 1]
@@ -66,15 +66,16 @@ class Assignment3():
             if plot == True:
                 plt.arrow(x=x1 * scale, y=y1 * scale, dx=dx * scale, dy=dy * scale, length_includes_head=True, head_width=.1, color=color, rasterized=True)
 
+            nestDistance = Assignment3.distance(x1, y1, nest[0], nest[1])
             x1 += dx
             y1 += dy
 
-            if track == True and foodLoc is not None:
-                nestDistance = Assignment3.distance(x1, y1, nest[0], nest[1])
+            if track is True and foodLoc is not None:
                 if nestDistance <= 5.0:
                     return 1
 
-            # dataPoints = np.append(dataPoints, [[x1, y1]], axis=0)
+            if track is False and foodLoc is not None:
+                shortestDist = min(shortestDist, nestDistance)
 
             if x1 > maxX:
                 maxX = x1
@@ -105,6 +106,9 @@ class Assignment3():
 
         if track == True:
             return 0
+        if track == False and foodLoc is not None:
+            print(shortestDist)
+            return shortestDist
         else:
             return (x1, y1)
 
@@ -120,17 +124,37 @@ class Assignment3():
 # How many simulations do you need to run? Do the results show that this is a good strategy?
 # Why or why not?
 
-successes = 0
-numTrials = 10
-
-for i in range(numTrials):
-    foodLocation = Assignment3.antRandomPath(plot=False)
-    successes += Assignment3.antRandomPath(plot=False, track=True, foodLoc=[foodLocation[0], foodLocation[1]])
-
-print('P(finds nest, 1 hour)=', successes / numTrials * 100, '%', '# samples:', numTrials)
+# successes = 0
+# numTrials = 10000
+#
+# for i in range(numTrials):
+#     foodLocation = Assignment3.antRandomPath(plot=False)
+#     successes += Assignment3.antRandomPath(plot=False, track=True, foodLoc=[foodLocation[0], foodLocation[1]])
+#
+# print('P(finds nest, 1 hour)=', successes / numTrials * 100, '%', '# samples:', numTrials)
 """Answer for 1b:
         P(finds nest, 1 hour)= 14.96 % # samples: 10000. After running 10,000 samples,
         the ant only gets within 5.0mm of the nest 14.96% of the time. This is
         very poor strategy, it is extremely inefficient"""
+#end Problem 1b
 
+# Problem 1c: If the ant searches for an hour, finds food, and then searches for the nest
+# by continuing to walk at random, on average, what is the closest distance it will come to
+# the nest over the course of the next hour? (Do not assume it stops if it comes within 5mm)
+# Find this average distance with a simulation.
+
+
+# Imagine the ant walks for an hour, and then continues to travel randomly for the next hour.
+# You should keep track of the closest the ant comes to the nest over the course of the second hour.
+# Now do this 500, 1000 etc times (some number of trials), and compute the average over all trials.
+# So you are finding the closest distance to the nest, on average.
+
+numTrials = 10
+shortestDist = []
+
+for i in range(numTrials):
+    foodLocation = Assignment3.antRandomPath(plot=False)
+    shortestDist += [Assignment3.antRandomPath(plot=False, track=False, foodLoc=[foodLocation[0], foodLocation[1]])]
+# print(min(shortestDist))
+print(sum(shortestDist) / numTrials)
 #end
