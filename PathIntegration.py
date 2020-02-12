@@ -153,8 +153,8 @@ numTrials = 10
 shortestDist = []
 
 for i in range(numTrials):
-    foodLocation = Assignment3.antRandomPath(plot=False)
-    shortestDist += [Assignment3.antRandomPath(plot=False, track=False, foodLoc=[foodLocation[0], foodLocation[1]])]
+    foodLocation = Assignment3.antRandomPath(plot=False) #first hour
+    shortestDist += [Assignment3.antRandomPath(plot=False, track=False, foodLoc=[foodLocation[0], foodLocation[1]])] #second hour
 # print(min(shortestDist))
 print(sum(shortestDist) / numTrials)
 #end
