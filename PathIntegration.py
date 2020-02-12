@@ -107,7 +107,7 @@ class Assignment3():
         if track == True:
             return 0
         if track == False and foodLoc is not None:
-            print(shortestDist)
+            # print(shortestDist)
             return shortestDist
         else:
             return (x1, y1)
@@ -149,7 +149,7 @@ class Assignment3():
 # Now do this 500, 1000 etc times (some number of trials), and compute the average over all trials.
 # So you are finding the closest distance to the nest, on average.
 
-numTrials = 10
+numTrials = 100
 shortestDist = []
 
 for i in range(numTrials):
@@ -157,4 +157,11 @@ for i in range(numTrials):
     shortestDist += [Assignment3.antRandomPath(plot=False, track=False, foodLoc=[foodLocation[0], foodLocation[1]])] #second hour
 # print(min(shortestDist))
 print(sum(shortestDist) / numTrials)
+"""Answer for 1c:
+        I am assuming that we are taking the shortest distance from the ant at any step to the nest over the course
+        of a search from food to the nest; this is one sample. I also assume we do this over many trials, sum all of the shortest
+        distances, and divide by the number of samples taken. I calculated average distances using 100 trials
+        5 times and got the following values in mm: [46.975, 44.964, 49.160, 47.394, 48.221].
+        I interpret these average distances to be inefficiency (energy or distance loss) from randomly
+        searching for the nest. """
 #end
