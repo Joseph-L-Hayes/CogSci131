@@ -36,7 +36,6 @@ class Assignment3():
 
 
     def antRandomPath(randomFunction=np.random.normal, mean=0.0, stdev=1.0, step=1, time=3600, scale=1, color='red', plot=True, foodLoc=None, nest=[0,0], track=False):
-        # nest = [0, 0]
         dataPoints = np.array([nest])
         # vectors = np.array([nest])
         timeAxis = list(range(1, time + 1, step))
@@ -112,7 +111,7 @@ class Assignment3():
         else:
             return (x1, y1)
 
-# Assignment3.antRandomPath(plot=False)
+# Assignment3.antRandomPath(plot=True)
 # print("dist: ", Assignment3.distance(-59.06819725288309, 5.947437155778581, 0, 0))
 #end problem 1a
 
@@ -143,14 +142,14 @@ class Assignment3():
 # the nest over the course of the next hour? (Do not assume it stops if it comes within 5mm)
 # Find this average distance with a simulation.
 
-numTrials = 100
-shortestDist = []
-
-for i in range(numTrials):
-    foodLocation = Assignment3.antRandomPath(plot=False) #first hour
-    shortestDist += [Assignment3.antRandomPath(plot=False, track=False, foodLoc=[foodLocation[0], foodLocation[1]])] #second hour
+# numTrials = 100
+# shortestDist = []
+#
+# for i in range(numTrials):
+#     foodLocation = Assignment3.antRandomPath(plot=False) #first hour
+#     shortestDist += [Assignment3.antRandomPath(plot=False, track=False, foodLoc=[foodLocation[0], foodLocation[1]])] #second hour
 # print(min(shortestDist))
-print(sum(shortestDist) / numTrials)
+# print(sum(shortestDist) / numTrials)
 """Answer for 1c:
         I am assuming that we are taking the shortest distance from the ant at any step to the nest over the course
         of a search from food to the nest; this is one sample. I also assume we do this over many trials, sum all of the shortest
@@ -158,4 +157,51 @@ print(sum(shortestDist) / numTrials)
         5 times and got the following values in mm: [46.975, 44.964, 49.160, 47.394, 48.221].
         I interpret these average distances to be inefficiency (energy or distance loss) from randomly
         searching for the nest. """
+
+
+#Problem 2
+# print(np.random.normal(0, .1, 3600))
+def antPathIntegration(noiseDev, moveDev=1.0, nest=(0,0), mean=0):
+    #create a list of outbound points
+    memoryPath = [nest]
+    actualPath = [nest]
+    x1, y1 = nest
+
+    for i in range(10):
+        #ant moves
+        x1 += np.random.normal(mean, moveDev)
+        y1 += np.random.normal(mean, moveDev)
+        actualPath.append((x1, y1)) #the actual move, no noise
+
+        noiseX = np.random.normal(mean, noiseDev)
+        noiseY = np.random.normal(mean, noiseDev)
+        memoryPath.append((x1 + noiseX, y1 + noiseY)) #the move plus memory noise
+
+    memoryPathArr = np.array(memoryPath)
+    actualPathArr = np.array(actualPath)
+
+    return memoryPathArr, actualPathArr
+
+memory, actual = antPathIntegration(.1)
+print(memory)
+print(actual)
+xMem, yMem = zip(*memory)
+xAct, yAct = zip(*actual)
+plt.plot(xMem, yMem, label='Memory Path', color='red')
+plt.plot(xAct, yAct, label='Actual Path', color='blue')
+plt.scatter(0, 0, label='nest')
+plt.legend(loc='lower right')
+plt.show()
+
+
+#ant random walks to food, stores actual location + noise
+#ant walks straight back (crows path) along a vector to nest based on memory
+#my gut says the ant will be off by distance(x + total noise, y + total noise)
+#how to generate the vector back to nest without using actual nest location?
+
+
+
+
+
+
 #end
