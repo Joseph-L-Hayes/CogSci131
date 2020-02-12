@@ -143,12 +143,6 @@ class Assignment3():
 # the nest over the course of the next hour? (Do not assume it stops if it comes within 5mm)
 # Find this average distance with a simulation.
 
-
-# Imagine the ant walks for an hour, and then continues to travel randomly for the next hour.
-# You should keep track of the closest the ant comes to the nest over the course of the second hour.
-# Now do this 500, 1000 etc times (some number of trials), and compute the average over all trials.
-# So you are finding the closest distance to the nest, on average.
-
 numTrials = 100
 shortestDist = []
 
