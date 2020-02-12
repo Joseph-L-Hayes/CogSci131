@@ -182,20 +182,27 @@ def antPathIntegration(noiseDev, moveDev=1.0, nest=(0,0), mean=0):
 
     return memoryPathArr, actualPathArr
 
-memory, actual = antPathIntegration(.1)
-print(memory)
-print(actual)
-memEndX, memEndY = memory[:1] #can't unpack FIX
-actEndX, actEndY = actual[:1] #can't unpack FIX
+memory, actual = antPathIntegration(1)
+# print(memory)
+# print(actual)
+memEnd = memory[-1]
+actEnd = actual[-1]
+lists = [memEnd, actEnd]
+print(lists)
+
+print("memEndX:", memEnd)
+print("actEndX:", actEnd)
 
 xMem, yMem = zip(*memory)
 xAct, yAct = zip(*actual)
 plt.plot(xMem, yMem, label='Memory Path', color='red')
 plt.plot(xAct, yAct, label='Actual Path', color='blue')
+plt.plot(memEnd, actEnd, color='black') #hmmm
+# plt.scatter(actEndX, actEndY, color='black') #hmmm
 plt.scatter(0, 0, label='nest')
-plt.scatter(memEndX, memEndY, label='memEnd', color='black')
-plt.scatter(actEndX, actEndY, label='actEnd', color='green')
-plt.legend(loc='lower right')
+# plt.scatter(memEndX, memEndY, label='memEnd', color='black')
+# plt.scatter(actEndX, actEndY, label='actEnd', color='green')
+# plt.legend(loc='upper right')
 plt.show()
 
 
