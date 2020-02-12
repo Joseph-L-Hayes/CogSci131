@@ -185,10 +185,11 @@ def antPathIntegration(noiseDev, moveDev=1.0, nest=(0,0), mean=0):
 memory, actual = antPathIntegration(1)
 # print(memory)
 # print(actual)
-memEnd = memory[-1]
-actEnd = actual[-1]
-lists = [memEnd, actEnd]
-print(lists)
+memEnd = memory[-1].T #returns arrays
+actEnd = actual[-1].T #returns arrays
+lists = [[memEnd[0], actEnd[0]], [memEnd[1], actEnd[1]]]
+listx, listy = zip(*lists)
+print(listx, listy)
 
 print("memEndX:", memEnd)
 print("actEndX:", actEnd)
@@ -197,7 +198,7 @@ xMem, yMem = zip(*memory)
 xAct, yAct = zip(*actual)
 plt.plot(xMem, yMem, label='Memory Path', color='red')
 plt.plot(xAct, yAct, label='Actual Path', color='blue')
-plt.plot(memEnd, actEnd, color='black') #hmmm
+plt.plot(listx, listy, color='black') #still getting issues with line drawn
 # plt.scatter(actEndX, actEndY, color='black') #hmmm
 plt.scatter(0, 0, label='nest')
 # plt.scatter(memEndX, memEndY, label='memEnd', color='black')
