@@ -10,7 +10,7 @@ import math
 # second, where at each ant step, x and y each come from a normal distribution with a mean
 # of 0 and a standard deviation of 1.0mm (assume this for all questions below). Plot
 # a trace of the ant’s path over the course of an hour.
-class Assignment3():
+class PathIntegration():
 
     def distance(x1, y1, x2, y2):
         """Returns the Pythagorean distance between two points"""
@@ -44,7 +44,7 @@ class Assignment3():
 
         if foodLoc is not None:
             x1, y1 = foodLoc
-            shortestDist = Assignment3.distance(foodLoc[0], foodLoc[1], nest[0], nest[1])
+            shortestDist = PathIntegration.distance(foodLoc[0], foodLoc[1], nest[0], nest[1])
 
         maxX, maxY = x1, y1
         minX, minY = x1, y1
@@ -53,7 +53,7 @@ class Assignment3():
             plt.text(foodLoc[0], foodLoc[1], 'food')
             plt.scatter(foodLoc[0], foodLoc[1], color='black')
             color = 'blue'
-            # nestDistance = Assignment3.distance(x1, y1, nest[0], nest[1])
+            # nestDistance = PathIntegration.distance(x1, y1, nest[0], nest[1])
             # if nestDistance <= 5.0:
             #     return 1
 
@@ -65,7 +65,7 @@ class Assignment3():
             if plot == True:
                 plt.arrow(x=x1 * scale, y=y1 * scale, dx=dx * scale, dy=dy * scale, length_includes_head=True, head_width=.1, color=color, rasterized=True)
 
-            nestDistance = Assignment3.distance(x1, y1, nest[0], nest[1])
+            nestDistance = PathIntegration.distance(x1, y1, nest[0], nest[1])
             x1 += dx
             y1 += dy
 
@@ -101,7 +101,7 @@ class Assignment3():
             plt.scatter(x1, y1, color='black')
             plt.grid()
             plt.show()
-            # plt.savefig('assignment3_1a.pdf')
+            # plt.savefig('Assignment3_1a.pdf')
 
         if track == True:
             return 0
@@ -111,8 +111,8 @@ class Assignment3():
         else:
             return (x1, y1)
 
-# Assignment3.antRandomPath(plot=True)
-# print("dist: ", Assignment3.distance(-59.06819725288309, 5.947437155778581, 0, 0))
+# PathIntegration.antRandomPath(plot=True)
+# print("dist: ", PathIntegration.distance(-59.06819725288309, 5.947437155778581, 0, 0))
 #end problem 1a
 
 # Problem 1b: Let’s think about why ants need to perform path integration. Suppose that instead
@@ -127,8 +127,8 @@ class Assignment3():
 # numTrials = 10000
 #
 # for i in range(numTrials):
-#     foodLocation = Assignment3.antRandomPath(plot=False)
-#     successes += Assignment3.antRandomPath(plot=False, track=True, foodLoc=[foodLocation[0], foodLocation[1]])
+#     foodLocation = PathIntegration.antRandomPath(plot=False)
+#     successes += PathIntegration.antRandomPath(plot=False, track=True, foodLoc=[foodLocation[0], foodLocation[1]])
 #
 # print('P(finds nest, 1 hour)=', successes / numTrials * 100, '%', '# samples:', numTrials)
 """Answer for 1b:
@@ -146,8 +146,8 @@ class Assignment3():
 # shortestDist = []
 #
 # for i in range(numTrials):
-#     foodLocation = Assignment3.antRandomPath(plot=False) #first hour
-#     shortestDist += [Assignment3.antRandomPath(plot=False, track=False, foodLoc=[foodLocation[0], foodLocation[1]])] #second hour
+#     foodLocation = PathIntegration.antRandomPath(plot=False) #first hour
+#     shortestDist += [PathIntegration.antRandomPath(plot=False, track=False, foodLoc=[foodLocation[0], foodLocation[1]])] #second hour
 # print(min(shortestDist))
 # print(sum(shortestDist) / numTrials)
 """Answer for 1c:
@@ -159,8 +159,8 @@ class Assignment3():
         searching for the nest. """
 
 
-#Problem 2
-# print(np.random.normal(0, .1, 3600))
+"""Problem 2"""
+
 def antPathIntegration(noiseDev, time=3600, moveDev=1.0, nest=(0,0), mean=0):
     """Returns the Euclidean distance between end two points of two random paths, one path
         incorporates noise with every step along its path. """
@@ -186,7 +186,7 @@ def antPathIntegration(noiseDev, time=3600, moveDev=1.0, nest=(0,0), mean=0):
     actX, actY = actualPath[-1]
     memX, memY = memoryPath[-1]
 
-    return Assignment3.distance(actX, actY, memX, memY)
+    return PathIntegration.distance(actX, actY, memX, memY)
 
 # distance = antPathIntegration(1, time=3600)
 # print(distance)
@@ -201,15 +201,15 @@ def pathIntegrationSimulation(noiseDev=[], samples=1000, time=3600):
         meanDist += [sum([antPathIntegration(S, time) for i in range(samples)]) / samples]
     return noiseDev, meanDist
 
-# noises, distances = pathIntegrationSimulation([1.0, 0.1, 0.01, 0.001, 0.0001], time=3600)
-#
+noises, distances = pathIntegrationSimulation([1.0, 0.1, 0.01, 0.001, 0.0001], time=10)
+
 # plt.semilogx(noises, distances)
 # plt.ylabel('Distance (mm)')
 # plt.xlabel('Standard Deviation as Noise (mm)')
 # plt.title('Mean distance difference in ant memory vector back to nest \n and true vector back to nest at different noise levels (n=1000)')
-# plt.savefig('path_integration_deviation.pdf')
+# # plt.savefig('path_integration_deviation.pdf')
 # plt.show()
 
-
+"""Problem 3a """
 
 #end
