@@ -161,51 +161,61 @@ class Assignment3():
 
 #Problem 2
 # print(np.random.normal(0, .1, 3600))
-def antPathIntegration(noiseDev, moveDev=1.0, nest=(0,0), mean=0):
-    #create a list of outbound points
+def antPathIntegration(noiseDev, time=3600, moveDev=1.0, nest=(0,0), mean=0):
+    """Returns the Euclidean distance between end two points of two random paths, one path
+        incorporates noise with every step along its path. """
     memoryPath = [nest]
     actualPath = [nest]
-    x1, y1 = nest
+    actualX, actualY = nest
+    noiseX, noiseY = nest
 
-    for i in range(10):
+    for i in range(time):
         #ant moves
-        x1 += np.random.normal(mean, moveDev)
-        y1 += np.random.normal(mean, moveDev)
-        actualPath.append((x1, y1)) #the actual move, no noise
+        deltaX = np.random.normal(mean, moveDev)
+        deltaY = np.random.normal(mean, moveDev)
+        actualX += deltaX #update point
+        actualY += deltaY #update point
 
-        noiseX = np.random.normal(mean, noiseDev)
-        noiseY = np.random.normal(mean, noiseDev)
-        memoryPath.append((x1 + noiseX, y1 + noiseY)) #the move plus memory noise
+        actualPath.append((actualX, actualY)) #the actual move, no noise
 
-    memoryPathArr = np.array(memoryPath)
-    actualPathArr = np.array(actualPath)
+        #question: does next noise step go from actual or from last noise step?
+        noiseX += (deltaX + np.random.normal(mean, noiseDev)) #noisy point + new noisy point
+        noiseY += (deltaY + np.random.normal(mean, noiseDev)) #noisy point + new noisy point
+        memoryPath.append((noiseX, noiseY)) #the move plus memory noise
 
-    return memoryPathArr, actualPathArr
+    # memoryPathArr = np.array(memoryPath)
+    # actualPathArr = np.array(actualPath)
+    actX, actY = actualPath[-1]
+    memX, memY = memoryPath[-1]
 
-memory, actual = antPathIntegration(1)
-# print(memory)
-# print(actual)
-memEnd = memory[-1].T #returns arrays
-actEnd = actual[-1].T #returns arrays
-lists = [[memEnd[0], actEnd[0]], [memEnd[1], actEnd[1]]]
-listx, listy = zip(*lists)
-print(listx, listy)
+    return Assignment3.distance(actX, actY, memX, memY)
 
-print("memEndX:", memEnd)
-print("actEndX:", actEnd)
+distance = antPathIntegration(1, time=3600)
+print(distance)
 
-xMem, yMem = zip(*memory)
-xAct, yAct = zip(*actual)
-plt.plot(xMem, yMem, label='Memory Path', color='red')
-plt.plot(xAct, yAct, label='Actual Path', color='blue')
-plt.plot(listx, listy, color='black') #still getting issues with line drawn
-# plt.scatter(actEndX, actEndY, color='black') #hmmm
-plt.scatter(0, 0, label='nest')
-# plt.scatter(memEndX, memEndY, label='memEnd', color='black')
-# plt.scatter(actEndX, actEndY, label='actEnd', color='green')
-# plt.legend(loc='upper right')
-plt.show()
-
+#FOR PLOTTING PATH ONLY, NOT FOR EXPERIMENT
+# memEnd = memory[-1] #returns arrays
+# actEnd = actual[-1] #returns arrays
+# lists = [[memEnd[0], actEnd[0]], [memEnd[1], actEnd[1]]]
+# listx, listy = zip(*lists)
+# # print(listx, listy)
+#
+# # print("memEndX:", memEnd)
+# # print("actEndX:", actEnd)
+#
+# xMem, yMem = zip(*memory)
+# xAct, yAct = zip(*actual)
+# plt.plot(xMem, yMem, label='Memory Path', color='red')
+# plt.plot(xAct, yAct, label='Actual Path', color='blue')
+# # plt.plot(listx, listy, color='black') #still getting issues with line drawn
+# plt.scatter(memEnd[0], memEnd[1], color='black') #hmmm
+# plt.scatter(actEnd[0], actEnd[1], color='green') #hmmm
+# plt.scatter(0, 0, label='nest')
+# # plt.scatter(memEndX, memEndY, label='memEnd', color='black')
+# # plt.scatter(actEndX, actEndY, label='actEnd', color='green')
+# # plt.legend(loc='upper right')
+# plt.show()
+#END PLOT PATH EXPERIMENT
 
 #ant random walks to food, stores actual location + noise
 #ant walks straight back (crows path) along a vector to nest based on memory
@@ -213,8 +223,29 @@ plt.show()
 #how to generate the vector back to nest without using actual nest location?
 
 
-
-
+#SAVED CODE, move + noise, no noisy position update
+# def antPathIntegration(noiseDev, time=3600, moveDev=1.0, nest=(0,0), mean=0):
+#     #create a list of outbound points
+#     memoryPath = [nest]
+#     actualPath = [nest]
+#     x1, y1 = nest
+#
+#     for i in range(time):
+#         #ant moves
+#         actualX += np.random.normal(mean, moveDev)
+#         actualY += np.random.normal(mean, moveDev)
+#         actualPath.append((x1, y1)) #the actual move, no noise
+#
+#         #question: does next noise step go from actual or from last noise step?
+#         noiseX = actualX + np.random.normal(mean, noiseDev)
+#         noiseY = actualY + np.random.normal(mean, noiseDev)
+#         print(noiseX, noiseY)
+#         memoryPath.append((noiseX, noiseY)) #the move plus memory noise
+#
+#     memoryPathArr = np.array(memoryPath)
+#     actualPathArr = np.array(actualPath)
+#
+#     return memoryPathArr, actualPathArr #only need to return the distance between memory and actual end points
 
 
 #end
