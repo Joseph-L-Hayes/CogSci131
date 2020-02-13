@@ -211,59 +211,5 @@ def pathIntegrationSimulation(noiseDev=[], samples=1000, time=3600):
 # plt.show()
 
 
-#FOR PLOTTING PATH ONLY, NOT FOR EXPERIMENT
-# memEnd = memory[-1] #returns arrays
-# actEnd = actual[-1] #returns arrays
-# lists = [[memEnd[0], actEnd[0]], [memEnd[1], actEnd[1]]]
-# listx, listy = zip(*lists)
-# # print(listx, listy)
-#
-# # print("memEndX:", memEnd)
-# # print("actEndX:", actEnd)
-#
-# xMem, yMem = zip(*memory)
-# xAct, yAct = zip(*actual)
-# plt.plot(xMem, yMem, label='Memory Path', color='red')
-# plt.plot(xAct, yAct, label='Actual Path', color='blue')
-# # plt.plot(listx, listy, color='black') #still getting issues with line drawn
-# plt.scatter(memEnd[0], memEnd[1], color='black') #hmmm
-# plt.scatter(actEnd[0], actEnd[1], color='green') #hmmm
-# plt.scatter(0, 0, label='nest')
-# # plt.scatter(memEndX, memEndY, label='memEnd', color='black')
-# # plt.scatter(actEndX, actEndY, label='actEnd', color='green')
-# # plt.legend(loc='upper right')
-# plt.show()
-#END PLOT PATH EXPERIMENT
-
-#ant random walks to food, stores actual location + noise
-#ant walks straight back (crows path) along a vector to nest based on memory
-#my gut says the ant will be off by distance(x + total noise, y + total noise)
-#how to generate the vector back to nest without using actual nest location?
-
-
-#SAVED CODE, move + noise, no noisy position update
-# def antPathIntegration(noiseDev, time=3600, moveDev=1.0, nest=(0,0), mean=0):
-#     #create a list of outbound points
-#     memoryPath = [nest]
-#     actualPath = [nest]
-#     x1, y1 = nest
-#
-#     for i in range(time):
-#         #ant moves
-#         actualX += np.random.normal(mean, moveDev)
-#         actualY += np.random.normal(mean, moveDev)
-#         actualPath.append((x1, y1)) #the actual move, no noise
-#
-#         #question: does next noise step go from actual or from last noise step?
-#         noiseX = actualX + np.random.normal(mean, noiseDev)
-#         noiseY = actualY + np.random.normal(mean, noiseDev)
-#         print(noiseX, noiseY)
-#         memoryPath.append((noiseX, noiseY)) #the move plus memory noise
-#
-#     memoryPathArr = np.array(memoryPath)
-#     actualPathArr = np.array(actualPath)
-#
-#     return memoryPathArr, actualPathArr #only need to return the distance between memory and actual end points
-
 
 #end
