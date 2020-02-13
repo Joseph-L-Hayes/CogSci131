@@ -230,8 +230,9 @@ def pathIntegrationEnergy(noiseDev=[], samples=1000, time=3600):
 # plt.title('Mean energy expenditure for ant foraging (exp(.1/S) + distance^2) \n from noisy memory vector back to the nest at \n different noise levels S (n=1000)')
 # plt.xlabel('Standard Deviation as Noise (mm)')
 # plt.ylabel('Energy Expenditure')
-# plt.savefig('path_integration_energy.pdf')
-# plt.close()
+# # plt.savefig('path_integration_energy.pdf')
+# plt.show()
+# # plt.close()
 
 """Problem 3b Answer:
     To use a smaller S and thus less noise as the ant moves, it requires more energy
