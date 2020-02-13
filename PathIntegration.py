@@ -202,7 +202,7 @@ def pathIntegrationSimulation(noiseDev=[], samples=1000, time=3600):
     return noiseDev, meanDist
 
 # noises, distances = pathIntegrationSimulation([1.0, 0.1, 0.01, 0.001, 0.0001], time=3600)
-# 
+#
 # plt.semilogx(noises, distances)
 # plt.ylabel('Distance (mm)')
 # plt.xlabel('Standard Deviation as Noise (mm)')
