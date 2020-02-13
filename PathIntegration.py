@@ -183,15 +183,35 @@ def antPathIntegration(noiseDev, time=3600, moveDev=1.0, nest=(0,0), mean=0):
         noiseY += (deltaY + np.random.normal(mean, noiseDev)) #noisy point + new noisy point
         memoryPath.append((noiseX, noiseY)) #the move plus memory noise
 
-    # memoryPathArr = np.array(memoryPath)
-    # actualPathArr = np.array(actualPath)
     actX, actY = actualPath[-1]
     memX, memY = memoryPath[-1]
 
     return Assignment3.distance(actX, actY, memX, memY)
 
-distance = antPathIntegration(1, time=3600)
-print(distance)
+# distance = antPathIntegration(1, time=3600)
+# print(distance)
+
+def pathIntegrationSimulation(noiseDev=[], samples=1000, time=3600):
+    """Returns the mean distance of end points for all standard deviations in
+        noiseDev and the noiseDev list. """
+    #return noiseDev for x-axis numbers and mean distances over all samples for each noiseDev
+    meanDist = [] #list for storing the mean distances for every noiseDev
+
+    for S in noiseDev:
+        meanDist += [sum([antPathIntegration(S, time) for i in range(samples)]) / samples]
+    return noiseDev, meanDist
+
+noises, distances = pathIntegrationSimulation([1.0, 0.1, 0.01, 0.001, 0.0001], time=3600)
+print(noises)
+print(distances)
+
+plt.semilogx(noises, distances)
+plt.ylabel('Distance (mm)')
+plt.xlabel('Standard Deviation as Noise')
+plt.title('Mean distance difference in ant memory vector back to nest \n and true vector back to nest at different noise levels (n=1000)')
+# plt.savefig('path_integration_deviation.pdf')
+# plt.show()
+
 
 #FOR PLOTTING PATH ONLY, NOT FOR EXPERIMENT
 # memEnd = memory[-1] #returns arrays
