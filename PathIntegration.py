@@ -34,7 +34,6 @@ class PathIntegration():
 
         return list
 
-
     def antRandomPath(randomFunction=np.random.normal, mean=0.0, stdev=1.0, step=1, time=3600, scale=1, color='red', plot=True, foodLoc=None, nest=[0,0], track=False):
         dataPoints = np.array([nest])
         # vectors = np.array([nest])
@@ -53,9 +52,6 @@ class PathIntegration():
             plt.text(foodLoc[0], foodLoc[1], 'food')
             plt.scatter(foodLoc[0], foodLoc[1], color='black')
             color = 'blue'
-            # nestDistance = PathIntegration.distance(x1, y1, nest[0], nest[1])
-            # if nestDistance <= 5.0:
-            #     return 1
 
         for a in timeAxis:
             # color = colors[a - 1]
@@ -134,7 +130,8 @@ PathIntegration.antRandomPath(plot=True)
 """Answer for 1b:
         P(finds nest, 1 hour)= 14.96 % # samples: 10000. After running 10,000 samples,
         the ant only gets within 5.0mm of the nest 14.96% of the time. This is
-        very poor strategy, it is extremely inefficient"""
+        very poor strategy, it is extremely inefficient, the ant would rarely make
+        its way back to the nest with food. """
 #end Problem 1b
 
 # Problem 1c: If the ant searches for an hour, finds food, and then searches for the nest
@@ -209,13 +206,15 @@ def pathIntegrationSimulation(noiseDev=[], samples=1000, time=3600):
 # plt.title('Mean distance difference in ant memory vector back to nest \n and true vector back to nest at different noise levels (n=1000)')
 # # plt.savefig('path_integration_deviation.pdf')
 # plt.show()
+"""Answer for problem 2:
+    The distance from the next goes up logarithmically as noise increases from .0001 to 1.
+    The accuracy of the ant's memory is crucial to its survival."""
+
 
 """Problem 3a """
-#modify the above with energy option? np.exp(.1/S) + d**2 per trip averaged
 def pathIntegrationEnergy(noiseDev=[], samples=1000, time=3600):
     """Returns the mean energy expenditure of a foraging trip at exp(.1/noiseDev)
         plus (distance to the nest)^2 over samples number of trials. """
-    #return noiseDev for x-axis numbers and mean distances over all samples for each noiseDev
     meanEnergy = [] #list for storing the mean distances for every noiseDev
 
     for S in noiseDev:
@@ -224,7 +223,7 @@ def pathIntegrationEnergy(noiseDev=[], samples=1000, time=3600):
     return noiseDev, meanEnergy
 
 # noises, energy = pathIntegrationEnergy([.001, .01, .1, 1, 10, 100, 1000], time=3600, samples=1000)
-# 
+#
 # plt.loglog(noises, energy, color='red')
 # plt.scatter(.1, min(energy), color='blue')
 # plt.grid()
@@ -234,8 +233,7 @@ def pathIntegrationEnergy(noiseDev=[], samples=1000, time=3600):
 # plt.savefig('path_integration_energy.pdf')
 # plt.close()
 
-
-"""Problem 3b:
+"""Problem 3b Answer:
     To use a smaller S and thus less noise as the ant moves, it requires more energy
     expenditure per step. The minimum shows that there is a compromise at about
     0.1mm noise. At this level of noise, the ant gets fairly close to the nest
@@ -246,6 +244,5 @@ def pathIntegrationEnergy(noiseDev=[], samples=1000, time=3600):
     very important to worker ants because they tend to have short lifespans (depending
     on the species) giving them little time to learn more efficient methods of foraging. """
 
-#Question 3B refers to the minimum itself. Try thinking back to the lecture on core knowledge
-#and how achieving that minimum would be evolutionarily useful for an ant.
+
 #end
