@@ -1,4 +1,6 @@
 import re
+from PyDictionary import PyDictionary
+import random
 """documentation for re:
     https://docs.python.org/3/library/re.html """
 
@@ -25,6 +27,9 @@ def response(s1, s2):
         # print('Group 1:', m.group(1))
         # print('Group 2:', m.group(2))
 
+    if one:
+        print(one)
+
     # if z:
     #     print(z.group(1))
     #groups are the (.+) portions of the string
@@ -44,8 +49,30 @@ def responseInput(*args):
 
     print('Hello %s, it is a pleasure to meet you.' % (name))
 
+# def running(*args): #identify the noun and the verb, return a response
+    # dictionary = PyDictionary()
+    # verb, noun = '', ''
+    # for w in args:
+    #     number = random.randint(1, 101)
+    #     pos = dictionary.meaning(w)
+    #     # print(pos)
+    #     if pos and 'Noun' in pos.keys():
+    #         noun = w
+    #         print(noun)
+    #     if pos and 'Verb' in pos.keys():
+    #         verb = w
+    #         print(verb)
 
-response('My name is ELIZA the chatbot', 'My name is Joe')
+
+    # print('I can %s %s %s. ' % (verb, number, noun))
+
+def running2(): #try using regex matching for response
+    return None
+
+
+# response('My name is ELIZA the chatbot', 'My name is Joe')
+running('How', 'many', 'miles', 'can', 'you', 'run?')
+# running('miles')
 #
 # responseAll('My name is ELIZA the chatbot', 'My name is Joe')
 
