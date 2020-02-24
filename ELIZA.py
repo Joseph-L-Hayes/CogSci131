@@ -2,12 +2,13 @@ import re
 import random
 
 class ELIZA:
+    """This chatbot will talk about sports the user participates in"""
 
     def __init__(self):
-        self.name = ELIZA.takeQuestion()
+        self.name = self.takeName()
 
-    def takeQuestion():
-        """Takes in initial question from terminal"""
+    def takeName(self):
+        """Takes in the user's name from the terminal"""
         return input('Hello, my name is ELIZA. What is your name?')
 
     def randomRule(self, ruleList):
@@ -16,13 +17,22 @@ class ELIZA:
 
         return ruleList[number]
 
+    def rules(self):
+        return None
+
+    def main(self):
+        print("take 2")
+        self.takeName()
+
+if __name__ == "__main__":
+    ELIZA().main()
 
 
 
+ELIZA()
 
 #project 4
-for i in range(50):
-    print(ELIZA().randomRule(list))
+
 
 
 
