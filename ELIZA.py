@@ -5,15 +5,18 @@ import random
 def ruleOne(self, answer): #leave here for testing, can't call inside the class for some reason...
     one = re.search(r'I love (.+)', answer)
     if one:
-        self.text = 'Why do you love ' + one[1] +'?' #this format works
-        return True
+        return True, 'Why do you love ' + one[1] +'?' #this format works
 
 def ruleTwo(self, answer): #answer when a car company was founded
     two = re.search(r'when was (.+)', answer)
 
     if two:
-        self.text = two[1] + ' was founded in 1925 by Enzo Ferrari'
-        return True
+        # self.text = two[1] + ' was founded in 1925 by Enzo Ferrari'
+        return True, two[1] + ' was founded in 1925 by Enzo Ferrari'
+
+def ruleSixteen(self, answer):
+    """This rule returns a random answer when ELIZA doesn't understand the question"""
+    return None
 
 
 class ELIZA:
@@ -44,14 +47,15 @@ class ELIZA:
         list = []
 
         for key, rule in self.ruleDict.items():
-            if rule(self, answer):
-                list += [rule]
+            matches, answer = rule(self, answer) #this is currently broken
+            if matches:
+                list += [answer]
                 #we need to store the
 
         if len(list) > 1:
             return self.randomRule(list) #FINISH, should probably not modify self.text from the rule, do here instead
-        else:
-            return self.text #need to figure out how to handle the rule and their answers
+        # else:
+        #     return self.text #need to figure out how to handle the rule and their answers
 
     def generateRules(self): #integers as keys and function names as values
         self.ruleDict[1] = ruleOne
