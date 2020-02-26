@@ -8,7 +8,7 @@ class ELIZA:
     def __init__(self):
         # self.name = self.takeName()
         self.ruleDict = {} #dictionary with rule name as key and string as value
-        self.text = 'Hello, my name is ELIZA. Ask me anything about sports cars!'
+        self.text = 'ELIZA: Hello, my name is ELIZA. Ask me anything about sports cars! '
 
     def takeName(self):
         """Takes in the user's name from the terminal"""
@@ -26,25 +26,26 @@ class ELIZA:
     def rules(self):
         return None
 
-    def matchRule(self, answer): #Ensure that at least 5 rules have one variable and at least 5 have two variables.
-        list = []
+    def matchRule(self, input): #Ensure that at least 5 rules have one variable and at least 5 have two variables.
+        ruleList = []
 
         for key, rule in self.ruleDict.items():
-            matches, answer = rule(self, answer) #this is currently broken
+            matches, answer = rule(self, input)
             if matches:
-                list += [answer]
-                #we need to store the
+                ruleList += [answer]
 
-        if len(list) > 1:
-            return self.randomRule(list) #FINISH, should probably not modify self.text from the rule, do here instead
-        # else:
-        #     return self.text #need to figure out how to handle the rule and their answers
+        if len(ruleList) > 1:
+            return self.randomRule(ruleList) #FINISH, should probably not modify self.text from the rule, do here instead
+        elif len(ruleList) == 1: #returns the last thing even if no match
+            return ruleList[0]
+        else:
+            return Rule.rule16() #need to figure out how to handle the rule and their answers
 
     def generateRules(self):
         """Generates a dictionary of rules"""
-        for i in range(1, 17):
+        for i in range(1, 16):
             self.ruleDict[i] = eval('Rules.rule' + str(i))
-            print(self.ruleDict[i])
+            # print(self.ruleDict[i])
         # print(self.ruleDict)
 
     def main(self):
@@ -54,7 +55,8 @@ class ELIZA:
         while userInput != 'q':
 
             elizaOutput = self.matchRule(userInput) #matchRule should return the statement
-            userInput = self.getInput(elizaOutput) #asks next question
+            print('OUTPUT', elizaOutput)
+            userInput = self.getInput('ELIZA: ' + elizaOutput) #asks next question
 
 
 if __name__ == "__main__":
@@ -65,13 +67,6 @@ if __name__ == "__main__":
 Ferrari, Porsche, General Motors: Camaro, Corvette, Firebird
 
 May be a good idea to use the car as the focus of the discussion instead of manufacturers"""
-
-# class Example(object):
-#     def main(self):
-#         print ("Hello World!")
-#
-# if __name__ == '__main__':
-#     Example().main()
 
 #project 4
 
