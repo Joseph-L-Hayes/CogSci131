@@ -11,6 +11,7 @@ class ELIZA:
         self.text = 'ELIZA: Hello, my name is ELIZA. Ask me anything about sports cars! '
 
     def getInput(self, userInput):
+        """Enter function"""
         return input(userInput)
 
     def randomRule(self, ruleList):
@@ -20,6 +21,7 @@ class ELIZA:
         return ruleList[number]
 
     def matchRule(self, input): #Ensure that at least 5 rules have one variable and at least 5 have two variables.
+        """Enter function"""
         ruleList = []
 
         for key, rule in self.ruleDict.items():
