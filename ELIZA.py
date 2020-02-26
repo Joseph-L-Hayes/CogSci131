@@ -1,5 +1,6 @@
 import re
 import random
+import string
 import Rules
 
 class ELIZA:
@@ -47,13 +48,13 @@ class ELIZA:
     def main(self):
         self.generateRules()
         print(self.text)
-        userInput = self.getInput("USER: ").lower()
+        userInput = self.getInput("USER: ").lower().strip(string.punctuation)
 
         while userInput != 'q':
 
             elizaOutput = self.matchRule(userInput.lower())
             print('ELIZA: ' + elizaOutput)
-            userInput = self.getInput('USER: ')
+            userInput = self.getInput('USER: ').lower().strip(string.punctuation)
 
 if __name__ == "__main__":
     ELIZA().main()

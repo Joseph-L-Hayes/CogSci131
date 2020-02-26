@@ -1,5 +1,6 @@
 import re
 import random
+import string
 
 def rule1(self, input): #leave here for testing, can't call inside the class for some reason...
     """Enter function"""
@@ -124,4 +125,11 @@ def rule15(self,input):
 def rule16(self, input):
     """This rule returns a random input when ELIZA doesn't understand the question"""
     input = input.split() #place holder, works for now
-    return False, "I don't know what " + input[2] + " are!" #formatting works, need regex
+    return False, "I don't know what " + input[random.randint(0, len(input) - 1)] + " are!" #formatting works, need regex
+    # number = random.randint(0, len(ruleList) - 1 )
+
+
+
+
+
+#end
