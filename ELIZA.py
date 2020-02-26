@@ -8,7 +8,7 @@ class ELIZA:
     def __init__(self):
         # self.name = self.takeName()
         self.ruleDict = {} #dictionary with rule name as key and string as value
-        self.text = 'ELIZA: Hello, my name is ELIZA. Ask me anything about sports cars! '
+        self.text = 'ELIZA: Hello, my name is ELIZA. Ask me anything about sports cars!'
 
     def getInput(self, userInput):
         """Enter function"""
@@ -37,23 +37,23 @@ class ELIZA:
             return ruleList[0]
         else:
             match, answer = self.ruleDict[16](self, input)
-            return answer #need to figure out how to handle the rule and their answers
+            return answer
 
     def generateRules(self):
         """Generates a dictionary of rules"""
         for i in range(1, 17):
             self.ruleDict[i] = eval('Rules.rule' + str(i))
-            # print(self.ruleDict[i])
-        # print(self.ruleDict)
 
     def main(self):
         self.generateRules()
-        userInput = self.getInput(self.text)
+        print(self.text)
+        userInput = self.getInput("USER: ").lower()
 
         while userInput != 'q':
 
-            elizaOutput = self.matchRule(userInput) #matchRule should return the statement
-            userInput = self.getInput('ELIZA: ' + elizaOutput) #asks next question
+            elizaOutput = self.matchRule(userInput.lower())
+            print('ELIZA: ' + elizaOutput)
+            userInput = self.getInput('USER: ')
 
 if __name__ == "__main__":
     ELIZA().main()
