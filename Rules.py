@@ -132,9 +132,8 @@ def rule15(self,input):
 def rule16(self, input):
     """This rule returns a random input when ELIZA doesn't understand the question"""
     input = input.split() #place holder, works for now
-    # return False, "I don't know what " + input[random.randint(0, len(input) - 1)] + " are!" #formatting works, need regex
-    return False, "Let's just talk about sports cars, okay?"
-    # number = random.randint(0, len(ruleList) - 1 )
+
+    return False, "Let's just talk about sports cars, okay?" # select a random car from the carDict, add text: 'Like the randomCar'
 
 corvette = {'power': 'XXXhp','made': 'Chevrolet', 'engine': 'V8', 'top speed': '200mph', 'fast': 'yes'}
 enzo = {'power': 'XXXhp', 'made': 'Ferrari', 'engine': 'V12','top speed': '221mph', 'fast': 'yes'}
@@ -142,6 +141,9 @@ nineEleven = {'power': 'XXXhp', 'made': 'Porsche', 'engine': 'Turbo Boxer 6','to
 
 carDict = {'corvette': corvette, 'enzo': enzo, '911': nineEleven}
 
+
+# number = random.randint(0, len(ruleList) - 1 )
+# return False, "I don't know what " + input[random.randint(0, len(input) - 1)] + " are!" #formatting works, need regex
 
 
 #end
