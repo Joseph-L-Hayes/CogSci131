@@ -136,9 +136,9 @@ def rule16(self, input):
     return False, "Let's just talk about sports cars, okay?"
     # number = random.randint(0, len(ruleList) - 1 )
 
-corvette = {'made': 'Chevrolet', 'engine': 'V8', 'top speed': '200mph', 'fast': 'yes'}
-enzo = {'made': 'Ferrari', 'engine': 'V12','top speed': '221mph', 'fast': 'yes'}
-nineEleven = {'made': 'Porsche', 'engine': 'Boxer 6','top speed': '191mph', 'fast': 'yes'}
+corvette = {'power': 'XXXhp','made': 'Chevrolet', 'engine': 'V8', 'top speed': '200mph', 'fast': 'yes'}
+enzo = {'power': 'XXXhp', 'made': 'Ferrari', 'engine': 'V12','top speed': '221mph', 'fast': 'yes'}
+nineEleven = {'power': 'XXXhp', 'made': 'Porsche', 'engine': 'Turbo Boxer 6','top speed': '191mph', 'fast': 'yes'}
 
 carDict = {'corvette': corvette, 'enzo': enzo, '911': nineEleven}
 
