@@ -12,9 +12,10 @@ def rule1(self, input): #leave here for testing, can't call inside the class for
 
 def rule2(self, input): #input when a car company was founded
     """Enter function"""
-    two = re.search(r'when was (.+)', input)
+    two = re.search(r'how much (.+) does a (.+) have?', input) #needs to be more general
     if two:
-        return True, two[1] + ' was founded in 1925 by Enzo Ferrari'
+        car = two[2].capitalize()
+        return True, 'A ' + car + ' has ' + carDict[two[2]]['power']
     else:
         return False, None
 
@@ -140,9 +141,8 @@ huracan = {'price': '$261,000', 'power': '630 hp', 'made': 'Ferrari', 'engine': 
 nineEleven = {'price': '$123,000', 'power': '540 hp', 'made': 'Porsche', 'engine': 'Turbo Boxer 6','top speed': '191mph', '60': '2.8 seconds'}
 roadster = {'price': '$200,000', 'power': '10000 Nm', 'made': 'Tesla', 'engine': 'Electric','top speed': '250mph', '60': '1.9 seconds'}
 
-carDict = {'corvette': corvette, 'huracan': huracan, '911': nineEleven}
+carDict = {'corvette': corvette, 'huracan': huracan, '911': nineEleven, 'roadster': roadster}
 
-j
 # number = random.randint(0, len(ruleList) - 1 )
 # return False, "I don't know what " + input[random.randint(0, len(input) - 1)] + " are!" #formatting works, need regex
 
