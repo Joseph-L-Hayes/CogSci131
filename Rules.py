@@ -11,7 +11,7 @@ def rule1(self, input): #leave here for testing, can't call inside the class for
         return False, None
 
 def rule2(self, input): #input when a car company was founded
-    """Enter function"""
+    """Rule 2 answers questions about the horsepower of a car"""
     two = re.search(r'how much (.+) does a (.+) have?', input) #needs to be more general
     if two:
         car = two[2].capitalize()
@@ -20,14 +20,14 @@ def rule2(self, input): #input when a car company was founded
         return False, None
 
 def rule3(self,input): #two variable
-    """Rule 3 handles questions about the top speed of a car"""
+    """Rule 3 answers questions about the top speed of a car"""
 
-    three = re.search(r'the (.+) (.+) of a (.+)', input)
+    three = re.search(r'the (.+) (.+) of a (.+)', input) #would like to have optional word in place of just a: 'a', 'an', 'the'
 
     if three and (three[3] in carDict): #combine 1 and 2 for testing only
         topSpeed = three[1] + ' ' + three[2]
         car = three[3]
-        madeBy = carDict[car]['made']
+        madeBy = carDict[car]['make']
         answer = carDict.get(three[3])[topSpeed]
 
         return True, 'The ' + topSpeed + ' of a ' + madeBy + ' ' + car.capitalize() + ' is ' + answer
@@ -133,15 +133,20 @@ def rule15(self,input):
 def rule16(self, input):
     """This rule returns a random input when ELIZA doesn't understand the question"""
     input = input.split() #place holder, works for now
+    modelList = list(carDict.keys())
+    randomCar = modelList[random.randint(0, len(carDict) - 1)]
+    partOne = carDict[randomCar]['make']
+    partTwo = carDict[randomCar]['name']
 
-    return False, "Let's just talk about sports cars, okay?" # select a random car from the carDict, add text: 'Like the randomCar'
+    return False, "Let's just talk about sports cars, okay? " + "Want to hear about the " + partOne + " " + partTwo + "?" # select a random car from the carDict, add text: 'Like the randomCar'
 
-corvette = {'price': '$123,000','power': '755 hp','made': 'Chevrolet', 'engine': 'V8', 'top speed': '200mph', '60': '3.0 seconds'}
-huracan = {'price': '$261,000', 'power': '630 hp', 'made': 'Ferrari', 'engine': 'V10','top speed': '199mph', '60': '3.4 seconds'}
-nineEleven = {'price': '$123,000', 'power': '540 hp', 'made': 'Porsche', 'engine': 'Turbo Boxer 6','top speed': '191mph', '60': '2.8 seconds'}
-roadster = {'price': '$200,000', 'power': '10000 Nm', 'made': 'Tesla', 'engine': 'Electric','top speed': '250mph', '60': '1.9 seconds'}
+corvette = {'name': 'Corvette', 'price': '$123,000','power': '755 hp','make': 'Chevrolet', 'engine': 'V8', 'top speed': '200mph', '60': '3.0 seconds'}
+huracan = {'name': 'Huracan', 'price': '$261,000', 'power': '630 hp', 'make': 'Lamborghini', 'engine': 'V10','top speed': '199mph', '60': '3.4 seconds'}
+nineEleven = {'name': '911', 'price': '$123,000', 'power': '540 hp', 'make': 'Porsche', 'engine': 'Turbo Boxer 6','top speed': '191mph', '60': '2.8 seconds'}
+roadster = {'name': 'Roadster', 'price': '$200,000', 'power': '10000 Nm', 'make': 'Tesla', 'engine': 'Electric','top speed': '250mph', '60': '1.9 seconds'}
+eightTwelveSuper = {'name': '812 Superfast', 'price': '$335,000', 'power': '788 hp', 'make': 'Ferrari', 'engine': 'V12','top speed': '211mph', '60': '2.9 seconds'}
 
-carDict = {'corvette': corvette, 'huracan': huracan, '911': nineEleven, 'roadster': roadster}
+carDict = {'corvette': corvette, 'huracan': huracan, '911': nineEleven, 'roadster': roadster, '812 superfast': eightTwelveSuper}
 
 # number = random.randint(0, len(ruleList) - 1 )
 # return False, "I don't know what " + input[random.randint(0, len(input) - 1)] + " are!" #formatting works, need regex
