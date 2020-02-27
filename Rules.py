@@ -20,7 +20,7 @@ def rule2(self, input): #input when a car company was founded
 
 def rule3(self,input): #two variable
     """Rule 3 handles questions about the top speed of a car"""
-    
+
     three = re.search(r'the (.+) (.+) of a (.+)', input)
 
     if three and (three[3] in carDict): #combine 1 and 2 for testing only
@@ -138,7 +138,7 @@ def rule16(self, input):
 
 corvette = {'made': 'Chevrolet', 'engine': 'V8', 'top speed': '200mph', 'fast': 'yes'}
 enzo = {'made': 'Ferrari', 'engine': 'V12','top speed': '221mph', 'fast': 'yes'}
-nineEleven = {'made': 'Porsche', 'engine': 'F6','top speed': '191mph', 'fast': 'yes'}
+nineEleven = {'made': 'Porsche', 'engine': 'Boxer 6','top speed': '191mph', 'fast': 'yes'}
 
 carDict = {'corvette': corvette, 'enzo': enzo, '911': nineEleven}
 
