@@ -135,13 +135,14 @@ def rule16(self, input):
 
     return False, "Let's just talk about sports cars, okay?" # select a random car from the carDict, add text: 'Like the randomCar'
 
-corvette = {'power': 'XXXhp','made': 'Chevrolet', 'engine': 'V8', 'top speed': '200mph', 'fast': 'yes'}
-enzo = {'power': 'XXXhp', 'made': 'Ferrari', 'engine': 'V12','top speed': '221mph', 'fast': 'yes'}
-nineEleven = {'power': 'XXXhp', 'made': 'Porsche', 'engine': 'Turbo Boxer 6','top speed': '191mph', 'fast': 'yes'}
+corvette = {'price': '$123,000','power': '755 hp','made': 'Chevrolet', 'engine': 'V8', 'top speed': '200mph', '60': '3.0 seconds'}
+huracan = {'price': '$261,000', 'power': '630 hp', 'made': 'Ferrari', 'engine': 'V10','top speed': '199mph', '60': '3.4 seconds'}
+nineEleven = {'price': '$123,000', 'power': '540 hp', 'made': 'Porsche', 'engine': 'Turbo Boxer 6','top speed': '191mph', '60': '2.8 seconds'}
+roadster = {'price': '$200,000', 'power': '10000 Nm', 'made': 'Tesla', 'engine': 'Electric','top speed': '250mph', '60': '1.9 seconds'}
 
-carDict = {'corvette': corvette, 'enzo': enzo, '911': nineEleven}
+carDict = {'corvette': corvette, 'huracan': huracan, '911': nineEleven}
 
-
+j
 # number = random.randint(0, len(ruleList) - 1 )
 # return False, "I don't know what " + input[random.randint(0, len(input) - 1)] + " are!" #formatting works, need regex
 
