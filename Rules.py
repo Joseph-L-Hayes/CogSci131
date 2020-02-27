@@ -18,15 +18,22 @@ def rule2(self, input): #input when a car company was founded
     else:
         return False, None
 
-def rule3(self,input):
-    """Enter function"""
-    three = re.search(r'i hate (.+)',input)
-    if three:
-        return True, 'Why do you hate ' + three[1] + '?'
-    else:
-        return False, None
+def rule3(self,input): #two variable
+    """Rule 3 handles questions about the top speed of a car"""
+    
+    three = re.search(r'the (.+) (.+) of a (.+)', input)
 
-def rule4(self,input):
+    if three and (three[3] in carDict): #combine 1 and 2 for testing only
+        topSpeed = three[1] + ' ' + three[2]
+        car = three[3]
+        madeBy = carDict[car]['made']
+        answer = carDict.get(three[3])[topSpeed]
+
+        return True, 'The ' + topSpeed + ' of a ' + madeBy + ' ' + car.capitalize() + ' is ' + answer
+    else:
+        return False, None #could return response message here
+
+def rule4(self,input): #ask if you would go that fast?
     """Enter function"""
     four = re.search(r'i aborr (.+)', input)
     if four:
@@ -125,10 +132,15 @@ def rule15(self,input):
 def rule16(self, input):
     """This rule returns a random input when ELIZA doesn't understand the question"""
     input = input.split() #place holder, works for now
-    return False, "I don't know what " + input[random.randint(0, len(input) - 1)] + " are!" #formatting works, need regex
+    # return False, "I don't know what " + input[random.randint(0, len(input) - 1)] + " are!" #formatting works, need regex
+    return False, "Let's just talk about sports cars, okay?"
     # number = random.randint(0, len(ruleList) - 1 )
 
+corvette = {'made': 'Chevrolet', 'engine': 'V8', 'top speed': '200mph', 'fast': 'yes'}
+enzo = {'made': 'Ferrari', 'engine': 'V12','top speed': '221mph', 'fast': 'yes'}
+nineEleven = {'made': 'Porsche', 'engine': 'F6','top speed': '191mph', 'fast': 'yes'}
 
+carDict = {'corvette': corvette, 'enzo': enzo, '911': nineEleven}
 
 
 
