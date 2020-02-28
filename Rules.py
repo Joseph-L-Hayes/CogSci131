@@ -65,10 +65,12 @@ def rule5(self,input):
         return False, None
 
 def rule6(self,input):
-    """Enter function"""
-    six = re.search(r'i aborr (.+)', input)
-    if six:
-        return True, 'Why do you 6 ' + six[1] + '?'
+    """Rule 6 applies to questions about who makes a car"""
+    six = re.search(r'\b(.:|makes|manufactures|builds)\b \b(?:a|an|the)\b (.+)', input)
+    if six and carInDict(six[2]):
+        car = six[2]
+        make = carDict.get(car, None)['make']
+        return True, make + ' ' + six[1] + ' the ' + car.capitalize()
     else:
         return False, None
 
@@ -138,9 +140,10 @@ def rule14(self,input):
 
 def rule15(self,input): #need to make sure other functions haven't applied yet: use a class and global variable?
     """Rule 15 applies if a car other than one ELIZA knows is asked about"""
-    fifteen = re.search(r'\b(?:a|an|the)\b (.+) ([a-z]+)', input)
+    fifteen = re.search(r'\b(?:a|an|the)\b (.+) (?:)', input) #(?:) creates a non-capture group, very useful
+    # print(fifteen.groups())
     partOne, partTwo = randomCar()
-    if fifteen and carDict.get(input, True):
+    if fifteen and not carInDict(fifteen[1]):
         return True, "I don't think a " + fifteen[1].capitalize() + " is a sports car." + " Want to hear about the " + partOne + " " + partTwo + "?"
     else:
         return False, None
