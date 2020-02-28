@@ -8,8 +8,7 @@ def carInDict(car):
 def rule1(self, input):
     """Rule 1 applies to questions about parts of a car"""
     one = re.search(r'\b(?:sort|type|kind |.*)\b \b(?:.*)\b(.+) \b(?:.*)\b \b(?:a|an|the)\b (.+) \b(?:have|possess)', input)
-    print(one.groups())
-    if one and carInDict(one[2]) and (carDict.get(one[2], True)[one[1]]):
+    if one and carInDict(one[2]) and (carDict.get(one[2], False).get(one[1], False)):
         car = one[2]
         part = carDict[car][one[1]]
         return True, 'The ' + car.capitalize() + ' has a ' + part + ' ' + one[1] + '.'
@@ -55,9 +54,9 @@ def rule4(self,input): #ask if you would go that fast?
 
 def rule5(self,input):
     """Rule 5 applies to questions about how fast a car is"""
-    five = re.search(r'\b(fast)\b is \b(?:a|an|the)\b (.+)', input)
-    if five and carInDict(five[2]):
-        car = five[2]
+    five = re.search(r'\b(?:fast|quick)\b is \b(?:a|an|the)\b (.+)', input)
+    if five and carInDict(five[1]):
+        car = five[1]
         speed = carDict.get(car)['60']
         if carDict.get(car)['fastest']:
             return True, 'The ' + car.capitalize() + ' goes 0-60 mph in ' + speed + ", it's the fastest car I know of!"
@@ -65,7 +64,7 @@ def rule5(self,input):
     else:
         return False, None
 
-def rule6(self,input):
+def rule6(self,input): #still getting random output from rule 15
     """Rule 6 applies to questions about who makes a car"""
     six = re.search(r'\b(.:|makes|manufactures|builds)\b \b(?:a|an|the)\b (.+)', input)
     if six and carInDict(six[2]):
@@ -76,10 +75,14 @@ def rule6(self,input):
         return False, None
 
 def rule7(self,input):
-    """Enter function"""
-    seven = re.search(r'i aborr (.+)', input)
-    if seven:
-        return True, 'Why do you 7 ' + seven[1] + '?'
+    """Rule 7 applies to questions about convertible cars"""
+    seven = re.search(r'\b(?:a|an|the)\b (.+) (?:.*) (?:.*) (convertible+)', input)
+    if seven and carInDict(seven[1]):
+        print(seven.groups())
+        if carDict.get(seven[1], False).get(seven[2]):
+            return True, 'You can get a ' + seven[1] + ' in a ' + seven[2]
+        else:
+            return True, 'You cannot get a ' + seven[1] + ' in a ' + seven[2]
     else:
         return False, None
 
@@ -164,11 +167,11 @@ def randomCar():
 
     return partOne, partTwo
 
-corvette = {'name': 'Corvette', 'transmission': '7spd manual','price': '$123,000','power': '755 hp','make': 'Chevrolet', 'engine': 'V8', 'top speed': '200mph', '60': '3.0 seconds', 'fastest': False}
-huracan = {'name': 'Huracan', 'transmission': '7spd automatic', 'price': '$261,000', 'power': '630 hp', 'make': 'Lamborghini', 'engine': 'V10','top speed': '199mph', '60': '3.4 seconds', 'fastest': False}
-nineEleven = {'name': '911', 'transmission': '7spd automatic', 'price': '$123,000', 'power': '540 hp', 'make': 'Porsche', 'engine': 'Turbo Boxer 6','top speed': '191mph', '60': '2.8 seconds', 'fastest': False}
-roadster = {'name': 'Roadster', 'transmission': '1spd automatic', 'price': '$200,000', 'power': '10000 Nm', 'make': 'Tesla', 'engine': 'Electric','top speed': '250mph', '60': '1.9 seconds', 'fastest': True}
-eightTwelveSuper = {'name': '812 Superfast', 'transmission': '7spd automatic','price': '$335,000', 'power': '788 hp', 'make': 'Ferrari', 'engine': 'V12','top speed': '211mph', '60': '2.9 seconds', 'fastest': False}
+corvette = {'name': 'Corvette', 'transmission': '7spd manual','price': '$123,000','power': '755 hp','make': 'Chevrolet', 'engine': 'V8', 'top speed': '200mph', '60': '3.0 seconds', 'fastest': False, 'convertible': False}
+huracan = {'name': 'Huracan', 'transmission': '7spd automatic', 'price': '$261,000', 'power': '630 hp', 'make': 'Lamborghini', 'engine': 'V10','top speed': '199mph', '60': '3.4 seconds', 'fastest': False, 'convertible': False}
+nineEleven = {'name': '911', 'transmission': '7spd automatic', 'price': '$123,000', 'power': '540 hp', 'make': 'Porsche', 'engine': 'Turbo Boxer 6','top speed': '191mph', '60': '2.8 seconds', 'fastest': False , 'convertible': True}
+roadster = {'name': 'Roadster', 'transmission': '1spd automatic', 'price': '$200,000', 'power': '10000 Nm', 'make': 'Tesla', 'engine': 'Electric','top speed': '250mph', '60': '1.9 seconds', 'fastest': True , 'convertible': False}
+eightTwelveSuper = {'name': '812 Superfast', 'transmission': '7spd automatic','price': '$335,000', 'power': '788 hp', 'make': 'Ferrari', 'engine': 'V12','top speed': '211mph', '60': '2.9 seconds', 'fastest': False, 'convertible': False}
 
 carDict = {'corvette': corvette, 'huracan': huracan, '911': nineEleven, 'roadster': roadster, '812 superfast': eightTwelveSuper}
 
