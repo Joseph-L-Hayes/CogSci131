@@ -3,8 +3,8 @@ import random
 import string
 
 def rule1(self, input):
-    """Rule 1 applies to """
-    one = re.search(r'of (.+) does \b(?:a|an|the)\b (.+) ([a-z]+)', input)
+    """Rule 1 applies to questions about parts of a car"""
+    one = re.search(r'\b(?:of|sort|type of)\b (.+) does \b(?:a|an|the)\b (.+) ([a-z]+)', input)
     if one and (one[2] in carDict) and (carDict[one[2]][one[1]]):
         car = one[2]
         part = carDict[car][one[1]]
@@ -31,16 +31,20 @@ def rule3(self,input): #two variable
         topSpeed = three[1] + ' ' + three[2]
         car = three[3]
         madeBy = carDict[car]['make']
-        answer = carDict.get(three[3])[topSpeed]
+        answer = carDict.get(three[3], False)[topSpeed]
 
         return True, 'The ' + topSpeed + ' of a ' + madeBy + ' ' + car.capitalize() + ' is ' + answer
     else:
         return False, None #could return response message here
 
 def rule4(self,input): #ask if you would go that fast?
-    """Enter function"""
-    four = re.search(r'i aborr (.+)', input)
-    if four:
+    """Rule 4 applies to questions about the cost of a car. """
+    four = re.search(r'\b(?:a|an|the)\b (.+) (.+)', input)
+    car = four[1]
+    print(car)
+
+    if four and car in carDict:
+        cost = carDict.get(car, False)['price']
         return True, 'Why do you 4 ' + four[1] + '?'
     else:
         return False, None
@@ -127,10 +131,10 @@ def rule14(self,input):
 
 def rule15(self,input): #need to make sure other functions haven't applied yet: use a class and global variable?
     """Rule 15 applies if a car other than one ELIZA knows is asked about"""
-    fifteen = re.search(r'a (.+)', input)
+    fifteen = re.search(r'\b(?:a|an|the)\b (.+) ([a-z]+)', input)
     partOne, partTwo = randomCar()
     if fifteen and carDict.get(input, True):
-        return True, "I don't think " + fifteen[1].capitalize() + " is a sports car." + " Want to hear about the " + partOne + " " + partTwo + "?"
+        return True, "I don't think a " + fifteen[1].capitalize() + " is a sports car." + " Want to hear about the " + partOne + " " + partTwo + "?"
     else:
         return False, None
 
