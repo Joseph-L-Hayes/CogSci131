@@ -4,7 +4,7 @@ import string
 
 def rule1(self, input):
     """Rule 1 applies to """
-    one = re.search(r'of (.+) does a (.+) ([a-z]+)', input)
+    one = re.search(r'of (.+) does \b(?:a|an|the)\b (.+) ([a-z]+)', input)
     if one and (one[2] in carDict) and (carDict[one[2]][one[1]]):
         car = one[2]
         part = carDict[car][one[1]]
@@ -15,7 +15,7 @@ def rule1(self, input):
 
 def rule2(self, input): #input when a car company was founded
     """Rule 2 applies to questions about the horsepower of a car"""
-    two = re.search(r'how much (.+) does a (.+) have?', input) #needs to be more general
+    two = re.search(r'how much (.+) does \b(?:a|an|the)\b (.+) have?', input) #needs to be more general
     if two and (two[2] in carDict):
         car = two[2].capitalize()
         return True, 'A ' + car + ' has ' + carDict[two[2]]['power']
@@ -25,7 +25,7 @@ def rule2(self, input): #input when a car company was founded
 def rule3(self,input): #two variable
     """Rule 3 answers questions about the top speed of a car"""
 
-    three = re.search(r'the (.+) (.+) of a (.+)', input) #would like to have optional word in place of just a: 'a', 'an', 'the'
+    three = re.search(r'the (.+) (.+) of \b(?:a|an|the)\b (.+)', input) #would like to have optional word in place of just a: 'a', 'an', 'the'
 
     if three and (three[3] in carDict): #combine 1 and 2 for testing only
         topSpeed = three[1] + ' ' + three[2]
