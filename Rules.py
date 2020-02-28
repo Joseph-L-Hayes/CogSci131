@@ -3,17 +3,20 @@ import random
 import string
 
 def rule1(self, input):
-    """Enter function"""
-    one = re.search(r'i love (.+)', input)
-    if one:
-        return True, 'Why do you love ' + one[1] + '?'
+    """Rule 1 applies to """
+    one = re.search(r'of (.+) does a (.+) ([a-z]+)', input)
+    if one and (one[2] in carDict) and (carDict[one[2]][one[1]]):
+        car = one[2]
+        part = carDict[car][one[1]]
+        return True, 'The ' + car + ' has a ' + part + ' ' + one[1] + '.'
+        # return True, 'The %s has a %s transmission', car, trans
     else:
         return False, None
 
 def rule2(self, input): #input when a car company was founded
-    """Rule 2 answers questions about the horsepower of a car"""
+    """Rule 2 applies to questions about the horsepower of a car"""
     two = re.search(r'how much (.+) does a (.+) have?', input) #needs to be more general
-    if two:
+    if two and (two[2] in carDict):
         car = two[2].capitalize()
         return True, 'A ' + car + ' has ' + carDict[two[2]]['power']
     else:
@@ -146,11 +149,11 @@ def randomCar():
 
     return partOne, partTwo
 
-corvette = {'name': 'Corvette', 'price': '$123,000','power': '755 hp','make': 'Chevrolet', 'engine': 'V8', 'top speed': '200mph', '60': '3.0 seconds'}
-huracan = {'name': 'Huracan', 'price': '$261,000', 'power': '630 hp', 'make': 'Lamborghini', 'engine': 'V10','top speed': '199mph', '60': '3.4 seconds'}
-nineEleven = {'name': '911', 'price': '$123,000', 'power': '540 hp', 'make': 'Porsche', 'engine': 'Turbo Boxer 6','top speed': '191mph', '60': '2.8 seconds'}
-roadster = {'name': 'Roadster', 'price': '$200,000', 'power': '10000 Nm', 'make': 'Tesla', 'engine': 'Electric','top speed': '250mph', '60': '1.9 seconds'}
-eightTwelveSuper = {'name': '812 Superfast', 'price': '$335,000', 'power': '788 hp', 'make': 'Ferrari', 'engine': 'V12','top speed': '211mph', '60': '2.9 seconds'}
+corvette = {'name': 'Corvette', 'transmission': '7spd manual','price': '$123,000','power': '755 hp','make': 'Chevrolet', 'engine': 'V8', 'top speed': '200mph', '60': '3.0 seconds'}
+huracan = {'name': 'Huracan', 'transmission': '7spd automatic', 'price': '$261,000', 'power': '630 hp', 'make': 'Lamborghini', 'engine': 'V10','top speed': '199mph', '60': '3.4 seconds'}
+nineEleven = {'name': '911', 'transmission': '7spd automatic', 'price': '$123,000', 'power': '540 hp', 'make': 'Porsche', 'engine': 'Turbo Boxer 6','top speed': '191mph', '60': '2.8 seconds'}
+roadster = {'name': 'Roadster', 'transmission': '1spd automatic', 'price': '$200,000', 'power': '10000 Nm', 'make': 'Tesla', 'engine': 'Electric','top speed': '250mph', '60': '1.9 seconds'}
+eightTwelveSuper = {'name': '812 Superfast', 'transmission': '7spd automatic','price': '$335,000', 'power': '788 hp', 'make': 'Ferrari', 'engine': 'V12','top speed': '211mph', '60': '2.9 seconds'}
 
 carDict = {'corvette': corvette, 'huracan': huracan, '911': nineEleven, 'roadster': roadster, '812 superfast': eightTwelveSuper}
 
