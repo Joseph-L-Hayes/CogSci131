@@ -7,11 +7,12 @@ def carInDict(car):
 
 def rule1(self, input):
     """Rule 1 applies to questions about parts of a car"""
-    one = re.search(r'\b(?:of|sort|type of)\b (.+) does \b(?:a|an|the)\b (.+) \b(?:have|possess)\b', input)
-    if one and carInDict(one[2]) and (carDict[one[2]][one[1]]):
+    one = re.search(r'\b(?:sort|type|kind |.*)\b \b(?:.*)\b(.+) \b(?:.*)\b \b(?:a|an|the)\b (.+) \b(?:have|possess)', input)
+    print(one.groups())
+    if one and carInDict(one[2]) and (carDict.get(one[2], True)[one[1]]):
         car = one[2]
         part = carDict[car][one[1]]
-        return True, 'The ' + car + ' has a ' + part + ' ' + one[1] + '.'
+        return True, 'The ' + car.capitalize() + ' has a ' + part + ' ' + one[1] + '.'
         # return True, 'The %s has a %s transmission', car, trans
     else:
         return False, None
