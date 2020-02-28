@@ -28,13 +28,11 @@ class ELIZA:
         for key, rule in self.ruleDict.items():
             matches, answer = rule(self, input)
             if matches:
-                # print(rule)
                 ruleList += [answer]
 
         if len(ruleList) > 1:
-            return self.randomRule(ruleList) #FINISH, should probably not modify self.text from the rule, do here instead
-        elif len(ruleList) == 1: #returns the last thing even if no match
-            # print(ruleList)
+            return self.randomRule(ruleList)
+        elif len(ruleList) == 1:
             return ruleList[0]
         else:
             match, answer = self.ruleDict[16](self, input)

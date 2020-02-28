@@ -122,23 +122,29 @@ def rule14(self,input):
     else:
         return False, None
 
-def rule15(self,input):
-    """Enter function"""
-    fifteen = re.search(r'i aborr (.+)', input)
-    if fifteen:
-        return True, 'Why do you 15 ' + fifteen[1] + '?'
+def rule15(self,input): #need to make sure other functions haven't applied yet
+    """Rule 15 applies if a car other than one ELIZA knows is asked about"""
+    fifteen = re.search(r'a (.+)', input)
+    partOne, partTwo = randomCar()
+    if fifteen and carDict.get(input, True):
+        return True, "I don't think " + fifteen[1].capitalize() + " is a sports car." + " Want to hear about the " + partOne + " " + partTwo + "?"
     else:
         return False, None
 
 def rule16(self, input):
     """This rule returns a random input when ELIZA doesn't understand the question"""
-    input = input.split() #place holder, works for now
+    partOne, partTwo = randomCar()
+
+    return False, "Let's just talk about sports cars, okay? " + "Want to hear about the " + partOne + " " + partTwo + "?" # select a random car from the carDict, add text: 'Like the randomCar'
+
+def randomCar():
+    """Returns a random car from carDict"""
     modelList = list(carDict.keys())
     randomCar = modelList[random.randint(0, len(carDict) - 1)]
     partOne = carDict[randomCar]['make']
     partTwo = carDict[randomCar]['name']
 
-    return False, "Let's just talk about sports cars, okay? " + "Want to hear about the " + partOne + " " + partTwo + "?" # select a random car from the carDict, add text: 'Like the randomCar'
+    return partOne, partTwo
 
 corvette = {'name': 'Corvette', 'price': '$123,000','power': '755 hp','make': 'Chevrolet', 'engine': 'V8', 'top speed': '200mph', '60': '3.0 seconds'}
 huracan = {'name': 'Huracan', 'price': '$261,000', 'power': '630 hp', 'make': 'Lamborghini', 'engine': 'V10','top speed': '199mph', '60': '3.4 seconds'}
