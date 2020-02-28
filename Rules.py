@@ -74,11 +74,10 @@ def rule6(self,input): #still getting random output from rule 15
     else:
         return False, None
 
-def rule7(self,input):
+def rule7(self,input): #still have random issue from rule 15
     """Rule 7 applies to questions about convertible cars"""
     seven = re.search(r'\b(?:a|an|the)\b (.+) (?:.*) (?:.*) (convertible+)', input)
     if seven and carInDict(seven[1]):
-        print(seven.groups())
         if carDict.get(seven[1], False).get(seven[2]):
             return True, 'You can get a ' + seven[1] + ' in a ' + seven[2]
         else:
@@ -87,7 +86,7 @@ def rule7(self,input):
         return False, None
 
 def rule8(self,input):
-    """Enter function"""
+    """Rule 8 applies to questions about colors of cars"""
     eight = re.search(r'i aborr (.+)', input)
     if eight:
         return True, 'Why do you 8 ' + eight[1] + '?'
