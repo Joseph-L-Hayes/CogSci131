@@ -2,9 +2,9 @@ import re
 import random
 import string
 
-def rule1(self, input): #leave here for testing, can't call inside the class for some reason...
+def rule1(self, input):
     """Enter function"""
-    one = re.search(r'i love (.+)', input) #for all input, make lowercase, answer in upper
+    one = re.search(r'i love (.+)', input)
     if one:
         return True, 'Why do you love ' + one[1] + '?'
     else:
@@ -122,7 +122,7 @@ def rule14(self,input):
     else:
         return False, None
 
-def rule15(self,input): #need to make sure other functions haven't applied yet
+def rule15(self,input): #need to make sure other functions haven't applied yet: use a class and global variable?
     """Rule 15 applies if a car other than one ELIZA knows is asked about"""
     fifteen = re.search(r'a (.+)', input)
     partOne, partTwo = randomCar()
@@ -135,7 +135,7 @@ def rule16(self, input):
     """This rule returns a random input when ELIZA doesn't understand the question"""
     partOne, partTwo = randomCar()
 
-    return False, "Let's just talk about sports cars, okay? " + "Want to hear about the " + partOne + " " + partTwo + "?" # select a random car from the carDict, add text: 'Like the randomCar'
+    return False, "Let's just talk about sports cars, okay? " + "Want to hear about the " + partOne + " " + partTwo + "?"
 
 def randomCar():
     """Returns a random car from carDict"""
