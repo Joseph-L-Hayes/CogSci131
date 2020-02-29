@@ -1,3 +1,7 @@
+1. Turn in your code [20pts, HELP]. 
+(If you are going for bonus points, write a sentence on how you accomplished it)
+This ELIZA program is an expert on sports cars (5 different ones). ELIZA looks for keywords in the user's entry it infer what they might be asking about. Using keywords allows for a more general interpretation of the user's entry without having to handle different sentence structures or orders. For example, if the user input contains the word 'engine' then ELIZA assumes they want to know what type of engine a car has. The downside to this method is that there are many possible reasons the word engine could be in the input so this method is quite specific.
+
 import re
 import random
 import string
@@ -232,4 +236,10 @@ colors = ['black', 'blue', 'red', 'silver', 'green', 'yellow']
 
 carDict = {'corvette': corvette, 'huracan': huracan, '911': nineEleven, 'roadster': roadster, '812 superfast': eightTwelveSuper}
 
-#end
+#end code
+
+2. *Intentionally left blank*
+
+3. ELIZA would perform better in conversations if it looked for keywords and syntactical queues to infer more meaning about the user input. 
+
+4. "How many fins does a cat have?" Is a sentence that a pet expert ELIZA would not get correct. It would likely be able to figure out that fins are an animal body part but not that cats don't have fins because ELIZA doesn't understand what a cat is or what fins are. 
