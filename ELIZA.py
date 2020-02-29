@@ -7,8 +7,7 @@ class ELIZA:
     """This chatbot will talk about sports cars"""
 
     def __init__(self):
-        # self.name = self.takeName()
-        self.ruleDict = {} #dictionary with rule name as key and string as value
+        self.ruleDict = {}
         self.text = 'ELIZA: Hello, my name is ELIZA. Ask me anything about sports cars!'
 
     def getInput(self, userInput):
@@ -17,11 +16,11 @@ class ELIZA:
 
     def randomRule(self, ruleList):
         """Takes in a list of rules and returns one at random"""
-        number = random.randint(0, len(ruleList) - 1 )
+        number = random.randint(0, len(ruleList) - 2 ) #-2 to avoid rule 15 for multiple
 
         return ruleList[number]
 
-    def matchRule(self, input): #Ensure that at least 5 rules have one variable and at least 5 have two variables.
+    def matchRule(self, input):
         """Enter function"""
         ruleList = []
 
@@ -56,29 +55,5 @@ class ELIZA:
 
 if __name__ == "__main__":
     ELIZA().main()
-
-"""Use a dictionary/list of sports car manufacturers, models, year range, top speeds, colors, HP/torque, engine sizes
-
-Ferrari, Porsche, General Motors: Camaro, Corvette, Firebird
-
-May be a good idea to use the car as the focus of the discussion instead of manufacturers"""
-
-#project 4
-
-#
-# response = input("What is your name? ")
-#
-# while response != 'q':
-#     # response = ruleOne(response) #pattern match
-#     for doesntmatter, value in rules.items():
-#         answer = value(response) # = ruleOne(string)
-#         if answer != None:
-#             response = answer
-#             break
-#
-#     response = input(response)
-
-
-
 
 #end
