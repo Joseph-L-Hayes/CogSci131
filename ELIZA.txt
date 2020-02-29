@@ -167,24 +167,24 @@ def rule9(self,input): # 1 var
 
 def rule10(self,input):
     """Rule 10 applies if the user asks what ELIZA's favorite car is"""
-    ten = re.search(r'(favorite+)', input)
+    ten = re.search(r'(?:what) (?:.*) (favorite+)', input)
     if ten:
         make, car = randomCar()
-        return True, 'My ' + ten[1] +' sports car is the ' + make + ' ' + car + '.' + ' What is your ' + ten[1] +'?'
+        return True, 'My ' + ten[1] +' sports car is the ' + make + ' ' + car + '.' + ' What is your ' + ten[1] +' car?'
     else:
         return False, None
 
 def rule11(self,input):
     """"""
-    eleven = re.search(r'i aborr (.+)', input)
-    if eleven:
-        return True, 'Why do you 11 ' + eleven[1] + '?'
+    eleven = re.search(r'(favorite+) (?:.*) \b(?:a|an|the)\b (.+)', input)
+    if eleven and carInDict(eleven[2]):
+        return True, 'The ' + eleven[2] + ' is a great car!' 
     else:
         return False, None
 
 def rule12(self,input):
     """Enter function"""
-    twelve = re.search(r'i aborr (.+)', input)
+    twelve = re.search(r'blah blah (.+)', input)
     if twelve:
         return True, 'Why do you 12 ' + twelve[1] + '?'
     else:
@@ -192,7 +192,7 @@ def rule12(self,input):
 
 def rule13(self,input):
     """Enter function"""
-    thirteen = re.search(r'i aborr (.+)', input)
+    thirteen = re.search(r'blah blah (.+)', input)
     if thirteen:
         return True, 'Why do you 13 ' + thirteen[1] + '?'
     else:
@@ -237,6 +237,7 @@ colors = ['black', 'blue', 'red', 'silver', 'green', 'yellow']
 carDict = {'corvette': corvette, 'huracan': huracan, '911': nineEleven, 'roadster': roadster, '812 superfast': eightTwelveSuper}
 
 #end code
+
 
 2. *Intentionally left blank*
 
