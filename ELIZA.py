@@ -35,12 +35,12 @@ class ELIZA:
         elif len(ruleList) == 1:
             return ruleList[0]
         else:
-            match, answer = self.ruleDict[16](self, input)
+            match, answer = self.ruleDict[14](self, input)
             return answer
 
     def generateRules(self):
         """Generates a dictionary of rules"""
-        for i in range(1, 17):
+        for i in range(1, 16):
             self.ruleDict[i] = eval('Rules.rule' + str(i))
 
     def main(self):
