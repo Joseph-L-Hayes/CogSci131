@@ -9,15 +9,11 @@ def importCSV(csvFile, dataType, header=1): #how to reference the sports without
 def simToDist(x):
     return 1 - x
 
-
 def convertArray(simArray, func):
     """Takes a similarity array and converts it to a distance array using the supplied
         function func"""
-    array = np.array(21, dtype=float)
-    for x in range(21):
-        array[x] = np.apply_along_axis(func, x, simArray) #errors
 
-    return array
+    return np.apply_along_axis(func, 1, simArray)
 
 def stress(vector):
     """Returns the stress of vector positions"""
@@ -28,10 +24,7 @@ def gradient(vector):
     return None
 
 array = importCSV('similarities.csv', float)
-print(array)
-print(array.shape)
-convertArray(array, simToDist)
-print(array)
-
+array = convertArray(array, simToDist)
+print(array))
 
 #end
