@@ -4,7 +4,7 @@ import random
 """Problem 1 The dataset1 provides similarities, not distances. Write down three
     ways you could convert a similarity to a distance ψij and choose one to use in the
     code. Briefly explain why you chose it over the others.
-    1. Use the formula distance = (1 -similarity)
+    1. Use the formula distance = (1 - similarity)
     2. Use the formula distance = 1 / similarity
     3. """
 
