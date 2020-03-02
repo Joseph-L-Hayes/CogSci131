@@ -35,7 +35,7 @@ def stress(psyDist, pos_i, pos_j): #stress(psyDist array, targetPos, posArray) #
 
 def stress2(psychArray, targetItem, coordArray): #this function is exponentially incorrect...
     lst = [(psychArray[targetItem, j] - np.linalg.norm(targetItem - coordArray[j]))**2 for j in range(len(coordArray))]
-
+    #try removing the list comprehension, copy the for loop from below
     return sum(lst)
 
 """Problem 3
