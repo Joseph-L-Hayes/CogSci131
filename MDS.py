@@ -34,7 +34,7 @@ def stress(psyDist, pos_i, pos_j):
     Write down a function that takes a vector/matrix of positions and computes the gradient
     (e.g. applies the above numerical method of df/dp to each coordinate location)."""
 
-def gradient(vector):
+def gradient(vector, h=0.001):
     """Returns the gradient of vector positions"""
     return None
 
@@ -47,23 +47,23 @@ def convertArray(simArray, func):
     """Takes a similarity array and converts it to a psychological distance array using
         the supplied function func"""
 
-    return np.apply_along_axis(func, 1, simArray)
+    return np.apply_along_axis(func, 1, simArray) #doesn't like array w/headers, figure out later
 
 def getRandPositions(rows, columns):
     """Returns a rows by columns matrix with random values"""
     return np.random.randn(rows, columns) #why not random.normal?
 
-def genNames(array):
-    nameList = []
-    for i in array:
-        nameList += [i]
-    return nameList
+def importNames(csvFile, dataType, header=1):
+    """Returns a numpy array without headers from a CSV file"""
+    return np.genfromtxt(csvFile,delimiter=",", names=True)
 
 
 
 #may need a main function to drive the code
 importArray = importCSV('similarities.csv', float)
-# print(importArray)
+nameArray = importNames('similarities.csv', float) #doing this twice for now, convertArray doesn't like the headers
+nameList = list(nameArray.dtype.names)
+print(nameList)
 psyArray = convertArray(importArray, simToDist)
 # test = np.array([[ 0, 0],
 # [0, 0]])
