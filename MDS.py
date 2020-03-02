@@ -72,22 +72,39 @@ def getNames(csvFile, dataType, header=1):
     array = np.genfromtxt(csvFile,delimiter=",", names=True)
     return list(array.dtype.names)
 
-def makeLabels(nameList, positionArray, i):
+def makeLabels(nameList, positionArray):
     fig, labels = plt.subplots()
 
     for j in range(len(positionArray)):
-        labels.annotate(nameList[j], positionArray[i], positionArray[j], size=5, ha='left') #annotations work!
+        labels.annotate(nameList[j], positionArray[j], size=5, ha='left') #annotations work!
 
 
 """Problem 4 IDEA: MOVE EACH ITEM, compute stress, then move other items, set stress threshold for stopping?"""
 
 
 #may need a main function to drive the code
+i = 0
 importArray = importCSV('similarities.csv', float)
 nameList = getNames('similarities.csv', float) #doing this twice for now, convertArray doesn't like the headers
 # print(nameList)
 psyArray = convertArray(importArray, simToDist)
 posArray = getRandPositions(21, 2)
+
+makeLabels(nameList, posArray)
+
+
+part2 = stress(psyArray, nameList.index('football'), posArray)
+print(nameList[i], "stress: ", part2) #big diff between stress numbers
+
+
+x, y = zip(*posArray)
+colors = np.random.RandomState(0).rand(21)
+
+plt.scatter(x,y, c=colors)
+plt.show()
+
+#end
+
 # print(posArray)
 # test = np.array([[0, 0],
 # [0, 0]])
@@ -103,17 +120,3 @@ posArray = getRandPositions(21, 2)
 
 # for j in range(len(posArray)):
 #     labels.annotate(nameList[j], posArray[i], posArray[j], size=5, ha='left') #annotations work!
-i = 0
-makeLabels(nameList, posArray, i)
-
-part2 = stress(psyArray, i, posArray)
-print(nameList[i], "stress: ", part2) #big diff between stress numbers
-
-
-x, y = zip(*posArray)
-colors = np.random.RandomState(0).rand(21)
-
-plt.scatter(x,y, c=colors)
-plt.show()
-
-#end
