@@ -40,8 +40,8 @@ def gradient(vector, h=0.001):
 
 def importCSV(csvFile, dataType, header=1):
     """Returns a numpy array without headers from a CSV file"""
-    return np.genfromtxt(csvFile, dtype=dataType ,delimiter=",", skip_header=1)
-    # return np.genfromtxt(csvFile,delimiter=",", names=True)
+    array = np.genfromtxt(csvFile, dtype=dataType ,delimiter=",", skip_header=1)
+    return array
 
 def convertArray(simArray, func):
     """Takes a similarity array and converts it to a psychological distance array using
@@ -53,31 +53,44 @@ def getRandPositions(rows, columns):
     """Returns a rows by columns matrix with random values"""
     return np.random.randn(rows, columns) #why not random.normal?
 
-def importNames(csvFile, dataType, header=1):
-    """Returns a numpy array without headers from a CSV file"""
-    return np.genfromtxt(csvFile,delimiter=",", names=True)
+def getNames(csvFile, dataType, header=1):
+    """Returns the header names form a CSV file"""
+    array = np.genfromtxt(csvFile,delimiter=",", names=True)
+    return list(array.dtype.names)
 
 
 
 #may need a main function to drive the code
 importArray = importCSV('similarities.csv', float)
-nameArray = importNames('similarities.csv', float) #doing this twice for now, convertArray doesn't like the headers
-nameList = list(nameArray.dtype.names)
-print(nameList)
+nameList = getNames('similarities.csv', float) #doing this twice for now, convertArray doesn't like the headers
+# print(nameList)
 psyArray = convertArray(importArray, simToDist)
-# test = np.array([[ 0, 0],
-# [0, 0]])
-
 posArray = getRandPositions(21, 2)
+print(posArray)
+# test = np.array([[0, 0],
+# [-1, -1]])
 # print(test[0])
 # print(test[1])
-# print(importArray[3, 6])
+# print(importArray[0, 0])
 #
-# print(stress(psyArray[3, 6], test[0], test[1]))
+# print(stress(psyArray[0, 0], test[0], test[1]))
+
+stressSum = 0
+i = 0
+fig, labels = plt.subplots()
+
+for j in range(len(posArray)): #this should show the stress sum for football (index 0)
+    stressSum += stress(psyArray[i, j], posArray[i], posArray[j])
+    labels.annotate(nameList[j], posArray[i], posArray[j], size=5, ha='left') #annotations work!
+
+
+print(nameList[i], stressSum)
+
 
 x, y = zip(*posArray)
+colors = np.random.RandomState(0).rand(21)
 
-# plt.scatter(x,y)
-# plt.show()
+plt.scatter(x,y, c=colors)
+plt.show()
 
 #end
