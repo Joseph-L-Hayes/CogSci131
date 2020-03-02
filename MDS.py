@@ -24,24 +24,25 @@ def simToDist(x):
 """Problem 2
     Write a function that takes a vector/matrix of positions for each item and computes
     the stress."""
-def stress2(psyArray, pos_i, pos_j): #stress(psyDist array, targetPos, posArray) #rewrite to compute stress for each item?
-    """Returns the stress value for an item based on it's position to other items """
-    # stressSum = 0
-    # for j in range(len(posArray)): #this should show the stress sum for football (index 0)
-    #     # print(posArray[j]) #prints all of the coord sets in posArray
-    #     stressSum += (psyArray[i, j], posArray[i], posArray[j])
+# def pointStress(psychoArray, coordArray, pos_i): #stress(psyDist array, targetPos, posArray) #rewrite to compute stress for each item?
+#     """Returns the stress value for an item based on it's position to other items """
+#     stressSum = 0
+#     for j in range(len(coordArray)):
+#         if pos_i != j:
+#             target = coordArray[pos_i]
+#             dest = coordArray[j]
+#             stressSum = stressSum + ((psychoArray[pos_i, j] - np.linalg.norm(target - dest)) ** 2)
+#
+#     return stressSum
 
-    return (psyArray - np.linalg.norm(pos_i - pos_j))**2
-
-def stress(psychArray, targetItem, coordArray): #this function is exponentially incorrect...
+def stress(psychArray, pos_i, coordArray): #this function is exponentially incorrect...
     # lst = [(psychArray[targetItem, j] - np.linalg.norm(targetItem - coordArray[j]))**2 for j in range(len(coordArray))]
     stressSum = 0
     for j in range(len(coordArray)): #i != j
-        target = coordArray[i]
+        target = coordArray[pos_i]
         dest = coordArray[j]
-        stressSum += (psychArray[targetItem, j] - np.linalg.norm(target - dest)) ** 2
+        stressSum += (psychArray[pos_i, j] - np.linalg.norm(target - dest)) ** 2
 
-    #try removing the list comprehension, copy the for loop from below
     return stressSum #need to test this vs stress() functionm
 
 """Problem 3
@@ -72,11 +73,11 @@ def getNames(csvFile, dataType, header=1):
     array = np.genfromtxt(csvFile,delimiter=",", names=True)
     return list(array.dtype.names)
 
-def makeLabels(nameList, positionArray):
+def makeLabels(nameList, positionArray, font_size=5):
     fig, labels = plt.subplots()
 
     for j in range(len(positionArray)):
-        labels.annotate(nameList[j], positionArray[j], size=5, ha='left') #annotations work!
+        labels.annotate(nameList[j], positionArray[j], size=font_size, ha='left') #annotations work!
 
 
 """Problem 4 IDEA: MOVE EACH ITEM, compute stress, then move other items, set stress threshold for stopping?"""
@@ -90,11 +91,10 @@ nameList = getNames('similarities.csv', float) #doing this twice for now, conver
 psyArray = convertArray(importArray, simToDist)
 posArray = getRandPositions(21, 2)
 
-makeLabels(nameList, posArray)
+makeLabels(nameList, posArray, 5)
 
-
-part2 = stress(psyArray, nameList.index('football'), posArray)
-print(nameList[i], "stress: ", part2) #big diff between stress numbers
+part = stress(psyArray, nameList.index('football'), posArray)
+print(nameList[i], "stress: ", part)
 
 
 x, y = zip(*posArray)
