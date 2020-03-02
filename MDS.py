@@ -24,7 +24,7 @@ def simToDist(x):
 """Problem 2
     Write a function that takes a vector/matrix of positions for each item and computes
     the stress."""
-def stress(psyArray, pos_i, pos_j): #stress(psyDist array, targetPos, posArray) #rewrite to compute stress for each item?
+def stress2(psyArray, pos_i, pos_j): #stress(psyDist array, targetPos, posArray) #rewrite to compute stress for each item?
     """Returns the stress value for an item based on it's position to other items """
     # stressSum = 0
     # for j in range(len(posArray)): #this should show the stress sum for football (index 0)
@@ -33,16 +33,16 @@ def stress(psyArray, pos_i, pos_j): #stress(psyDist array, targetPos, posArray) 
 
     return (psyArray - np.linalg.norm(pos_i - pos_j))**2
 
-def stress2(psychArray, targetItem, coordArray): #this function is exponentially incorrect...
+def stress(psychArray, targetItem, coordArray): #this function is exponentially incorrect...
     # lst = [(psychArray[targetItem, j] - np.linalg.norm(targetItem - coordArray[j]))**2 for j in range(len(coordArray))]
     stressSum = 0
-    for j in range(len(coordArray)):
+    for j in range(len(coordArray)): #i != j
         target = coordArray[i]
         dest = coordArray[j]
         stressSum += (psychArray[targetItem, j] - np.linalg.norm(target - dest)) ** 2
 
     #try removing the list comprehension, copy the for loop from below
-    return stressSum #need to test this vs stress() function
+    return stressSum #need to test this vs stress() functionm
 
 """Problem 3
     Write down a function that takes a vector/matrix of positions and computes the gradient
@@ -72,6 +72,13 @@ def getNames(csvFile, dataType, header=1):
     array = np.genfromtxt(csvFile,delimiter=",", names=True)
     return list(array.dtype.names)
 
+def makeLabels(nameList, positionArray, i):
+    fig, labels = plt.subplots()
+
+    for j in range(len(positionArray)):
+        labels.annotate(nameList[j], positionArray[i], positionArray[j], size=5, ha='left') #annotations work!
+
+
 """Problem 4 IDEA: MOVE EACH ITEM, compute stress, then move other items, set stress threshold for stopping?"""
 
 
@@ -90,18 +97,17 @@ posArray = getRandPositions(21, 2)
 #
 # print(stress(psyArray[0, 0], test[0], test[1]))
 
-stressSum = 0 #we want to minimize the stress for the item, how to automate this?
+# stressSum = 0 #we want to minimize the stress for the item, how to automate this?
+# i = 0
+# fig, labels = plt.subplots()
+
+# for j in range(len(posArray)):
+#     labels.annotate(nameList[j], posArray[i], posArray[j], size=5, ha='left') #annotations work!
 i = 0
-fig, labels = plt.subplots()
+makeLabels(nameList, posArray, i)
 
-for j in range(len(posArray)): #this should show the stress sum for football (index 0)
-    # print(posArray[j]) #prints all of the coord sets in posArray
-    stressSum += stress(psyArray[i, j], posArray[i], posArray[j])
-    labels.annotate(nameList[j], posArray[i], posArray[j], size=5, ha='left') #annotations work!
-
-part2 = stress2(psyArray, i, posArray)
-print(part2)
-print(nameList[i], "stress 1: ",stressSum, "stress2: ", part2) #big diff between stress numbers
+part2 = stress(psyArray, i, posArray)
+print(nameList[i], "stress: ", part2) #big diff between stress numbers
 
 
 x, y = zip(*posArray)
