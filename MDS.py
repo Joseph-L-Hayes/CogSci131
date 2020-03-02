@@ -24,7 +24,7 @@ def simToDist(x):
 """Problem 2
     Write a function that takes a vector/matrix of positions for each item and computes
     the stress."""
-def stress(psychArray, pos_i, coordArray): #may need to take just the point from question 5, faster
+def stress(psychArray, coordArray, pos_i): #may need to take just the point from question 5, faster
     """Returns the stress of a single single point relative to other points"""
 
     stressSum = 0
@@ -40,11 +40,11 @@ def stress(psychArray, pos_i, coordArray): #may need to take just the point from
     Write down a function that takes a vector/matrix of positions and computes the gradient
     (e.g. applies the above numerical method of df/dp to each coordinate location)."""
 
-def gradient(point, h=0.001):
+def gradient(point, psychArray, coordArray, h=0.001):
     """Returns the gradient of a vector positions"""
     #may need to use the point only, array from parent function
 
-    return (stress(point + h) - stress(point - h)) / (2*h)
+    return (stress(psychArray, point + h, coordArray) - stress(pyschArray, point - h, coordArray)) / (2*h)
 
 def importCSV(csvFile, dataType, header=1):
     """Returns a numpy array without headers from a CSV file"""
@@ -86,7 +86,7 @@ posArray = getRandPositions(21, 2)
 
 makeLabels(nameList, posArray, 5)
 
-part = stress(psyArray, nameList.index('football'), posArray)
+part = stress(psyArray, posArray, nameList.index('football'))
 print(nameList[i], "stress: ", part)
 
 
