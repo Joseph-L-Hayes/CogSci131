@@ -24,11 +24,19 @@ def simToDist(x):
 """Problem 2
     Write a function that takes a vector/matrix of positions for each item and computes
     the stress."""
-def stress(psyDist, pos_i, pos_j):
-    """Returns the stress value of two """
-    #stress = sum(i,j)(behavDist - euclidDist(posi, posj))**2
+def stress(psyDist, pos_i, pos_j): #stress(psyDist array, targetPos, posArray) #rewrite to compute stress for each item?
+    """Returns the stress value for an item based on it's position to other items """
+    # stressSum = 0
+    # for j in range(len(posArray)): #this should show the stress sum for football (index 0)
+    #     # print(posArray[j]) #prints all of the coord sets in posArray
+    #     stressSum += stress(psyArray[i, j], posArray[i], posArray[j])
 
     return (psyDist - np.linalg.norm(pos_i - pos_j))**2
+
+def stress2(psychArray, targetItem, coordArray): #this function is exponentially incorrect...
+    lst = [(psychArray[targetItem, j] - np.linalg.norm(targetItem - coordArray[j]))**2 for j in range(len(coordArray))]
+
+    return sum(lst)
 
 """Problem 3
     Write down a function that takes a vector/matrix of positions and computes the gradient
@@ -58,6 +66,7 @@ def getNames(csvFile, dataType, header=1):
     array = np.genfromtxt(csvFile,delimiter=",", names=True)
     return list(array.dtype.names)
 
+"""Problem 4 IDEA: MOVE EACH ITEM, compute stress, then move other items, set stress threshold for stopping?"""
 
 
 #may need a main function to drive the code
@@ -66,25 +75,27 @@ nameList = getNames('similarities.csv', float) #doing this twice for now, conver
 # print(nameList)
 psyArray = convertArray(importArray, simToDist)
 posArray = getRandPositions(21, 2)
-print(posArray)
+# print(posArray)
 # test = np.array([[0, 0],
-# [-1, -1]])
+# [0, 0]])
 # print(test[0])
 # print(test[1])
 # print(importArray[0, 0])
 #
 # print(stress(psyArray[0, 0], test[0], test[1]))
 
-stressSum = 0
+stressSum = 0 #we want to minimize the stress for the item, how to automate this?
 i = 0
 fig, labels = plt.subplots()
 
 for j in range(len(posArray)): #this should show the stress sum for football (index 0)
+    # print(posArray[j]) #prints all of the coord sets in posArray
     stressSum += stress(psyArray[i, j], posArray[i], posArray[j])
     labels.annotate(nameList[j], posArray[i], posArray[j], size=5, ha='left') #annotations work!
 
-
-print(nameList[i], stressSum)
+part2 = stress2(psyArray, i, posArray)
+print(part2)
+print(nameList[i], "stress 1: ",stressSum, "stress2: ", part2) #big diff between stress numbers
 
 
 x, y = zip(*posArray)
