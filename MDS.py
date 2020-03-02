@@ -24,26 +24,32 @@ def simToDist(x):
 """Problem 2
     Write a function that takes a vector/matrix of positions for each item and computes
     the stress."""
-def stress(psyDist, pos_i, pos_j): #stress(psyDist array, targetPos, posArray) #rewrite to compute stress for each item?
+def stress(psyArray, pos_i, pos_j): #stress(psyDist array, targetPos, posArray) #rewrite to compute stress for each item?
     """Returns the stress value for an item based on it's position to other items """
     # stressSum = 0
     # for j in range(len(posArray)): #this should show the stress sum for football (index 0)
     #     # print(posArray[j]) #prints all of the coord sets in posArray
-    #     stressSum += stress(psyArray[i, j], posArray[i], posArray[j])
+    #     stressSum += (psyArray[i, j], posArray[i], posArray[j])
 
-    return (psyDist - np.linalg.norm(pos_i - pos_j))**2
+    return (psyArray - np.linalg.norm(pos_i - pos_j))**2
 
 def stress2(psychArray, targetItem, coordArray): #this function is exponentially incorrect...
-    lst = [(psychArray[targetItem, j] - np.linalg.norm(targetItem - coordArray[j]))**2 for j in range(len(coordArray))]
+    # lst = [(psychArray[targetItem, j] - np.linalg.norm(targetItem - coordArray[j]))**2 for j in range(len(coordArray))]
+    stressSum = 0
+    for j in range(len(coordArray)):
+        target = coordArray[i]
+        dest = coordArray[j]
+        stressSum += (psychArray[targetItem, j] - np.linalg.norm(target - dest)) ** 2
+
     #try removing the list comprehension, copy the for loop from below
-    return sum(lst)
+    return stressSum #need to test this vs stress() function
 
 """Problem 3
     Write down a function that takes a vector/matrix of positions and computes the gradient
     (e.g. applies the above numerical method of df/dp to each coordinate location)."""
 
 def gradient(vector, h=0.001):
-    """Returns the gradient of vector positions"""
+    """Returns the gradient of a vector positions"""
     return None
 
 def importCSV(csvFile, dataType, header=1):
