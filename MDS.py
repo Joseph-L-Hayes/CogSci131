@@ -24,24 +24,15 @@ def simToDist(x):
 """Problem 2
     Write a function that takes a vector/matrix of positions for each item and computes
     the stress."""
-# def pointStress(psychoArray, coordArray, pos_i): #stress(psyDist array, targetPos, posArray) #rewrite to compute stress for each item?
-#     """Returns the stress value for an item based on it's position to other items """
-#     stressSum = 0
-#     for j in range(len(coordArray)):
-#         if pos_i != j:
-#             target = coordArray[pos_i]
-#             dest = coordArray[j]
-#             stressSum = stressSum + ((psychoArray[pos_i, j] - np.linalg.norm(target - dest)) ** 2)
-#
-#     return stressSum
+def stress(psychArray, pos_i, coordArray): #may need to take just the point from question 5, faster
+    """Returns the stress of a single single point relative to other points"""
 
-def stress(psychArray, pos_i, coordArray): #this function is exponentially incorrect...
-    # lst = [(psychArray[targetItem, j] - np.linalg.norm(targetItem - coordArray[j]))**2 for j in range(len(coordArray))]
     stressSum = 0
     for j in range(len(coordArray)): #i != j
-        target = coordArray[pos_i]
-        dest = coordArray[j]
-        stressSum += (psychArray[pos_i, j] - np.linalg.norm(target - dest)) ** 2
+        if pos_i != j:
+            target = coordArray[pos_i]
+            dest = coordArray[j]
+            stressSum += (psychArray[pos_i, j] - np.linalg.norm(target - dest)) ** 2
 
     return stressSum #need to test this vs stress() functionm
 
@@ -49,9 +40,11 @@ def stress(psychArray, pos_i, coordArray): #this function is exponentially incor
     Write down a function that takes a vector/matrix of positions and computes the gradient
     (e.g. applies the above numerical method of df/dp to each coordinate location)."""
 
-def gradient(vector, h=0.001):
+def gradient(point, h=0.001):
     """Returns the gradient of a vector positions"""
-    return None
+    #may need to use the point only, array from parent function
+
+    return (stress(point + h) - stress(point - h)) / (2*h)
 
 def importCSV(csvFile, dataType, header=1):
     """Returns a numpy array without headers from a CSV file"""
