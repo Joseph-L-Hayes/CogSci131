@@ -28,11 +28,11 @@ def stress(psychArray, coordArray):
     """Returns the stress value of the current graph"""
     stressSum = 0
 
-    for j in range(len(coordArray)):
-        for i in range(len(coordArray)):
+    for i in range(len(coordArray)):
+        for j in range(len(coordArray)):
             if i != j:
-                target = coordArray[i]
-                dest = coordArray[j]
+                target = coordArray[i] #[xi, yi]
+                dest = coordArray[j] #[xj, yj]
                 stressSum += (psychArray[i, j] - np.linalg.norm(target - dest)) ** 2
 
     return stressSum #need to test this vs stress() functionm
@@ -47,7 +47,7 @@ def gradient(point, psychArray, coordArray, h=0.001): #be sure to take small ste
     minusArrayX = np.copy(coordArray)
     plusArrayY = np.copy(coordArray)
     minusArrayY = np.copy(coordArray)
-    minusArrayX[point][0] -= h
+    minusArrayX[point][0] -= h #[x, y] [0, 1] x=
     plusArrayX[point][0] += h
     minusArrayY[point][1] -= h
     plusArrayY[point][1] += h
@@ -119,12 +119,13 @@ def traceGradient(psycho_array, learn_rate=.01, gradient_threshold=0.5, n=1000):
 
     return best_positions, min_stress
 
-
 importArray = importCSV('similarities.csv', float)
 nameList = getNames('similarities.csv', float)
 
 psyArray = convertArray(importArray, simToDist)
+posArray = getRandPositions(21, 2)
 posArray_mod, minStress = traceGradient(psyArray, learn_rate=.01, n=100)
+
 print("minStress: ", minStress)
 # print(posArray_mod)
 
@@ -133,6 +134,7 @@ colors1 = np.random.RandomState(0).rand(21)
 makeLabels(nameList, posArray_mod, 5)
 plt.scatter(x2,y2, c=colors1)
 plt.show()
+
 
 
 
