@@ -100,12 +100,13 @@ def makeLabels(nameList, positionArray, font_size=5):
 i = 0
 importArray = importCSV('similarities.csv', float)
 nameList = getNames('similarities.csv', float) #doing this twice for now, convertArray doesn't like the headers
+nameList2 = [i + '2' for i in nameList]
 # print(nameList)
 psyArray = convertArray(importArray, simToDist)
-posArray = getRandPositions(21, 2)
+posArray_orig = getRandPositions(21, 2)
+posArray_mod = np.copy(posArray_orig) #to save original array
 
-x1, y1 = zip(*posArray)
-makeLabels(nameList, posArray, 5)
+x1, y1 = zip(*posArray_orig)
 # print("stress value before : ", stress(psyArray, posArray))
 # print("pos before: ", posArray)
 # part = stress(psyArray, posArray, nameList.index('football'))
@@ -113,11 +114,11 @@ gradX, gradY = 0,0
 stressVal = 2000
 iterations = 0
 while stressVal >= 100:
-    for x in range(len(posArray) - 1):
-        gradX, gradY = gradient(x, psyArray, posArray, .001)
-        posArray[x][0] += (gradX * -.001) #correct method for moving? applies change to both coords equally...
-        posArray[x][1] += (gradY * -.001)
-        stressVal = stress(psyArray, posArray) #update stress
+    for x in range(0, len(posArray_mod)):
+        gradX, gradY = gradient(x, psyArray, posArray_mod, .001)
+        posArray_mod[x][0] += (gradX * -.001) #correct method for moving? applies change to both coords equally...
+        posArray_mod[x][1] += (gradY * -.001)
+        stressVal = stress(psyArray, posArray_mod) #update stress
         iterations += 1
         if iterations % 100 == 0:
             print(iterations)
@@ -126,13 +127,17 @@ print(stressVal)
 # print("stress value after : ", stress(psyArray, posArray))
 print("gradientX: ", gradX, "gradientY: ",gradY)
 """After figuring out the single iteration, getting min stress value, need to try N trials with random positions to ensure global minima is reached"""
-x2, y2 = zip(*posArray)
+x2, y2 = zip(*posArray_mod)
 colors1 = np.random.RandomState(0).rand(21)
 # colors2 = np.random.RandomState(0).rand(21)
 # print("pos after:", posArray)
-
-makeLabels(nameList, posArray, 5)
-plt.scatter(x1,y1, c='black')
+posArray_final = np.concatenate((posArray_orig, posArray_mod))
+print(posArray_final)
+nameList_final = nameList + nameList2
+# print(nameList_final)
+makeLabels(nameList_final, posArray_final, 5)
+makeLabels(nameList2, posArray_mod, 5)
+# plt.scatter(x1,y1, c='black')
 plt.scatter(x2,y2, c=colors1)
 plt.show()
 
