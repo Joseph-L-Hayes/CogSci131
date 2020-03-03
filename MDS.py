@@ -111,7 +111,6 @@ while stressVal >= 1000: #not working, stress stays high...
 print("stress value after : ", stress(psyArray, posArray))
 print("gradient: ", grad)
 
-
 x, y = zip(*posArray)
 colors = np.random.RandomState(0).rand(21)
 print("pos after:", posArray)
