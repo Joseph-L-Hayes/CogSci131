@@ -104,31 +104,36 @@ nameList = getNames('similarities.csv', float) #doing this twice for now, conver
 psyArray = convertArray(importArray, simToDist)
 posArray = getRandPositions(21, 2)
 
-x2, y2 = zip(*posArray)
-
-print("stress value before : ", stress(psyArray, posArray))
-print("pos before: ", posArray)
+x1, y1 = zip(*posArray)
+makeLabels(nameList, posArray, 5)
+# print("stress value before : ", stress(psyArray, posArray))
+# print("pos before: ", posArray)
 # part = stress(psyArray, posArray, nameList.index('football'))
-grad = 0
+gradX, gradY = 0,0
 stressVal = 2000
-while stressVal >= 10: #not working, stress stays high...
+iterations = 0
+while stressVal >= 100:
     for x in range(len(posArray) - 1):
         gradX, gradY = gradient(x, psyArray, posArray, .001)
-        posArray[x][0] -= (gradX * .001) #correct method for moving? applies change to both coords equally...
-        posArray[x][1] -= (gradY * .001)
+        posArray[x][0] += (gradX * -.001) #correct method for moving? applies change to both coords equally...
+        posArray[x][1] += (gradY * -.001)
         stressVal = stress(psyArray, posArray) #update stress
-        print(stressVal)
+        iterations += 1
+        if iterations % 100 == 0:
+            print(iterations)
+print(stressVal)
 #after change in point position
-print("stress value after : ", stress(psyArray, posArray))
-print("gradient: ", grad)
-
-x, y = zip(*posArray)
-colors = np.random.RandomState(0).rand(21)
-print("pos after:", posArray)
+# print("stress value after : ", stress(psyArray, posArray))
+print("gradientX: ", gradX, "gradientY: ",gradY)
+"""After figuring out the single iteration, getting min stress value, need to try N trials with random positions to ensure global minima is reached"""
+x2, y2 = zip(*posArray)
+colors1 = np.random.RandomState(0).rand(21)
+# colors2 = np.random.RandomState(0).rand(21)
+# print("pos after:", posArray)
 
 makeLabels(nameList, posArray, 5)
-plt.scatter(x2,y2, c=colors)
-plt.scatter(x,y, c=colors)
+plt.scatter(x1,y1, c='black')
+plt.scatter(x2,y2, c=colors1)
 plt.show()
 
 #end
