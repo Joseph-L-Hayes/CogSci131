@@ -42,14 +42,11 @@ def stress(psychArray, coordArray):
     (e.g. applies the above numerical method of df/dp to each coordinate location)."""
 
 def gradient(point, psychArray, coordArray, h=0.001): #be sure to take small steps in the direction of the gradient (e.g. 0.01*gradient)
-    #There is not a difference in the function; the difference is in the input. You
-    #input the entire matrix to the stress function when computing the gradient, but
-    #a single value has .001 added to or subtracted from it.
-    """Returns the gradient of a vector positions"""
+    """Returns the gradient with respect to x and y in point"""
     plusArrayX = np.copy(coordArray)
-    minusArrayX = np.copy(coordArray) #success?
+    minusArrayX = np.copy(coordArray)
     plusArrayY = np.copy(coordArray)
-    minusArrayY = np.copy(coordArray) #success?
+    minusArrayY = np.copy(coordArray)
     minusArrayX[point][0] -= h
     plusArrayX[point][0] += h
     minusArrayY[point][1] -= h
@@ -58,12 +55,6 @@ def gradient(point, psychArray, coordArray, h=0.001): #be sure to take small ste
     dx = (stress(psychArray, plusArrayX) - stress(psychArray, minusArrayX)) / (2*h)
     dy = (stress(psychArray, plusArrayY) - stress(psychArray, minusArrayY)) / (2*h)
 
-    # print(plusArray)
-
-    # print(minusArray)
-    # print("plus: ", stress(psychArray, plusArray))
-    # print("minus: ", stress(psychArray, minusArray))
-    # return (stress(psychArray, plusArray) - stress(psychArray, minusArray)) / (2*h)
     return dx, dy
 
 def importCSV(csvFile, dataType, header=1):
@@ -100,7 +91,7 @@ def traceGradient(psycho_array, learn_rate=.01, gradient_threshold=0.5, n=1000):
     #2) while until gradient_threshold is met, save stress values
     #3) return position array with min stress value
 
-    grad_x, grad_y = 0, 0
+    grad_x, grad_y = 10000, 10000
     grad_total = 10000
     min_stress = float('inf')
     stress_value = float('inf')
@@ -109,14 +100,16 @@ def traceGradient(psycho_array, learn_rate=.01, gradient_threshold=0.5, n=1000):
     for i in range(n + 1):
         x, y = 0, 1
         position_array = getRandPositions(21, 2) #new random array
-        while grad_total > gradient_threshold: #iterate positions to convergence threshold
+        # print(i)
+        while (grad_x > gradient_threshold) and (grad_y > gradient_threshold): #iterate positions to convergence threshold
             for point in range(0, len(position_array)):
-                print(point)
                 grad_x, grad_y = gradient(point, psycho_array, position_array, h=.001)
                 position_array[point][x] += (-grad_x * learn_rate)
                 position_array[point][y] += (-grad_y * learn_rate)
-            grad_total = grad_x + grad_y #may need to adjust nesting of this
+            # grad_total = grad_x + grad_y #how to get total gradient using independent gradient for x and y?
             # print(grad_total)
+        # grad_total = 10000 #grad total was staying the same, only getting a few while loops!
+        grad_x, grad_y = 10000, 10000
 
         stress_value = stress(psycho_array, position_array) #get stress
 
@@ -131,17 +124,15 @@ importArray = importCSV('similarities.csv', float)
 nameList = getNames('similarities.csv', float)
 
 psyArray = convertArray(importArray, simToDist)
-posArray_mod, minStress = traceGradient(psyArray, learn_rate=.01, n=1000)
+posArray_mod, minStress = traceGradient(psyArray, learn_rate=.01, n=100)
 print("minStress: ", minStress)
-print(posArray_mod)
+# print(posArray_mod)
 
 x2, y2 = zip(*posArray_mod)
 colors1 = np.random.RandomState(0).rand(21)
 makeLabels(nameList, posArray_mod, 5)
 plt.scatter(x2,y2, c=colors1)
 plt.show()
-
-
 
 
 
