@@ -41,20 +41,30 @@ def stress(psychArray, coordArray):
     Write down a function that takes a vector/matrix of positions and computes the gradient
     (e.g. applies the above numerical method of df/dp to each coordinate location)."""
 
-def gradient(x, y, psychArray, coordArray, h=0.001): #be sure to take small steps in the direction of the gradient (e.g. 0.01*gradient)
+def gradient(point, psychArray, coordArray, h=0.001): #be sure to take small steps in the direction of the gradient (e.g. 0.01*gradient)
     #There is not a difference in the function; the difference is in the input. You
     #input the entire matrix to the stress function when computing the gradient, but
     #a single value has .001 added to or subtracted from it.
     """Returns the gradient of a vector positions"""
-    plusArray = np.copy(coordArray)
-    minusArray = np.copy(coordArray) #success?
-    plusArray[x] += h
+    plusArrayX = np.copy(coordArray)
+    minusArrayX = np.copy(coordArray) #success?
+    plusArrayY = np.copy(coordArray)
+    minusArrayY = np.copy(coordArray) #success?
+    minusArrayX[point][0] -= h
+    plusArrayX[point][0] += h
+    minusArrayY[point][1] -= h
+    plusArrayY[point][1] += h
+
+    dx = (stress(psychArray, plusArrayX) - stress(psychArray, minusArrayX)) / (2*h)
+    dy = (stress(psychArray, plusArrayY) - stress(psychArray, minusArrayY)) / (2*h)
+
     # print(plusArray)
-    minusArray[x] -= h
+
     # print(minusArray)
     # print("plus: ", stress(psychArray, plusArray))
     # print("minus: ", stress(psychArray, minusArray))
-    return (stress(psychArray, plusArray) - stress(psychArray, minusArray)) / (2*h)
+    # return (stress(psychArray, plusArray) - stress(psychArray, minusArray)) / (2*h)
+    return dx, dy
 
 def importCSV(csvFile, dataType, header=1):
     """Returns a numpy array without headers from a CSV file"""
@@ -101,10 +111,11 @@ print("pos before: ", posArray)
 # part = stress(psyArray, posArray, nameList.index('football'))
 grad = 0
 stressVal = 2000
-while stressVal >= 1000: #not working, stress stays high...
+while stressVal >= 10: #not working, stress stays high...
     for x in range(len(posArray) - 1):
-        grad += gradient(0, 0, psyArray, posArray, .001)
-        posArray[x] -= (grad * .001) #correct method for moving? applies change to both coords equally...
+        gradX, gradY = gradient(x, psyArray, posArray, .001)
+        posArray[x][0] -= (gradX * .001) #correct method for moving? applies change to both coords equally...
+        posArray[x][1] -= (gradY * .001)
         stressVal = stress(psyArray, posArray) #update stress
         print(stressVal)
 #after change in point position
