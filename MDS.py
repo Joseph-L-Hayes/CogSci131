@@ -107,11 +107,16 @@ def traceGradient(psycho_array, learn_rate=.01, gradient_threshold=0.5, n=1000):
     best_positions = None
 
     for i in range(n + 1):
-        position_array = getRandPositions(21, 2)
+        x, y = 0, 1
+        position_array = getRandPositions(21, 2) #new random array
         while grad_total > gradient_threshold: #iterate positions to convergence threshold
-            grad_x, grad_y = gradient(point, psycho_array, position_array, h=.001)
-            position_array[point][0] += (-grad_x * learn_rate)
-            position_array[point][1] += (-grad_y * learn_rate)
+            for point in range(0, len(position_array)):
+                print(point)
+                grad_x, grad_y = gradient(point, psycho_array, position_array, h=.001)
+                position_array[point][x] += (-grad_x * learn_rate)
+                position_array[point][y] += (-grad_y * learn_rate)
+            grad_total = grad_x + grad_y #may need to adjust nesting of this
+            # print(grad_total)
 
         stress_value = stress(psycho_array, position_array) #get stress
 
@@ -121,66 +126,28 @@ def traceGradient(psycho_array, learn_rate=.01, gradient_threshold=0.5, n=1000):
 
     return best_positions, min_stress
 
-#may need a main function to drive the code
-i = 0
-importArray = importCSV('similarities.csv', float)
-nameList = getNames('similarities.csv', float) #doing this twice for now, convertArray doesn't like the headers
-nameList2 = [i + '2' for i in nameList]
-# print(nameList)
-psyArray = convertArray(importArray, simToDist)
-# posArray_orig = getRandPositions(21, 2)
-# posArray_mod = np.copy(posArray_orig) #to save original array
-posArray_mod, minStress = traceGradient(psyArray, learn_rate=.01, n=100)
 
-x1, y1 = zip(*posArray_orig)
-# print("stress value before : ", stress(psyArray, posArray))
-# print("pos before: ", posArray)
-# part = stress(psyArray, posArray, nameList.index('football'))
-gradX, gradY = 0,0
-stressVal = 2000
-iterations = 0
-while stressVal >= 100:
-    for x in range(0, len(posArray_mod)):
-        gradX, gradY = gradient(x, psyArray, posArray_mod, .001)
-        posArray_mod[x][0] += (gradX * -.001) #correct method for moving? applies change to both coords equally...
-        posArray_mod[x][1] += (gradY * -.001)
-        stressVal = stress(psyArray, posArray_mod) #update stress
-        iterations += 1
-        if iterations % 100 == 0:
-            print(iterations)
-print(stressVal)
-#after change in point position
-# print("stress value after : ", stress(psyArray, posArray))
-# print("gradientX: ", gradX, "gradientY: ",gradY)
-"""After figuring out the single iteration, getting min stress value, need to try N trials with random positions to ensure global minima is reached"""
+importArray = importCSV('similarities.csv', float)
+nameList = getNames('similarities.csv', float)
+
+psyArray = convertArray(importArray, simToDist)
+posArray_mod, minStress = traceGradient(psyArray, learn_rate=.01, n=1000)
+print("minStress: ", minStress)
+print(posArray_mod)
+
 x2, y2 = zip(*posArray_mod)
 colors1 = np.random.RandomState(0).rand(21)
-# colors2 = np.random.RandomState(0).rand(21)
-# print("pos after:", posArray)
-posArray_final = np.concatenate((posArray_orig, posArray_mod))
-# print(posArray_final)
-nameList_final = nameList + nameList2
-# print(nameList_final)
-makeLabels(nameList_final, posArray_final, 5)
-makeLabels(nameList2, posArray_mod, 5)
-# plt.scatter(x1,y1, c='black')
+makeLabels(nameList, posArray_mod, 5)
 plt.scatter(x2,y2, c=colors1)
 plt.show()
 
+
+
+
+
+
+
+
+
+
 #end
-
-# print(posArray)
-# test = np.array([[0, 0],
-# [0, 0]])
-# print(test[0])
-# print(test[1])
-# print(importArray[0, 0])
-#
-# print(stress(psyArray[0, 0], test[0], test[1]))
-
-# stressSum = 0 #we want to minimize the stress for the item, how to automate this?
-# i = 0
-# fig, labels = plt.subplots()
-
-# for j in range(len(posArray)):
-#     labels.annotate(nameList[j], posArray[i], posArray[j], size=5, ha='left') #annotations work!
