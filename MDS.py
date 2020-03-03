@@ -94,7 +94,32 @@ def makeLabels(nameList, positionArray, font_size=5):
 
 
 """Problem 4 IDEA: MOVE EACH ITEM, compute stress, then move other items, set stress threshold for stopping?"""
+def traceGradient(psycho_array, learn_rate=.01, gradient_threshold=0.5, n=1000):
+    """Takes a psychological distance array, returns a position array with min(stress) after n iterations and it's stress value"""
+    #1) create random position array
+    #2) while until gradient_threshold is met, save stress values
+    #3) return position array with min stress value
 
+    grad_x, grad_y = 0, 0
+    grad_total = 10000
+    min_stress = float('inf')
+    stress_value = float('inf')
+    best_positions = None
+
+    for i in range(n + 1):
+        position_array = getRandPositions(21, 2)
+        while grad_total > gradient_threshold: #iterate positions to convergence threshold
+            grad_x, grad_y = gradient(point, psycho_array, position_array, h=.001)
+            position_array[point][0] += (-grad_x * learn_rate)
+            position_array[point][1] += (-grad_y * learn_rate)
+
+        stress_value = stress(psycho_array, position_array) #get stress
+
+        if stress_value < min_stress:
+            min_stress = stress_value #update lowest stress
+            best_positions = position_array #update best positions
+
+    return best_positions, min_stress
 
 #may need a main function to drive the code
 i = 0
@@ -103,8 +128,9 @@ nameList = getNames('similarities.csv', float) #doing this twice for now, conver
 nameList2 = [i + '2' for i in nameList]
 # print(nameList)
 psyArray = convertArray(importArray, simToDist)
-posArray_orig = getRandPositions(21, 2)
-posArray_mod = np.copy(posArray_orig) #to save original array
+# posArray_orig = getRandPositions(21, 2)
+# posArray_mod = np.copy(posArray_orig) #to save original array
+posArray_mod, minStress = traceGradient(psyArray, learn_rate=.01, n=100)
 
 x1, y1 = zip(*posArray_orig)
 # print("stress value before : ", stress(psyArray, posArray))
@@ -125,14 +151,14 @@ while stressVal >= 100:
 print(stressVal)
 #after change in point position
 # print("stress value after : ", stress(psyArray, posArray))
-print("gradientX: ", gradX, "gradientY: ",gradY)
+# print("gradientX: ", gradX, "gradientY: ",gradY)
 """After figuring out the single iteration, getting min stress value, need to try N trials with random positions to ensure global minima is reached"""
 x2, y2 = zip(*posArray_mod)
 colors1 = np.random.RandomState(0).rand(21)
 # colors2 = np.random.RandomState(0).rand(21)
 # print("pos after:", posArray)
 posArray_final = np.concatenate((posArray_orig, posArray_mod))
-print(posArray_final)
+# print(posArray_final)
 nameList_final = nameList + nameList2
 # print(nameList_final)
 makeLabels(nameList_final, posArray_final, 5)
