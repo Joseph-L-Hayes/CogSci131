@@ -24,15 +24,16 @@ def simToDist(x):
 """Problem 2
     Write a function that takes a vector/matrix of positions for each item and computes
     the stress."""
-def stress(psychArray, coordArray, pos_i): #may need to take just the point from question 5, faster
-    """Returns the stress of a single single point relative to other points"""
-
+def stress(psychArray, coordArray):
+    """Returns the stress value of the current graph"""
     stressSum = 0
-    for j in range(len(coordArray)): #i != j
-        if pos_i != j:
-            target = coordArray[pos_i]
-            dest = coordArray[j]
-            stressSum += (psychArray[pos_i, j] - np.linalg.norm(target - dest)) ** 2
+
+    for j in range(len(coordArray)):
+        for i in range(len(coordArray)):
+            if i != j:
+                target = coordArray[i]
+                dest = coordArray[j]
+                stressSum += (psychArray[i, j] - np.linalg.norm(target - dest)) ** 2
 
     return stressSum #need to test this vs stress() functionm
 
@@ -40,11 +41,20 @@ def stress(psychArray, coordArray, pos_i): #may need to take just the point from
     Write down a function that takes a vector/matrix of positions and computes the gradient
     (e.g. applies the above numerical method of df/dp to each coordinate location)."""
 
-def gradient(point, psychArray, coordArray, h=0.001):
+def gradient(x, y, psychArray, coordArray, h=0.001): #be sure to take small steps in the direction of the gradient (e.g. 0.01*gradient)
+    #There is not a difference in the function; the difference is in the input. You
+    #input the entire matrix to the stress function when computing the gradient, but
+    #a single value has .001 added to or subtracted from it.
     """Returns the gradient of a vector positions"""
-    #may need to use the point only, array from parent function
-
-    return (stress(psychArray, point + h, coordArray) - stress(pyschArray, point - h, coordArray)) / (2*h)
+    plusArray = np.copy(coordArray)
+    minusArray = np.copy(coordArray) #success?
+    plusArray[x] += h
+    # print(plusArray)
+    minusArray[x] -= h
+    # print(minusArray)
+    # print("plus: ", stress(psychArray, plusArray))
+    # print("minus: ", stress(psychArray, minusArray))
+    return (stress(psychArray, plusArray) - stress(psychArray, minusArray)) / (2*h)
 
 def importCSV(csvFile, dataType, header=1):
     """Returns a numpy array without headers from a CSV file"""
@@ -84,15 +94,30 @@ nameList = getNames('similarities.csv', float) #doing this twice for now, conver
 psyArray = convertArray(importArray, simToDist)
 posArray = getRandPositions(21, 2)
 
-makeLabels(nameList, posArray, 5)
+x2, y2 = zip(*posArray)
 
-part = stress(psyArray, posArray, nameList.index('football'))
-print(nameList[i], "stress: ", part)
+print("stress value before : ", stress(psyArray, posArray))
+print("pos before: ", posArray)
+# part = stress(psyArray, posArray, nameList.index('football'))
+grad = 0
+stressVal = 2000
+while stressVal >= 1000: #not working, stress stays high...
+    for x in range(len(posArray) - 1):
+        grad += gradient(0, 0, psyArray, posArray, .001)
+        posArray[x] -= (grad * .001) #correct method for moving? applies change to both coords equally...
+        stressVal = stress(psyArray, posArray) #update stress
+        print(stressVal)
+#after change in point position
+print("stress value after : ", stress(psyArray, posArray))
+print("gradient: ", grad)
 
 
 x, y = zip(*posArray)
 colors = np.random.RandomState(0).rand(21)
+print("pos after:", posArray)
 
+makeLabels(nameList, posArray, 5)
+plt.scatter(x2,y2, c=colors)
 plt.scatter(x,y, c=colors)
 plt.show()
 
