@@ -233,15 +233,19 @@ def plotMDS(*csvFiles, rows=2, cols=5):
         data += [importCSV(csv, float, header=0)] #gather the arrays in a list
 
     for i in range(row):
-        xVal, yVal = zip(*data[t])
-        t += 1
         for j in range(col):
+            xVal, yVal = zip(*data[t])
             color = scatterColor[t]
             mds[i, j].scatter(xVal, yVal, c=scatterColor)
+            header = 'subplot ' + str(t + 1)
+            mds[i, j].set_title(header)
+            # makeLabels(pointNames, data[t], font_size=5)
             # mds[i, j].title(' ')
+            t += 1
 
     fig.set_figheight(10)
     fig.set_figwidth(15)
+    fig.suptitle('MDS Plots N=1000', fontsize=16)
     plt.setp(plt.gcf().get_axes(), xticks=[], yticks=[]) #works!
     plt.savefig('Q7_10plots.pdf')
     plt.show()
