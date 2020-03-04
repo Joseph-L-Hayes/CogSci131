@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import datetime
 import random
 
 """Problem 1
@@ -80,9 +81,11 @@ def traceGradient(psycho_array, learn_rate=.01, gradient_threshold=0.005, n=1000
     min_stress = float('inf')
     stress_value = float('inf')
     best_positions = None
+    stressList = []
 
-    for i in range(n + 1):
+    for i in range(n):
         x, y = 0, 1
+
         position_array = getRandPositions(psycho_array.shape[0], dimensions)
         while (grad_x > gradient_threshold) and (grad_y > gradient_threshold):
             for point in range(0, len(position_array)):
@@ -93,17 +96,18 @@ def traceGradient(psycho_array, learn_rate=.01, gradient_threshold=0.005, n=1000
         grad_x, grad_y = 10000, 10000
 
         stress_value = stress(psycho_array, position_array)
+        stressList += [stress_value]
 
         if stress_value < min_stress:
             min_stress = stress_value
             best_positions = position_array
 
-    return best_positions, min_stress
+    return best_positions, min_stress, stressList
 
 def importCSV(csvFile, dataType, header=1):
     """Returns a numpy array without headers from a CSV file"""
-    array = np.genfromtxt(csvFile, dtype=dataType ,delimiter=",", skip_header=1)
-    return array
+    csvArray = np.genfromtxt(csvFile, dtype=dataType ,delimiter=",", skip_header=1)
+    return csvArray
 
 def convertArray(simArray, func):
     """Takes a similarity array and converts it to a psychological distance array using
@@ -126,6 +130,17 @@ def makeLabels(nameList, positionArray, font_size=5):
     for j in range(len(positionArray)):
         labels.annotate(nameList[j], positionArray[j], size=font_size, ha='left')
 
+def genMdsArrays(psycho_array, k=10, trials=1000, dim=2):
+    """Saves """
+    stressTrace = []
+    for z in range(1, k + 1):
+        dataArray, stress, stressTrace = traceGradient(psyArray, learn_rate=.01, n=trials, dimensions=dim)
+        name = 'MDS_n_1000_' + str(z) + '_stress_' + str(stress) + '.csv'
+        np.savetxt(name, dataArray, delimiter=',')
+
+        stressName = 'MDS_n_1000_' + str(z) + '_stress_' + str(stress) + '.csv'
+        np,savetxt(stressName, stressTrace, delimiter=',')
+
 #driver code for questions 1-4
 sportData = 'similarities.csv'
 circleData = 'circle.csv' #to test known shape
@@ -137,21 +152,7 @@ psyArray = convertArray(importArray, simToDist)
 arraySize = psyArray.shape[0]
 dim = 2
 
-posArray = getRandPositions(arraySize, dim)
-# posArray_mod, minStress = traceGradient(psyArray, learn_rate=.01, n=1000, dimensions=dim)
-
-# print("minStress: ", minStress)
-
-#saving 10 arrays for question 7
-# for z in range(1, 11):
-#     dataArray, garbage = traceGradient(psyArray, learn_rate=.01, n=1000, dimensions=dim)
-#     name = 'MDS_n_1000_' + str(z) + ".csv"
-#     np.savetxt(name, dataArray, delimiter=',')
-#     print(name)
-#     # print(name)
-
-#############################
-
+############################# SAVE BELOW CODE
 # x2, y2 = zip(*posArray_mod)
 # colors1 = np.random.RandomState(0).rand(arraySize)
 # makeLabels(nameList, posArray_mod, 5)
@@ -160,6 +161,7 @@ posArray = getRandPositions(arraySize, dim)
 # plt.savefig('xxx.pdf') #change name of file for future saves
 # plt.show()
 # plt.close()
+############################# SAVE ABOVE CODE
 """End Problem 4"""
 
 
@@ -186,5 +188,62 @@ posArray = getRandPositions(arraySize, dim)
 #np.linalg.norm(target - dest) as from above
 
 
+"""Problem 6
+    Plot the stress over iterations of your MDS. How should you use this plot in order
+    to figure out how many iterations are needed?"""
+
+def plotStress(psy_array, iterations=1000):
+    positionArray, minStress, stressTrace = traceGradient(psy_array, n=iterations)
+    stress_minima = min(stressTrace)
+    pY = stressTrace
+    pX = list(range(1, iterations + 1))
+    poly = np.polyfit(pX, pY, 5)
+    pYpoly = np.poly1d(poly)(pX)
+
+    plt.plot(pX, pYpoly, c='red')
+    plt.title("Stress Over Iterations")
+    plt.xlabel('Iterations')
+    plt.ylabel('Stress')
+    # plt.label('stress minima')
+    # plt.legend()
+    plt.savefig('stress_over_time.pdf')
+    plt.show()
+    plt.close()
+
+plotStress(psyArray, 10)
+
+"""Problem 7
+     Run the MDS code you wrote 10 times and show small plots, starting from random initial
+     positions. Are they all the same or not? Why?"""
+
+def plotMDS(*csvFiles):
+    axisNames = getNames(csvFiles[0], float)
+
+    for csv in csvFiles:
+        array = importCSV(csv, float)
+        #some code to plot MDS csvFiles.size times from csv files
+    return None
+
+"""Problem 8
+    If you wanted to find one “best” answer but had run MDS 10 times, how would you pick
+    the best? Why? Show a plot of the best and any code you used to find it."""
+
 
 #end
+
+
+#SAVE?
+# posArray = getRandPositions(arraySize, dim)
+# posArray_mod, minStress = traceGradient(psyArray, learn_rate=.01, n=1000, dimensions=dim)
+
+# print("minStress: ", minStress)
+
+#saving 10 arrays for question 7
+# for z in range(1, 11):
+#     dataArray, garbage, stressTrace = traceGradient(psyArray, learn_rate=.01, n=1000, dimensions=dim)
+#     name = 'MDS_n_1000_' + str(z) + ".csv"
+#     np.savetxt(name, dataArray, delimiter=',')
+#     print(name)
+#     # print(name)
+
+# print('{date:%H:%M:%S}'.format(date=datetime.datetime.now()))
