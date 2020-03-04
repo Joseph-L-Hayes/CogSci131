@@ -26,12 +26,11 @@ def stress(psychArray, coordArray):
     """Returns the stress value of the current graph"""
     stressSum = 0
 
-    for i in range(len(coordArray)):
-        for j in range(len(coordArray) - i):
-            if i != j:
-                target = coordArray[i]
-                dest = coordArray[j + i]
-                stressSum += (psychArray[i, j + i] - np.linalg.norm(target - dest)) ** 2
+    for i in range(len(coordArray) - 1):
+        for j in range(i + 1, len(coordArray)):
+            target = coordArray[i]
+            dest = coordArray[j]
+            stressSum += (psychArray[i, j] - np.linalg.norm(target - dest)) ** 2
 
     return stressSum
 
@@ -128,27 +127,27 @@ def makeLabels(nameList, positionArray, font_size=5):
         labels.annotate(nameList[j], positionArray[j], size=font_size, ha='left')
 
 #driver code for questions 1-4
-# sportData = 'similarities.csv'
-# circleData = 'circle.csv' #to test known shape
-#
-# importArray = importCSV(sportData, float)
-# nameList = getNames(sportData, float)
-#
-# psyArray = convertArray(importArray, simToDist)
-# arraySize = psyArray.shape[0]
-# dim = 2
-#
-# posArray = getRandPositions(arraySize, dim)
-# posArray_mod, minStress = traceGradient(psyArray, learn_rate=.01, n=1000, dimensions=dim)
-#
-# print("minStress: ", minStress)
-#
-# x2, y2 = zip(*posArray_mod)
-# colors1 = np.random.RandomState(0).rand(arraySize)
-# makeLabels(nameList, posArray_mod, 5)
-# plt.title("MDS For Psychological Similarity Distances of Sports, n=1000")
+sportData = 'similarities.csv'
+circleData = 'circle.csv' #to test known shape
+
+importArray = importCSV(sportData, float)
+nameList = getNames(sportData, float)
+
+psyArray = convertArray(importArray, simToDist)
+arraySize = psyArray.shape[0]
+dim = 2
+
+posArray = getRandPositions(arraySize, dim)
+posArray_mod, minStress = traceGradient(psyArray, learn_rate=.01, n=10, dimensions=dim)
+
+print("minStress: ", minStress)
+
+x2, y2 = zip(*posArray_mod)
+colors1 = np.random.RandomState(0).rand(arraySize)
+makeLabels(nameList, posArray_mod, 5)
+plt.title("MDS For Psychological Similarity Distances of Sports, n=1000")
 # plt.scatter(x2,y2, c=colors1)
-# # plt.savefig('sports_n1000.pdf')
+# plt.savefig('xxx.pdf') #change name of file for future saves
 # plt.show()
 # plt.close()
 """End Problem 4"""
@@ -158,7 +157,21 @@ def makeLabels(nameList, positionArray, font_size=5):
      Make a scatter plot of the the pairwise distances MDS found vs. people’s reported distances.
      Briefly describe what good and bad plots would look like and whether yours is good or bad."""
 
+mdsList = []
+psychList = []
+for i in range(len(posArray_mod) - 1):
+    for j in range(i + 1, len(posArray_mod)):
+        target = posArray_mod[i]
+        dest = posArray_mod[j]
+        psyTarget = psyArray[i]
+        psyDest = psyArray[j]
+        mdsList += [np.linalg.norm(target - dest)]
+        psychList += [psyArray[i, j]]
 
+# print(len(psychList))
+# plt.scatter(psychList, c='black')
+# plt.scatter(mdsList)
+# plt.show()
 #idea: plot psyArray distances and then distances of MDS posArray
 #np.linalg.norm(target - dest) as from above
 
