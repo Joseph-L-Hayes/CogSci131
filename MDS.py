@@ -138,14 +138,24 @@ arraySize = psyArray.shape[0]
 dim = 2
 
 posArray = getRandPositions(arraySize, dim)
-posArray_mod, minStress = traceGradient(psyArray, learn_rate=.01, n=10, dimensions=dim)
+# posArray_mod, minStress = traceGradient(psyArray, learn_rate=.01, n=1000, dimensions=dim)
 
-print("minStress: ", minStress)
+# print("minStress: ", minStress)
 
-x2, y2 = zip(*posArray_mod)
-colors1 = np.random.RandomState(0).rand(arraySize)
-makeLabels(nameList, posArray_mod, 5)
-plt.title("MDS For Psychological Similarity Distances of Sports, n=1000")
+#saving 10 arrays for question 7
+# for z in range(1, 11):
+#     dataArray, garbage = traceGradient(psyArray, learn_rate=.01, n=1000, dimensions=dim)
+#     name = 'MDS_n_1000_' + str(z) + ".csv"
+#     np.savetxt(name, dataArray, delimiter=',')
+#     print(name)
+#     # print(name)
+
+#############################
+
+# x2, y2 = zip(*posArray_mod)
+# colors1 = np.random.RandomState(0).rand(arraySize)
+# makeLabels(nameList, posArray_mod, 5)
+# plt.title("MDS For Psychological Similarity Distances of Sports, n=1000")
 # plt.scatter(x2,y2, c=colors1)
 # plt.savefig('xxx.pdf') #change name of file for future saves
 # plt.show()
@@ -157,16 +167,16 @@ plt.title("MDS For Psychological Similarity Distances of Sports, n=1000")
      Make a scatter plot of the the pairwise distances MDS found vs. people’s reported distances.
      Briefly describe what good and bad plots would look like and whether yours is good or bad."""
 
-mdsList = []
-psychList = []
-for i in range(len(posArray_mod) - 1):
-    for j in range(i + 1, len(posArray_mod)):
-        target = posArray_mod[i]
-        dest = posArray_mod[j]
-        psyTarget = psyArray[i]
-        psyDest = psyArray[j]
-        mdsList += [np.linalg.norm(target - dest)]
-        psychList += [psyArray[i, j]]
+# mdsList = []
+# psychList = []
+# for i in range(len(posArray_mod) - 1):
+#     for j in range(i + 1, len(posArray_mod)):
+#         target = posArray_mod[i]
+#         dest = posArray_mod[j]
+#         psyTarget = psyArray[i]
+#         psyDest = psyArray[j]
+#         mdsList += [np.linalg.norm(target - dest)]
+#         psychList += [psyArray[i, j]]
 
 # print(len(psychList))
 # plt.scatter(psychList, c='black')
