@@ -214,7 +214,7 @@ def plotStress(psy_array, iterations=1000):
     plt.show()
     plt.close()
 
-# plotStress(psyArray, 2000) #saved a plot, interpret later, do this for 2000 to compare
+plotStress(psyArray, iterations=2000) #saved a plot, interpret later, do this for 2000 to compare
 
 """Problem 7 EXPLAIN AND CHECK PLOT INTEGRITY
      Run the MDS code you wrote 10 times and show small plots, starting from random initial
@@ -232,7 +232,7 @@ def plotMDS(*csvFiles, names, rows=2, cols=5):
     # print(scatterColor)
 
     for csv in csvFiles:
-        data += [importCSV(csv, float, header=0)] #gather the arrays in a list
+        data += [importCSV(csv, float, header=0)]
 
     for i in range(row):
         for j in range(col):
