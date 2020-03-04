@@ -106,7 +106,10 @@ def traceGradient(psycho_array, learn_rate=.01, gradient_threshold=0.005, n=1000
 
 def importCSV(csvFile, dataType, header=1):
     """Returns a numpy array without headers from a CSV file"""
-    csvArray = np.genfromtxt(csvFile, dtype=dataType ,delimiter=",", skip_header=1)
+    if header:
+        csvArray = np.genfromtxt(csvFile, dtype=dataType ,delimiter=",", skip_header=1)
+    else:
+        csvArray = np.genfromtxt(csvFile, dtype=dataType ,delimiter=",")
     return csvArray
 
 def convertArray(simArray, func):
@@ -121,7 +124,7 @@ def getRandPositions(rows, columns):
 
 def getNames(csvFile, dataType, header=1):
     """Returns the header names form a CSV file"""
-    array = np.genfromtxt(csvFile,delimiter=",", names=True)
+    array = np.genfromtxt(csvFile, delimiter=",", names=True)
     return list(array.dtype.names)
 
 def makeLabels(nameList, positionArray, font_size=5):
@@ -130,7 +133,7 @@ def makeLabels(nameList, positionArray, font_size=5):
     for j in range(len(positionArray)):
         labels.annotate(nameList[j], positionArray[j], size=font_size, ha='left')
 
-def genMdsArrays(psycho_array, k=10, trials=1000, dim=2):
+def saveMdsArrays(psycho_array, k=10, trials=1000, dim=2):
     """Saves """
     stressTrace = []
     for z in range(1, k + 1):
@@ -190,7 +193,8 @@ dim = 2
 
 """Problem 6
     Plot the stress over iterations of your MDS. How should you use this plot in order
-    to figure out how many iterations are needed?"""
+    to figure out how many iterations are needed?
+    ANSWER: retry with 2000 iterations to compare graphs, may be issue with random starts, high stress values"""
 
 def plotStress(psy_array, iterations=1000):
     positionArray, minStress, stressTrace = traceGradient(psy_array, n=iterations)
@@ -200,29 +204,51 @@ def plotStress(psy_array, iterations=1000):
     poly = np.polyfit(pX, pY, 5)
     pYpoly = np.poly1d(poly)(pX)
 
-    plt.plot(pX, pYpoly, c='red')
+    plt.plot(pX, pYpoly, c='red', label='stress minima = ' + str(int(minStress)))
     plt.title("Stress Over Iterations")
     plt.xlabel('Iterations')
     plt.ylabel('Stress')
-    # plt.label('stress minima')
-    # plt.legend()
-    plt.savefig('stress_over_time.pdf')
+    plt.legend()
+    plt.savefig('stress_over_time_n2000.pdf')
     plt.show()
     plt.close()
 
-plotStress(psyArray, 10)
+# plotStress(psyArray, 2000) #saved a plot, interpret later, do this for 2000 to compare
 
 """Problem 7
      Run the MDS code you wrote 10 times and show small plots, starting from random initial
      positions. Are they all the same or not? Why?"""
 
-def plotMDS(*csvFiles):
-    axisNames = getNames(csvFiles[0], float)
+def plotMDS(*csvFiles, rows=2, cols=5):
+    pointNames = getNames(csvFiles[0], float)
+    row, col = 2, 5
+    fig, mds = plt.subplots(row, col)
+    data = []
+    t = 0
+    scatterColor = np.random.RandomState(0).rand(21)
+    # print(scatterColor)
 
     for csv in csvFiles:
-        array = importCSV(csv, float)
+        data += [importCSV(csv, float, header=0)] #gather the arrays in a list
+
+    for i in range(row):
+        xVal, yVal = zip(*data[t])
+        t += 1
+        for j in range(col):
+            color = scatterColor[t]
+            mds[i, j].scatter(xVal, yVal, c=scatterColor)
+            # mds[i, j].title(' ')
+
+    for m in mds.flat:
+        m.label_outer()
+
+    # plt.gca().axes.get_yaxis().set_visible(False)
+    plt.savefig('Q7_10plots.pdf')
+    plt.show()
+
         #some code to plot MDS csvFiles.size times from csv files
-    return None
+
+plotMDS('MDS_n_1000_1.csv', 'MDS_n_1000_2.csv','MDS_n_1000_3.csv','MDS_n_1000_4.csv','MDS_n_1000_5.csv','MDS_n_1000_6.csv','MDS_n_1000_7.csv','MDS_n_1000_8.csv','MDS_n_1000_9.csv','MDS_n_1000_10.csv')
 
 """Problem 8
     If you wanted to find one “best” answer but had run MDS 10 times, how would you pick

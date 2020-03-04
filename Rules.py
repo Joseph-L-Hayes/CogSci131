@@ -119,7 +119,7 @@ def rule11(self,input):
     """"""
     eleven = re.search(r'(favorite+) (?:.*) \b(?:a|an|the)\b (.+)', input)
     if eleven and carInDict(eleven[2]):
-        return True, 'The ' + eleven[2] + ' is a great car!' 
+        return True, 'The ' + eleven[2] + ' is a great car!'
     else:
         return False, None
 
