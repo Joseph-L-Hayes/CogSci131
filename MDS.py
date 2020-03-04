@@ -8,7 +8,7 @@ import random
     code. Briefly explain why you chose it over the others.
     1. Use the formula distance = (1 - similarity)
     2. Use the formula distance = 1 / similarity
-    3.
+    3. User the formula distance = 1 / sqrt(similarity)
 
     I will use distance = (1 - similarity) because it maintains the same scale as
     the similarity matrix and doesn't require normalizing. It is also easier for me
@@ -58,9 +58,22 @@ def gradient(point, psychArray, coordArray, h=0.001):
     return dx, dy
 """End Problem 3"""
 
-"""Problem 4 IDEA: MOVE EACH ITEM, compute stress, then move other items, set stress threshold for stopping?
-    Explanation: """
-def traceGradient(psycho_array, learn_rate=.01, gradient_threshold=0.5, n=1000, dimensions=2):
+"""Problem 4
+Write the code that follows a gradient in order to find positions that minimize the stress – be sure to
+take small steps in the direction of the gradient (e.g. 0.01*gradient). Plot the sport names at the resulting
+coordinates. Do the results agree with your intuitions about how this domain might be organized? Why or why not?
+
+    Explanation: In general I think the sports are grouped appropriately although there are some exceptions.
+    The water related sports swimming, canoeing, skiing, and surfing are all nicely grouped. All of the
+    ball related sports like football, basketball, etc are grouped in a similar area of the grid, but the distances
+    between ball sports are not always consistent with the psychological measurements. The MDS needs to compromise between
+    some sports to get the lowest stress value.
+
+    For example: 'sport A' may not be able to 'reach' a position near 'sport B' which it shares high similarity
+    with because 'sport C' and 'sport D', which are similar to 'sport B' but very dissimilar to 'sport A', are
+    blocking it. """
+
+def traceGradient(psycho_array, learn_rate=.01, gradient_threshold=0.005, n=1000, dimensions=2):
     """Takes a psychological distance array, returns a position array with min(stress) after n iterations and it's stress value"""
 
     grad_x, grad_y = 10000, 10000
@@ -114,35 +127,38 @@ def makeLabels(nameList, positionArray, font_size=5):
     for j in range(len(positionArray)):
         labels.annotate(nameList[j], positionArray[j], size=font_size, ha='left')
 
-
-sportsData = 'similarities.csv'
-circleData = 'circle.csv' #to test known shape
-
-importArray = importCSV(circleData, float)
-nameList = getNames(circleData, float)
-
-psyArray = convertArray(importArray, simToDist)
-arraySize = psyArray.shape[0]
-dim = 2
-
-posArray = getRandPositions(arraySize, dim)
-posArray_mod, minStress = traceGradient(psyArray, learn_rate=.01, n=1000, dimensions=dim)
-
-print("minStress: ", minStress)
-
-x2, y2 = zip(*posArray_mod)
-colors1 = np.random.RandomState(0).rand(arraySize)
-makeLabels(nameList, posArray_mod, 5)
-plt.scatter(x2,y2, c=colors1)
-plt.savefig('shape.pdf')
-plt.show()
-plt.close()
+#driver code for questions 1-4
+# sportData = 'similarities.csv'
+# circleData = 'circle.csv' #to test known shape
+#
+# importArray = importCSV(sportData, float)
+# nameList = getNames(sportData, float)
+#
+# psyArray = convertArray(importArray, simToDist)
+# arraySize = psyArray.shape[0]
+# dim = 2
+#
+# posArray = getRandPositions(arraySize, dim)
+# posArray_mod, minStress = traceGradient(psyArray, learn_rate=.01, n=1000, dimensions=dim)
+#
+# print("minStress: ", minStress)
+#
+# x2, y2 = zip(*posArray_mod)
+# colors1 = np.random.RandomState(0).rand(arraySize)
+# makeLabels(nameList, posArray_mod, 5)
+# plt.title("MDS For Psychological Similarity Distances of Sports, n=1000")
+# plt.scatter(x2,y2, c=colors1)
+# plt.savefig('sports_n1000.pdf')
+# plt.show()
+# plt.close()
 """End Problem 4"""
 
 
 """Problem 5
      Make a scatter plot of the the pairwise distances MDS found vs. people’s reported distances.
      Briefly describe what good and bad plots would look like and whether yours is good or bad."""
+
+     
 #idea: plot psyArray distances and then distances of MDS posArray
 #np.linalg.norm(target - dest) as from above
 
