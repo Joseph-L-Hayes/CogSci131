@@ -217,7 +217,8 @@ def plotStress(psy_array, iterations=1000):
 
 """Problem 7
      Run the MDS code you wrote 10 times and show small plots, starting from random initial
-     positions. Are they all the same or not? Why?"""
+     positions. Are they all the same or not? Why?
+     EXPLAIN: """
 
 def plotMDS(*csvFiles, rows=2, cols=5):
     pointNames = getNames(csvFiles[0], float)
@@ -239,14 +240,11 @@ def plotMDS(*csvFiles, rows=2, cols=5):
             mds[i, j].scatter(xVal, yVal, c=scatterColor)
             # mds[i, j].title(' ')
 
-    for m in mds.flat:
-        m.label_outer()
-
-    # plt.gca().axes.get_yaxis().set_visible(False)
+    fig.set_figheight(10)
+    fig.set_figwidth(15)
+    plt.setp(plt.gcf().get_axes(), xticks=[], yticks=[]) #works!
     plt.savefig('Q7_10plots.pdf')
     plt.show()
-
-        #some code to plot MDS csvFiles.size times from csv files
 
 plotMDS('MDS_n_1000_1.csv', 'MDS_n_1000_2.csv','MDS_n_1000_3.csv','MDS_n_1000_4.csv','MDS_n_1000_5.csv','MDS_n_1000_6.csv','MDS_n_1000_7.csv','MDS_n_1000_8.csv','MDS_n_1000_9.csv','MDS_n_1000_10.csv')
 
