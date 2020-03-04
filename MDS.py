@@ -27,11 +27,11 @@ def stress(psychArray, coordArray):
     stressSum = 0
 
     for i in range(len(coordArray)):
-        for j in range(len(coordArray)):
+        for j in range(len(coordArray) - i):
             if i != j:
                 target = coordArray[i]
-                dest = coordArray[j]
-                stressSum += (psychArray[i, j] - np.linalg.norm(target - dest)) ** 2
+                dest = coordArray[j + i]
+                stressSum += (psychArray[i, j + i] - np.linalg.norm(target - dest)) ** 2
 
     return stressSum
 
@@ -42,7 +42,7 @@ def stress(psychArray, coordArray):
     (e.g. applies the above numerical method of df/dp to each coordinate location)."""
 
 def gradient(point, psychArray, coordArray, h=0.001):
-    """Returns the gradient with respect to x and y in point"""
+    """Returns the gradient using partial derivative method with respect to x and y in a single point"""
     plusArrayX = np.copy(coordArray)
     minusArrayX = np.copy(coordArray)
     plusArrayY = np.copy(coordArray)
@@ -148,7 +148,7 @@ def makeLabels(nameList, positionArray, font_size=5):
 # makeLabels(nameList, posArray_mod, 5)
 # plt.title("MDS For Psychological Similarity Distances of Sports, n=1000")
 # plt.scatter(x2,y2, c=colors1)
-# plt.savefig('sports_n1000.pdf')
+# # plt.savefig('sports_n1000.pdf')
 # plt.show()
 # plt.close()
 """End Problem 4"""
@@ -158,7 +158,7 @@ def makeLabels(nameList, positionArray, font_size=5):
      Make a scatter plot of the the pairwise distances MDS found vs. people’s reported distances.
      Briefly describe what good and bad plots would look like and whether yours is good or bad."""
 
-     
+
 #idea: plot psyArray distances and then distances of MDS posArray
 #np.linalg.norm(target - dest) as from above
 
