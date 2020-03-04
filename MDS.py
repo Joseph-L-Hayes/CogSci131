@@ -116,10 +116,10 @@ def makeLabels(nameList, positionArray, font_size=5):
 
 
 sportsData = 'similarities.csv'
-# circleData = 'circle.csv' #to test known shape
+circleData = 'circle.csv' #to test known shape
 
-importArray = importCSV(sportsData, float)
-nameList = getNames(sportsData, float)
+importArray = importCSV(circleData, float)
+nameList = getNames(circleData, float)
 
 psyArray = convertArray(importArray, simToDist)
 arraySize = psyArray.shape[0]
@@ -134,14 +134,17 @@ x2, y2 = zip(*posArray_mod)
 colors1 = np.random.RandomState(0).rand(arraySize)
 makeLabels(nameList, posArray_mod, 5)
 plt.scatter(x2,y2, c=colors1)
-# plt.savefig('sports_n1000.pdf')
-# plt.show()
+plt.savefig('shape.pdf')
+plt.show()
+plt.close()
 """End Problem 4"""
 
 
-"""Problem 5"""
-
-
+"""Problem 5
+     Make a scatter plot of the the pairwise distances MDS found vs. people’s reported distances.
+     Briefly describe what good and bad plots would look like and whether yours is good or bad."""
+#idea: plot psyArray distances and then distances of MDS posArray
+#np.linalg.norm(target - dest) as from above
 
 
 
