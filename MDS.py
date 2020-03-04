@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import datetime
 import random
 
-"""Problem 1
+"""Problem 1 COMPLETE, check for errors
     The dataset1 provides similarities, not distances. Write down three
     ways you could convert a similarity to a distance ψij and choose one to use in the
     code. Briefly explain why you chose it over the others.
@@ -20,7 +20,7 @@ def simToDist(x):
     """Converts a similarity to a psychological distance"""
     return 1 - x
 
-"""Problem 2
+"""Problem 2 COMPLETE, check for errors
     Write a function that takes a vector/matrix of positions for each item and computes
     the stress."""
 def stress(psychArray, coordArray):
@@ -37,7 +37,7 @@ def stress(psychArray, coordArray):
 
 """End Problem 2"""
 
-"""Problem 3
+"""Problem 3, COMPLETE, check for erros
     Write down a function that takes a vector/matrix of positions and computes the gradient
     (e.g. applies the above numerical method of df/dp to each coordinate location)."""
 
@@ -58,7 +58,7 @@ def gradient(point, psychArray, coordArray, h=0.001):
     return dx, dy
 """End Problem 3"""
 
-"""Problem 4
+"""Problem 4 COMPLETE, CHECK FOR ERRORS
 Write the code that follows a gradient in order to find positions that minimize the stress – be sure to
 take small steps in the direction of the gradient (e.g. 0.01*gradient). Plot the sport names at the resulting
 coordinates. Do the results agree with your intuitions about how this domain might be organized? Why or why not?
@@ -122,9 +122,10 @@ def getRandPositions(rows, columns):
     """Returns a rows by columns matrix with random values"""
     return np.random.randn(rows, columns)
 
-def getNames(csvFile, dataType, header=1):
+def getNames(csvFile, dataType=str, header=1):
     """Returns the header names form a CSV file"""
-    array = np.genfromtxt(csvFile, delimiter=",", names=True)
+    array = np.genfromtxt(csvFile, dtype=str, delimiter=",", names=True)
+    # print(list(array.dtype.names))
     return list(array.dtype.names)
 
 def makeLabels(nameList, positionArray, font_size=5):
@@ -133,7 +134,7 @@ def makeLabels(nameList, positionArray, font_size=5):
     for j in range(len(positionArray)):
         labels.annotate(nameList[j], positionArray[j], size=font_size, ha='left')
 
-def saveMdsArrays(psycho_array, k=10, trials=1000, dim=2):
+def saveMdsArrays(psycho_array, k=10, trials=1000, dim=2): #may change to take the CSV rather than an array
     """Saves """
     stressTrace = []
     for z in range(1, k + 1):
@@ -149,7 +150,7 @@ sportData = 'similarities.csv'
 circleData = 'circle.csv' #to test known shape
 
 importArray = importCSV(sportData, float)
-nameList = getNames(sportData, float)
+nameArray = getNames(sportData, float)
 
 psyArray = convertArray(importArray, simToDist)
 arraySize = psyArray.shape[0]
@@ -158,7 +159,7 @@ dim = 2
 ############################# SAVE BELOW CODE
 # x2, y2 = zip(*posArray_mod)
 # colors1 = np.random.RandomState(0).rand(arraySize)
-# makeLabels(nameList, posArray_mod, 5)
+# makeLabels(nameArray, posArray_mod, 5)
 # plt.title("MDS For Psychological Similarity Distances of Sports, n=1000")
 # plt.scatter(x2,y2, c=colors1)
 # plt.savefig('xxx.pdf') #change name of file for future saves
@@ -168,7 +169,7 @@ dim = 2
 """End Problem 4"""
 
 
-"""Problem 5
+"""Problem 5 INCOMPLETE!!!!!!
      Make a scatter plot of the the pairwise distances MDS found vs. people’s reported distances.
      Briefly describe what good and bad plots would look like and whether yours is good or bad."""
 
@@ -191,7 +192,7 @@ dim = 2
 #np.linalg.norm(target - dest) as from above
 
 
-"""Problem 6
+"""Problem 6 NEED TO RERUN WITH 2K TRIALS
     Plot the stress over iterations of your MDS. How should you use this plot in order
     to figure out how many iterations are needed?
     ANSWER: retry with 2000 iterations to compare graphs, may be issue with random starts, high stress values"""
@@ -215,13 +216,14 @@ def plotStress(psy_array, iterations=1000):
 
 # plotStress(psyArray, 2000) #saved a plot, interpret later, do this for 2000 to compare
 
-"""Problem 7
+"""Problem 7 EXPLAIN AND CHECK PLOT INTEGRITY
      Run the MDS code you wrote 10 times and show small plots, starting from random initial
      positions. Are they all the same or not? Why?
-     EXPLAIN: """
+     EXPLAIN: xxx """
 
-def plotMDS(*csvFiles, rows=2, cols=5):
-    pointNames = getNames(csvFiles[0], float)
+def plotMDS(*csvFiles, names, rows=2, cols=5):
+    pointNames = getNames(names, str)
+    # print(pointNames)
     row, col = 2, 5
     fig, mds = plt.subplots(row, col)
     data = []
@@ -239,20 +241,21 @@ def plotMDS(*csvFiles, rows=2, cols=5):
             mds[i, j].scatter(xVal, yVal, c=scatterColor)
             header = 'subplot ' + str(t + 1)
             mds[i, j].set_title(header)
-            # makeLabels(pointNames, data[t], font_size=5)
-            # mds[i, j].title(' ')
+            for k, txt in enumerate(pointNames):
+                mds[i, j].annotate(txt, (xVal[k], yVal[k]), size=5)
             t += 1
 
     fig.set_figheight(10)
     fig.set_figwidth(15)
     fig.suptitle('MDS Plots N=1000', fontsize=16)
-    plt.setp(plt.gcf().get_axes(), xticks=[], yticks=[]) #works!
+    plt.setp(plt.gcf().get_axes(), xticks=[], yticks=[])
     plt.savefig('Q7_10plots.pdf')
     plt.show()
 
-plotMDS('MDS_n_1000_1.csv', 'MDS_n_1000_2.csv','MDS_n_1000_3.csv','MDS_n_1000_4.csv','MDS_n_1000_5.csv','MDS_n_1000_6.csv','MDS_n_1000_7.csv','MDS_n_1000_8.csv','MDS_n_1000_9.csv','MDS_n_1000_10.csv')
+# plotMDS('MDS_n_1000_1.csv', 'MDS_n_1000_2.csv','MDS_n_1000_3.csv','MDS_n_1000_4.csv','MDS_n_1000_5.csv','MDS_n_1000_6.csv',
+#     'MDS_n_1000_7.csv','MDS_n_1000_8.csv','MDS_n_1000_9.csv','MDS_n_1000_10.csv', names=sportData)
 
-"""Problem 8
+"""Problem 8 INCOMPLETE
     If you wanted to find one “best” answer but had run MDS 10 times, how would you pick
     the best? Why? Show a plot of the best and any code you used to find it."""
 
