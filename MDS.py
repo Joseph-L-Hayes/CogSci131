@@ -220,16 +220,24 @@ def plotStress(stressCSV, iterations=1000):
     plt.xlabel('Iterations')
     plt.ylabel('Stress')
     plt.legend()
-    plt.savefig('stress_over_iter_1000_5.pdf')
+    # plt.savefig('stress_over_iter_1000_5.pdf')
     plt.show()
     plt.close()
 
-plotStress('Stress_n_1000_UPDATE_5.csv')
+# plotStress('Stress_n_1000_UPDATE_5.csv')
 
-"""Problem 7 EXPLAIN AND CHECK PLOT INTEGRITY
+"""Problem 7 COMPLETE, ERROR CHECK
      Run the MDS code you wrote 10 times and show small plots, starting from random initial
      positions. Are they all the same or not? Why?
-     ANSWER: The plots are not all the same. """
+
+     ANSWER: The plots are not all the same. First, they are all starting from different
+     random positions and moving towards their ideal positions using MDS. Second, the MDS
+     is only being run one time on each graph they may only be achieving a local minima and
+     missing the global minima. Ideally the MDS would run until a global minima was reached.
+     The only way to do this is to create a new random array of coordinates, move on the
+     gradient until it is near 0, and record the stress. Over a sufficient number of iterations
+     we should expect that the array with the lowest stress has reached the global minimum and
+     can then see the best fit."""
 
 def plotMDS(*csvFiles, names, rows=2, cols=5):
     pointNames = getNames(names, str)
