@@ -1,0 +1,70 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1671\cocoasubrtf600
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 SAVE?\
+# posArray = getRandPositions(arraySize, dim)\
+# posArray_mod, minStress = traceGradient(psyArray, learn_rate=.01, n=1000, dimensions=dim)\
+\
+# print("minStress: ", minStress)\
+\
+#saving 10 arrays for question 7\
+# for z in range(1, 11):\
+#     dataArray, garbage, stressTrace = traceGradient(psyArray, learn_rate=.01, n=1000, dimensions=dim)\
+#     name = 'MDS_n_1000_' + str(z) + ".csv"\
+#     np.savetxt(name, dataArray, delimiter=',')\
+#     print(name)\
+#     # print(name)\
+\
+# print('\{date:%H:%M:%S\}'.format(date=datetime.datetime.now()))\
+\
+\
+\
+#POSSIBLE OTHER SOLUTION:\
+# def traceGradient(psycho_array, learn_rate=.01, gradient_threshold=0.0005, n=1000, dimensions=2):\
+#     """Takes a psychological distance array, returns a position array with min(stress) after n iterations and it's stress value"""\
+#\
+#     grad_x, grad_y = 10000, 10000\
+#     grad_total = 10000\
+#     min_stress = float('inf')\
+#     stress_value = float('inf')\
+#     best_positions = None\
+#     stressList = []\
+#     bestIter = 0\
+#     position_array = getRandPositions(psycho_array.shape[0], dimensions)\
+#\
+#     for i in range(n):\
+#         x, y = 0, 1\
+#\
+#         # position_array = getRandPositions(psycho_array.shape[0], dimensions)\
+#         # while (grad_x > gradient_threshold) and (grad_y > gradient_threshold):\
+#         for point in range(0, len(position_array)):\
+#             grad_x, grad_y = gradient(point, psycho_array, position_array, h=.001)\
+#             position_array[point][x] += (-grad_x * learn_rate)\
+#             position_array[point][y] += (-grad_y * learn_rate)\
+#\
+#         # grad_x, grad_y = 10000, 10000\
+#\
+#         stress_value = stress(psycho_array, position_array)\
+#         stressList += [stress_value]\
+#\
+#         if stress_value < min_stress:\
+#             min_stress = stress_value\
+#             best_positions = position_array\
+#             bestIter = i\
+#\
+#     return best_positions, min_stress, stressList, bestIter\
+\
+# Explanation: In general I think the sports are grouped appropriately although there are some exceptions.\
+# The water related sports swimming, canoeing, skiing, and surfing are all nicely grouped. All of the\
+# ball related sports like football, basketball, etc are grouped in a similar area of the grid, but the distances\
+# between ball sports are not always consistent with the psychological measurements. The MDS needs to compromise between\
+# some sports to get the lowest stress value.\
+#\
+# For example: 'sport A' may not be able to 'reach' a position near 'sport B' which it shares high similarity\
+# with because 'sport C' and 'sport D', which are similar to 'sport B' but very dissimilar to 'sport A', are\
+# blocking it.\
+}
