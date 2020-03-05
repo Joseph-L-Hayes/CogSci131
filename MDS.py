@@ -4,17 +4,17 @@ import matplotlib.pyplot as plt
 import datetime
 import random
 
-"""Problem 1 COMPLETE, check for errors
+"""Problem 1 COMPLETE
     The dataset1 provides similarities, not distances. Write down three
     ways you could convert a similarity to a distance ψij and choose one to use in the
     code. Briefly explain why you chose it over the others.
     1. Use the formula distance = (1 - similarity)
     2. Use the formula distance = 1 / similarity
-    3. User the formula distance = 1 / sqrt(similarity)
+    3. User the formula distance = 1 / (similarity)**2
 
     I will use distance = (1 - similarity) because it maintains the same scale as
     the similarity matrix and doesn't require normalizing. It is also easier for me
-    to conceptualize in my head, if two categories have a similarity score of 1
+    to conceptualize, if two categories have a similarity score of 1
     then their distance = 1 - 1 = 0 meaning they are in the same location. """
 
 def simToDist(x):
@@ -22,9 +22,10 @@ def simToDist(x):
     return 1 - x
 """END PROBLEM 1"""
 
-"""Problem 2 COMPLETE, check for errors
+"""Problem 2 COMPLETE
     Write a function that takes a vector/matrix of positions for each item and computes
-    the stress."""
+        the stress."""
+
 def stress(psychArray, coordArray):
     """Returns the stress value of the current graph"""
     stressSum = 0
@@ -39,7 +40,7 @@ def stress(psychArray, coordArray):
 
 """End Problem 2"""
 
-"""Problem 3, COMPLETE, check for errors
+"""Problem 3, COMPLETE
     Write down a function that takes a vector/matrix of positions and computes the gradient
     (e.g. applies the above numerical method of df/dp to each coordinate location)."""
 
@@ -60,7 +61,7 @@ def gradient(point, psychArray, coordArray, h=0.001):
     return dx, dy
 """END PROBLEM 3"""
 
-"""Problem 4 COMPLETE, CHECK FOR ERRORS
+"""Problem 4 COMPLETE
 Write the code that follows a gradient in order to find positions that minimize the stress – be sure to
 take small steps in the direction of the gradient (e.g. 0.01*gradient). Plot the sport names at the resulting
 coordinates. Do the results agree with your intuitions about how this domain might be organized? Why or why not?
@@ -73,7 +74,8 @@ coordinates. Do the results agree with your intuitions about how this domain mig
     in the same area of the grid but not as close as they could be if the global minimum was found.  """
 
 def traceGradient(psycho_array, learn_rate=.01, gradient_threshold=0.0005, n=1000, dimensions=2):
-    """Takes a psychological distance array, returns a position array with min(stress) after n iterations and it's stress value"""
+    """Takes a psychological distance array, returns a position array after n iterations, it's stress value,
+        and the stress values over iterations as stressList"""
 
     grad_x, grad_y = 10000, 10000
     grad_total = 10000
@@ -123,7 +125,6 @@ def getRandPositions(rows, columns):
 def getNames(csvFile, dataType=str, header=1):
     """Returns the header names form a CSV file"""
     array = np.genfromtxt(csvFile, dtype=str, delimiter=",", names=True)
-    # print(list(array.dtype.names))
     return list(array.dtype.names)
 
 def makeLabels(nameList, positionArray, font_size=5):
@@ -132,7 +133,7 @@ def makeLabels(nameList, positionArray, font_size=5):
     for j in range(len(positionArray)):
         labels.annotate(nameList[j], positionArray[j], size=font_size, ha='left')
 
-def saveMdsArrays(psycho_array, k=10, trials=1000, dim=2): #may change to take the CSV rather than an array
+def saveMdsArrays(psycho_array, k=10, trials=1000, dim=2):
     """Saves MDS arrays as csv files"""
     stressTrace = []
     for z in range(1, k + 1):
@@ -151,8 +152,6 @@ importArray = importCSV(sportData, float)
 nameArray = getNames(sportData, float)
 
 psyArray = convertArray(importArray, simToDist)
-# posArray_mod, stress, stressTrace, bestIter = traceGradient(psyArray, n=1000)
-# print(posArray_mod)
 arraySize = psyArray.shape[0]
 dim = 2
 
@@ -170,7 +169,7 @@ dim = 2
 """END PROBLEM 4"""
 
 
-"""Problem 5 COMPLETE, ERROR CHECK
+"""Problem 5 COMPLETE
      Make a scatter plot of the the pairwise distances MDS found vs. people’s reported distances.
      Briefly describe what good and bad plots would look like and whether yours is good or bad.
 
@@ -196,7 +195,7 @@ def distancesMDS(mdsDist, psychArray):
             lineListX += [x]
             lineListY += [y]
 
-    #normalize
+    #normalize MDS distances to match bounds of psychological distances
     normMDS = max(mdsList)
     mdsList = [(z / normMDS) for z in mdsList]
 
@@ -210,12 +209,12 @@ def distancesMDS(mdsDist, psychArray):
     plt.show()
     plt.close()
 
-# mdsDist1 = importCSV('MDS_n_1000_10.csv', float, header=0)
-# distancesMDS(mdsDist1, psyArray)
+mdsDist1 = importCSV('MDS_n_1000_UPDATE_10.csv', float, header=0)
+distancesMDS(mdsDist1, psyArray)
 # mdsDist2 = importCSV('MDS_n_1000_1.csv', float, header=0)
 # distancesMDS(mdsDist2, psyArray)
 
-"""Problem 6 COMPLETE, ERROR CHECK
+"""Problem 6 COMPLETE
     Plot the stress over iterations of your MDS. How should you use this plot in order
     to figure out how many iterations are needed?
 
@@ -225,15 +224,12 @@ def distancesMDS(mdsDist, psychArray):
     a local minimum rather than a global minimum."""
 
 def plotStress(stressCSV, iterations=1000):
-    # positionArray, minStress, stressTrace, best_iter = traceGradient(psy_array, n=iterations)
     stressData = importCSV(stressCSV, float, header=0)
     stress_minima = min(stressData)
     pY = stressData
     pX = list(range(1, iterations + 1))
     poly = np.polyfit(pX, pY, 4) #graph is not showing the minimum accurately, redo
     pYpoly = np.poly1d(poly)(pX)
-    # print("best iteration: ", best_iter + 1)
-    # print("stress value at best iter: ", stressData[best_iter])
 
     plt.plot(pX, pY, c='red', label='stress minima = ' + str(int(stress_minima)))
     plt.scatter(106, stress_minima, c='blue', label='stress minima')
@@ -245,22 +241,22 @@ def plotStress(stressCSV, iterations=1000):
     plt.show()
     plt.close()
 
-# plotStress('Stress_n_1000_UPDATE_5.csv')
+plotStress('Stress_n_1000_UPDATE_5.csv')
 
 """END PROBLEM 6"""
 
-"""Problem 7 COMPLETE, ERROR CHECK
+"""Problem 7 COMPLETE
      Run the MDS code you wrote 10 times and show small plots, starting from random initial
      positions. Are they all the same or not? Why?
 
      ANSWER: The plots are not all the same. First, they are all starting from different
-     random positions and moving towards their ideal positions using MDS. Second, the MDS
-     is only being run one time on each graph they may only be achieving a local minima and
-     missing the global minima. Ideally the MDS would run until a global minima was reached.
-     The only way to do this is to create a new random array of coordinates, move on the
-     gradient until it is near 0, and record the stress. Over a sufficient number of iterations
-     we should expect that the array with the lowest stress has reached the global minimum and
-     can then see the best fit. """
+     random positions and moving towards their ideal positions using MDS so groupings will
+     be in different areas of the graph. Second, the MDS is only being run one time on each
+     graph so they may only be achieving a local minima and missing the global minima. Ideally
+     the MDS would run until a global minima was reached. The only way to do this is to create
+     a new random array of coordinates, move on the gradient until it is near 0, and record
+     the stress. Over a sufficient number of iterations we should expect that the array with
+     the lowest stress has reached the global minimum and can then see the best fit. """
 
 def plotMDS(*csvFiles, names, rows=2, cols=5):
     pointNames = getNames(names, str)
@@ -293,8 +289,9 @@ def plotMDS(*csvFiles, names, rows=2, cols=5):
     plt.savefig('Q7_10_UPDATE_plots.pdf')
     plt.show()
 
-# plotMDS('MDS_n_1000_UPDATE_1.csv', 'MDS_n_1000_UPDATE_2.csv','MDS_n_1000_UPDATE_3.csv','MDS_n_1000_UPDATE_4.csv','MDS_n_1000_UPDATE_5.csv','MDS_n_1000_UPDATE_6.csv',
-#     'MDS_n_1000_UPDATE_7.csv','MDS_n_1000_UPDATE_8.csv','MDS_n_1000_UPDATE_9.csv','MDS_n_1000_UPDATE_10.csv', names=sportData)
+plotMDS('MDS_n_1000_UPDATE_1.csv', 'MDS_n_1000_UPDATE_2.csv','MDS_n_1000_UPDATE_3.csv','MDS_n_1000_UPDATE_4.csv','MDS_n_1000_UPDATE_5.csv','MDS_n_1000_UPDATE_6.csv',
+    'MDS_n_1000_UPDATE_7.csv','MDS_n_1000_UPDATE_8.csv','MDS_n_1000_UPDATE_9.csv','MDS_n_1000_UPDATE_10.csv', names=sportData)
+
 """END PROBLEM 7"""
 
 """Problem 8 INCOMPLETE
@@ -305,21 +302,24 @@ def plotMDS(*csvFiles, names, rows=2, cols=5):
     accurate way to choose the best MDS simply by looking at the 10 subplots. To find the best,
     I changed my traceGradient algorigthm (actually it's the first one I used as it's more accurate
     and I didn't realize the assignment wanted a less accurate version) to do the following:
-    1) Create a new random array of x,y points
+
+    1) Create a new random array of x,y points.
     2) Adjust the points using the gradient until a threshold near 0 is reached.
-    3) Check the stress for the point array and save it if it's stress score is less than
-        the last point array.
+    3) Check the stress for the point array and save the array if it's stress score is less than
+        the last best point array.
     4) Repeat 1-4 n iterations.
+    5) Return the best array and plot.
 
     This method will help ensure that a global minimum is found because we increase the chances
     that we get a random point array that is near the global minimum which should result in the
     lowest possible stress.
 
-    I have included a plot using this method """
+    I have included a plot using this method which shows a better clustering of sports than
+    doing N iterations on one position array. """
 
-#original method: SAVE
 def traceGradientOptimal(psycho_array, learn_rate=.01, gradient_threshold=0.0005, n=1000, dimensions=2):
-    """Takes a psychological distance array, returns a position array with min(stress) after n iterations and it's stress value"""
+    """Takes a psychological distance array, returns a position array with min(stress) after N iterations,
+        it's stress value, and the total stress for each position array over N iterations"""
 
     grad_x, grad_y = 10000, 10000
     grad_total = 10000
