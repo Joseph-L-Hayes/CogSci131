@@ -170,14 +170,15 @@ dim = 2
 """END PROBLEM 4"""
 
 
-"""Problem 5 INCOMPLETE!!!!!!
+"""Problem 5 COMPLETE, ERROR CHECK
      Make a scatter plot of the the pairwise distances MDS found vs. people’s reported distances.
      Briefly describe what good and bad plots would look like and whether yours is good or bad.
 
      ANSWER: I plotted x= MDS distances for each pair, y=reported distances for each pair of sports. I would
      expect that, for a perfect fit, all of the dots would cluster closely with the blue line y=x.
      My plot doesn't look great but then I don't know what an optimal version of this MDS algorigthm
-     with this data would look like.
+     with this data would look like. There are more points above y=x than below meaning that most of
+     my MDS distances are closer together than they should be according to the similarity distances.
      """
 
 def distancesMDS(mdsDist, psychArray):
@@ -195,16 +196,21 @@ def distancesMDS(mdsDist, psychArray):
             lineListX += [x]
             lineListY += [y]
 
-    plt.scatter(psyPlot, mdsList, c='red')
+    #normalize
+    normMDS = max(mdsList)
+    mdsList = [(z / normMDS) for z in mdsList]
+
+    plt.scatter(mdsList, psyPlot, c='red')
     plt.plot(lineListX, lineListY, c='blue')
-    plt.title('MDS Pairwise Distances vs. Reported Similarity Distances')
+    plt.title('MDS Pairwise Distances vs. Reported Similarity Distances (Soph)')
     plt.xlabel('MDS Distances')
     plt.ylabel('Similarity Distances')
-    plt.savefig('P5_pairwise_soph.pdf')
+    # plt.savefig('P5_pairwise_naive.pdf')
+    # plt.savefig('P5_pairwise_soph.pdf')
     plt.show()
     plt.close()
 
-# mdsDist1 = importCSV('MDS_n_1000_UPDATE_10.csv', float, header=0)
+# mdsDist1 = importCSV('MDS_n_1000_10.csv', float, header=0)
 # distancesMDS(mdsDist1, psyArray)
 # mdsDist2 = importCSV('MDS_n_1000_1.csv', float, header=0)
 # distancesMDS(mdsDist2, psyArray)
