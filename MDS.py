@@ -159,7 +159,7 @@ dim = 2
 ############################# SAVE BELOW CODE
 # x2, y2 = zip(*posArray_mod)
 # colors1 = np.random.RandomState(0).rand(arraySize)
-# makeLabels(nameArray, posArray_mod, 5)
+# # makeLabels(nameArray, posArray_mod, 5)
 # plt.title("MDS For Psychological Similarity Distances of Sports, n=1000")
 # plt.scatter(x2,y2, c=colors1)
 # # plt.savefig('n1000_newMethod_1.pdf') #change name of file for future saves
@@ -177,7 +177,7 @@ dim = 2
      ANSWER: I plotted x= MDS distances for each pair, y=reported distances for each pair of sports. I would
      expect that, for a perfect fit, all of the dots would cluster closely with the blue line y=x.
      My plot doesn't look great but then I don't know what an optimal version of this MDS algorigthm
-     with this data would look like. 
+     with this data would look like.
      """
 
 def distancesMDS(mdsDist, psychArray):
