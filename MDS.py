@@ -20,6 +20,7 @@ import random
 def simToDist(x):
     """Converts a similarity to a psychological distance"""
     return 1 - x
+"""END PROBLEM 1"""
 
 """Problem 2 COMPLETE, check for errors
     Write a function that takes a vector/matrix of positions for each item and computes
@@ -57,7 +58,7 @@ def gradient(point, psychArray, coordArray, h=0.001):
     dy = (stress(psychArray, plusArrayY) - stress(psychArray, minusArrayY)) / (2*h)
 
     return dx, dy
-"""End Problem 3"""
+"""END PROBLEM 3"""
 
 """Problem 4 COMPLETE, CHECK FOR ERRORS
 Write the code that follows a gradient in order to find positions that minimize the stress – be sure to
@@ -166,32 +167,47 @@ dim = 2
 # plt.close()
 ############################# SAVE ABOVE CODE
 # saveMdsArrays(psyArray, k=9) #remove after saving
-"""End Problem 4"""
+"""END PROBLEM 4"""
 
 
 """Problem 5 INCOMPLETE!!!!!!
      Make a scatter plot of the the pairwise distances MDS found vs. people’s reported distances.
-     Briefly describe what good and bad plots would look like and whether yours is good or bad."""
+     Briefly describe what good and bad plots would look like and whether yours is good or bad.
 
-# mdsList = []
-# psychList = []
-# for i in range(len(posArray_mod) - 1):
-#     for j in range(i + 1, len(posArray_mod)):
-#         target = posArray_mod[i]
-#         dest = posArray_mod[j]
-#         psyTarget = psyArray[i]
-#         psyDest = psyArray[j]
-#         mdsList += [np.linalg.norm(target - dest)]
-#         psychList += [psyArray[i, j]]
+     ANSWER: I plotted x= MDS distances, y=reported distances for each pair of sports. I would
+     expect that, for a perfect fit, all of the dots would cluster closely with the line y=x
 
-# print(len(psychList))
-# plt.scatter(psychList, c='black')
-# plt.scatter(mdsList)
-# plt.show()
-#idea: plot psyArray distances and then distances of MDS posArray
-#np.linalg.norm(target - dest) as from above
+     """
 
-#distance = math.sqrt(sum([(a - b) ** 2 for a, b in zip(x, y)])) #try this
+def distancesMDS(mdsDist, psychArray):
+    psyPlot = psychArray.flatten()
+    lineListX, lineListY = [0], [0]
+    x,y = 0, 0
+
+    mdsList = []
+
+    for i in range(len(mdsDist)):
+        for j in range(len(mdsDist)):
+            mdsList += [np.linalg.norm(mdsDist[i] - mdsDist[j])]
+            x += .0024
+            y += .0024
+            lineListX += [x]
+            lineListY += [y]
+
+    plt.scatter(psyPlot, mdsList, c='red')
+    plt.plot(lineListX, lineListY, c='blue')
+    plt.title('MDS Pairwise Distances vs. Reported Similarity Distances')
+    plt.xlabel('MDS Distances')
+    plt.ylabel('Similarity Distances')
+    plt.savefig('P5_pairwise_soph.pdf')
+    plt.show()
+    plt.close()
+
+# mdsDist1 = importCSV('MDS_n_1000_UPDATE_10.csv', float, header=0)
+# distancesMDS(mdsDist1, psyArray)
+mdsDist2 = importCSV('MDS_n_1000_1.csv', float, header=0)
+distancesMDS(mdsDist2, psyArray)
+
 
 
 """Problem 6 COMPLETE, ERROR CHECK
@@ -201,7 +217,7 @@ dim = 2
     ANSWER: The stress levels out and does not change after n iterations. The number of
     iterations at the point where stress no longer changes is how many are needed.
     This particular graph declines very sharply early on indicated that it may have reached
-    a local minimum rather than a global minimum. """
+    a local minimum rather than a global minimum."""
 
 def plotStress(stressCSV, iterations=1000):
     # positionArray, minStress, stressTrace, best_iter = traceGradient(psy_array, n=iterations)
@@ -226,6 +242,8 @@ def plotStress(stressCSV, iterations=1000):
 
 # plotStress('Stress_n_1000_UPDATE_5.csv')
 
+"""END PROBLEM 6"""
+
 """Problem 7 COMPLETE, ERROR CHECK
      Run the MDS code you wrote 10 times and show small plots, starting from random initial
      positions. Are they all the same or not? Why?
@@ -237,7 +255,7 @@ def plotStress(stressCSV, iterations=1000):
      The only way to do this is to create a new random array of coordinates, move on the
      gradient until it is near 0, and record the stress. Over a sufficient number of iterations
      we should expect that the array with the lowest stress has reached the global minimum and
-     can then see the best fit."""
+     can then see the best fit. """
 
 def plotMDS(*csvFiles, names, rows=2, cols=5):
     pointNames = getNames(names, str)
@@ -272,6 +290,7 @@ def plotMDS(*csvFiles, names, rows=2, cols=5):
 
 # plotMDS('MDS_n_1000_UPDATE_1.csv', 'MDS_n_1000_UPDATE_2.csv','MDS_n_1000_UPDATE_3.csv','MDS_n_1000_UPDATE_4.csv','MDS_n_1000_UPDATE_5.csv','MDS_n_1000_UPDATE_6.csv',
 #     'MDS_n_1000_UPDATE_7.csv','MDS_n_1000_UPDATE_8.csv','MDS_n_1000_UPDATE_9.csv','MDS_n_1000_UPDATE_10.csv', names=sportData)
+"""END PROBLEM 7"""
 
 """Problem 8 INCOMPLETE
     If you wanted to find one “best” answer but had run MDS 10 times, how would you pick
