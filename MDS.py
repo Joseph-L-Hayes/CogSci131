@@ -83,28 +83,32 @@ def traceGradient(psycho_array, learn_rate=.01, gradient_threshold=0.0005, n=100
     best_positions = None
     stressList = []
     bestIter = 0
+    position_array = getRandPositions(psycho_array.shape[0], dimensions)
+    z = 0
+    x, y = 0, 1
 
-    for i in range(n):
-        x, y = 0, 1
+    while (z < n):
 
-        position_array = getRandPositions(psycho_array.shape[0], dimensions)
-        while (grad_x > gradient_threshold) and (grad_y > gradient_threshold):
-            for point in range(0, len(position_array)):
-                grad_x, grad_y = gradient(point, psycho_array, position_array, h=.001)
-                position_array[point][x] += (-grad_x * learn_rate)
-                position_array[point][y] += (-grad_y * learn_rate)
+        # position_array = getRandPositions(psycho_array.shape[0], dimensions)
+        # while (grad_x > gradient_threshold) and (grad_y > gradient_threshold):
+        for point in range(0, len(position_array)):
+            grad_x, grad_y = gradient(point, psycho_array, position_array, h=.001)
+            position_array[point][x] += (-grad_x * learn_rate)
+            position_array[point][y] += (-grad_y * learn_rate)
 
-        grad_x, grad_y = 10000, 10000
+        # grad_x, grad_y = 10000, 10000
 
         stress_value = stress(psycho_array, position_array)
         stressList += [stress_value]
 
-        if stress_value < min_stress:
-            min_stress = stress_value
-            best_positions = position_array
-            bestIter = i
+        # if stress_value < min_stress:
+        #     min_stress = stress_value
+        #     best_positions = position_array
+        z += 1
+        print(z)
+            # bestIter = i
 
-    return best_positions, min_stress, stressList, bestIter
+    return position_array, min_stress, stressList, bestIter
 
 def importCSV(csvFile, dataType, header=1):
     """Returns a numpy array without headers from a CSV file"""
@@ -155,7 +159,8 @@ importArray = importCSV(sportData, float)
 nameArray = getNames(sportData, float)
 
 psyArray = convertArray(importArray, simToDist)
-posArray_mod, stress, stressTrace, bestIter = traceGradient(psyArray, n=10)
+posArray_mod, stress, stressTrace, bestIter = traceGradient(psyArray, n=1000)
+# print(posArray_mod)
 arraySize = psyArray.shape[0]
 dim = 2
 
@@ -165,7 +170,7 @@ colors1 = np.random.RandomState(0).rand(arraySize)
 makeLabels(nameArray, posArray_mod, 5)
 plt.title("MDS For Psychological Similarity Distances of Sports, n=1000")
 plt.scatter(x2,y2, c=colors1)
-# plt.savefig('xxx.pdf') #change name of file for future saves
+plt.savefig('n1000_newMethod_1.pdf') #change name of file for future saves
 plt.show()
 plt.close()
 ############################# SAVE ABOVE CODE
@@ -310,6 +315,41 @@ def plotMDS(*csvFiles, names, rows=2, cols=5):
 #             position_array[point][y] += (-grad_y * learn_rate)
 #
 #         # grad_x, grad_y = 10000, 10000
+#
+#         stress_value = stress(psycho_array, position_array)
+#         stressList += [stress_value]
+#
+#         if stress_value < min_stress:
+#             min_stress = stress_value
+#             best_positions = position_array
+#             bestIter = i
+#
+#     return best_positions, min_stress, stressList, bestIter
+
+
+#original method: SAVE
+# def traceGradient(psycho_array, learn_rate=.01, gradient_threshold=0.0005, n=1000, dimensions=2):
+#     """Takes a psychological distance array, returns a position array with min(stress) after n iterations and it's stress value"""
+#
+#     grad_x, grad_y = 10000, 10000
+#     grad_total = 10000
+#     min_stress = float('inf')
+#     stress_value = float('inf')
+#     best_positions = None
+#     stressList = []
+#     bestIter = 0
+#
+#     for i in range(n):
+#         x, y = 0, 1
+#
+#         position_array = getRandPositions(psycho_array.shape[0], dimensions)
+#         while (grad_x > gradient_threshold) and (grad_y > gradient_threshold):
+#             for point in range(0, len(position_array)):
+#                 grad_x, grad_y = gradient(point, psycho_array, position_array, h=.001)
+#                 position_array[point][x] += (-grad_x * learn_rate)
+#                 position_array[point][y] += (-grad_y * learn_rate)
+#
+#         grad_x, grad_y = 10000, 10000
 #
 #         stress_value = stress(psycho_array, position_array)
 #         stressList += [stress_value]
