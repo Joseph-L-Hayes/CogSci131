@@ -174,9 +174,10 @@ dim = 2
      Make a scatter plot of the the pairwise distances MDS found vs. people’s reported distances.
      Briefly describe what good and bad plots would look like and whether yours is good or bad.
 
-     ANSWER: I plotted x= MDS distances, y=reported distances for each pair of sports. I would
-     expect that, for a perfect fit, all of the dots would cluster closely with the line y=x
-
+     ANSWER: I plotted x= MDS distances for each pair, y=reported distances for each pair of sports. I would
+     expect that, for a perfect fit, all of the dots would cluster closely with the blue line y=x.
+     My plot doesn't look great but then I don't know what an optimal version of this MDS algorigthm
+     with this data would look like. 
      """
 
 def distancesMDS(mdsDist, psychArray):
@@ -205,10 +206,8 @@ def distancesMDS(mdsDist, psychArray):
 
 # mdsDist1 = importCSV('MDS_n_1000_UPDATE_10.csv', float, header=0)
 # distancesMDS(mdsDist1, psyArray)
-mdsDist2 = importCSV('MDS_n_1000_1.csv', float, header=0)
-distancesMDS(mdsDist2, psyArray)
-
-
+# mdsDist2 = importCSV('MDS_n_1000_1.csv', float, header=0)
+# distancesMDS(mdsDist2, psyArray)
 
 """Problem 6 COMPLETE, ERROR CHECK
     Plot the stress over iterations of your MDS. How should you use this plot in order
