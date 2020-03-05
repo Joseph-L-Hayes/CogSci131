@@ -73,7 +73,7 @@ coordinates. Do the results agree with your intuitions about how this domain mig
     with because 'sport C' and 'sport D', which are similar to 'sport B' but very dissimilar to 'sport A', are
     blocking it. """
 
-def traceGradient(psycho_array, learn_rate=.01, gradient_threshold=0.005, n=1000, dimensions=2):
+def traceGradient(psycho_array, learn_rate=.01, gradient_threshold=0.0005, n=1000, dimensions=2):
     """Takes a psychological distance array, returns a position array with min(stress) after n iterations and it's stress value"""
 
     grad_x, grad_y = 10000, 10000
@@ -82,6 +82,7 @@ def traceGradient(psycho_array, learn_rate=.01, gradient_threshold=0.005, n=1000
     stress_value = float('inf')
     best_positions = None
     stressList = []
+    bestIter = 0
 
     for i in range(n):
         x, y = 0, 1
@@ -101,8 +102,9 @@ def traceGradient(psycho_array, learn_rate=.01, gradient_threshold=0.005, n=1000
         if stress_value < min_stress:
             min_stress = stress_value
             best_positions = position_array
+            bestIter = i
 
-    return best_positions, min_stress, stressList
+    return best_positions, min_stress, stressList, bestIter
 
 def importCSV(csvFile, dataType, header=1):
     """Returns a numpy array without headers from a CSV file"""
@@ -138,7 +140,7 @@ def saveMdsArrays(psycho_array, k=10, trials=1000, dim=2): #may change to take t
     """Saves """
     stressTrace = []
     for z in range(1, k + 1):
-        dataArray, stress, stressTrace = traceGradient(psyArray, learn_rate=.01, n=trials, dimensions=dim)
+        dataArray, stressVal, stressTrace, bestIteration = traceGradient(psyArray, learn_rate=.01, n=trials, dimensions=dim)
         name = 'MDS_n_1000_' + str(z) + '_stress_' + str(stress) + '.csv'
         np.savetxt(name, dataArray, delimiter=',')
 
@@ -153,18 +155,19 @@ importArray = importCSV(sportData, float)
 nameArray = getNames(sportData, float)
 
 psyArray = convertArray(importArray, simToDist)
+posArray_mod, stress, stressTrace, bestIter = traceGradient(psyArray, n=10)
 arraySize = psyArray.shape[0]
 dim = 2
 
 ############################# SAVE BELOW CODE
-# x2, y2 = zip(*posArray_mod)
-# colors1 = np.random.RandomState(0).rand(arraySize)
-# makeLabels(nameArray, posArray_mod, 5)
-# plt.title("MDS For Psychological Similarity Distances of Sports, n=1000")
-# plt.scatter(x2,y2, c=colors1)
+x2, y2 = zip(*posArray_mod)
+colors1 = np.random.RandomState(0).rand(arraySize)
+makeLabels(nameArray, posArray_mod, 5)
+plt.title("MDS For Psychological Similarity Distances of Sports, n=1000")
+plt.scatter(x2,y2, c=colors1)
 # plt.savefig('xxx.pdf') #change name of file for future saves
-# plt.show()
-# plt.close()
+plt.show()
+plt.close()
 ############################# SAVE ABOVE CODE
 """End Problem 4"""
 
@@ -192,29 +195,31 @@ dim = 2
 #np.linalg.norm(target - dest) as from above
 
 
-"""Problem 6 NEED TO RERUN WITH 2K TRIALS
+"""Problem 6 INCOMPLETE
     Plot the stress over iterations of your MDS. How should you use this plot in order
     to figure out how many iterations are needed?
     ANSWER: retry with 2000 iterations to compare graphs, may be issue with random starts, high stress values"""
 
 def plotStress(psy_array, iterations=1000):
-    positionArray, minStress, stressTrace = traceGradient(psy_array, n=iterations)
+    positionArray, minStress, stressTrace, best_iter = traceGradient(psy_array, n=iterations)
     stress_minima = min(stressTrace)
     pY = stressTrace
     pX = list(range(1, iterations + 1))
-    poly = np.polyfit(pX, pY, 5)
+    poly = np.polyfit(pX, pY, 4) #graph is not showing the minimum accurately, redo
     pYpoly = np.poly1d(poly)(pX)
+    print("best iteration: ", best_iter + 1)
+    print("stress value at best iter: ", stressTrace[best_iter])
 
     plt.plot(pX, pYpoly, c='red', label='stress minima = ' + str(int(minStress)))
     plt.title("Stress Over Iterations")
     plt.xlabel('Iterations')
     plt.ylabel('Stress')
     plt.legend()
-    plt.savefig('stress_over_time_n2000.pdf')
+    # plt.savefig('stress_over_time_n1000_3.pdf')
     plt.show()
     plt.close()
 
-plotStress(psyArray, iterations=2000) #saved a plot, interpret later, do this for 2000 to compare
+# plotStress(psyArray, 10)
 
 """Problem 7 EXPLAIN AND CHECK PLOT INTEGRITY
      Run the MDS code you wrote 10 times and show small plots, starting from random initial
@@ -249,7 +254,7 @@ def plotMDS(*csvFiles, names, rows=2, cols=5):
     fig.set_figwidth(15)
     fig.suptitle('MDS Plots N=1000', fontsize=16)
     plt.setp(plt.gcf().get_axes(), xticks=[], yticks=[])
-    plt.savefig('Q7_10plots.pdf')
+    # plt.savefig('Q7_10plots.pdf')
     plt.show()
 
 # plotMDS('MDS_n_1000_1.csv', 'MDS_n_1000_2.csv','MDS_n_1000_3.csv','MDS_n_1000_4.csv','MDS_n_1000_5.csv','MDS_n_1000_6.csv',
@@ -278,3 +283,40 @@ def plotMDS(*csvFiles, names, rows=2, cols=5):
 #     # print(name)
 
 # print('{date:%H:%M:%S}'.format(date=datetime.datetime.now()))
+
+
+
+#POSSIBLE OTHER SOLUTION:
+# def traceGradient(psycho_array, learn_rate=.01, gradient_threshold=0.0005, n=1000, dimensions=2):
+#     """Takes a psychological distance array, returns a position array with min(stress) after n iterations and it's stress value"""
+#
+#     grad_x, grad_y = 10000, 10000
+#     grad_total = 10000
+#     min_stress = float('inf')
+#     stress_value = float('inf')
+#     best_positions = None
+#     stressList = []
+#     bestIter = 0
+#     position_array = getRandPositions(psycho_array.shape[0], dimensions)
+#
+#     for i in range(n):
+#         x, y = 0, 1
+#
+#         # position_array = getRandPositions(psycho_array.shape[0], dimensions)
+#         # while (grad_x > gradient_threshold) and (grad_y > gradient_threshold):
+#         for point in range(0, len(position_array)):
+#             grad_x, grad_y = gradient(point, psycho_array, position_array, h=.001)
+#             position_array[point][x] += (-grad_x * learn_rate)
+#             position_array[point][y] += (-grad_y * learn_rate)
+#
+#         # grad_x, grad_y = 10000, 10000
+#
+#         stress_value = stress(psycho_array, position_array)
+#         stressList += [stress_value]
+#
+#         if stress_value < min_stress:
+#             min_stress = stress_value
+#             best_positions = position_array
+#             bestIter = i
+#
+#     return best_positions, min_stress, stressList, bestIter
