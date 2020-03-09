@@ -12,7 +12,7 @@ regionList = generateRegions(10000, -10, 10)
 
 """Problem 1"""
 def contains(region, point):
-    """Takes a region tuple and returns if point is in the region"""
+    """Takes a region as a 2 element list or tuple and returns if point is in the region"""
     return (region[0] <= point) and (region[1] >= point)
 
 def size(region):
@@ -29,12 +29,30 @@ def conditionalProb(regionList, x, y):
         if contains(r, x):
             xRegions += [r]
 
+            if contains(r, y):
+                # totalProb += (condProb * (1 / size(xR)))
+                totalProb += 1 / size(r)
+
     condProb = len(xRegions) / len(regionList)
 
-    for xR in xRegions:
+    # for xR in xRegions:
+    #
+    #     if contains(xR, y):
+    #         # totalProb += (condProb * (1 / size(xR)))
+    #         totalProb += 1 / size(xR)
 
-        if contains(xR, y):
-            totalProb += (condProb * (1 / size(xR)))
+
+    # return totalProb / len(xRegions) #need to confirm the normalization method
+    return (totalProb * condProb) / len(regionList)
 
 
-    return totalProb / len(xRegions) #need to confirm the normalization method
+
+
+
+
+
+
+
+
+
+#end
