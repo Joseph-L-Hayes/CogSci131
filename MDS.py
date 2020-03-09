@@ -213,6 +213,7 @@ mdsDist1 = importCSV('MDS_n_1000_UPDATE_10.csv', float, header=0)
 distancesMDS(mdsDist1, psyArray)
 # mdsDist2 = importCSV('MDS_n_1000_1.csv', float, header=0)
 # distancesMDS(mdsDist2, psyArray)
+"""END PROBLEM 5"""
 
 """Problem 6 COMPLETE
     Plot the stress over iterations of your MDS. How should you use this plot in order
@@ -294,7 +295,7 @@ plotMDS('MDS_n_1000_UPDATE_1.csv', 'MDS_n_1000_UPDATE_2.csv','MDS_n_1000_UPDATE_
 
 """END PROBLEM 7"""
 
-"""Problem 8 INCOMPLETE
+"""Problem 8 COMPLETE
     If you wanted to find one “best” answer but had run MDS 10 times, how would you pick
     the best? Why? Show a plot of the best and any code you used to find it.
 
