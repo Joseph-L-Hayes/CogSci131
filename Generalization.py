@@ -15,9 +15,26 @@ def contains(region, point):
     """Takes a region tuple and returns if point is in the region"""
     return (region[0] <= point) and (region[1] >= point)
 
+def size(region):
+    return region[1] - region[0]
+
 """Problem 2"""
 def conditionalProb(regionList, x, y):
     """Takes a list of regions as intervals and returns P(y | x)"""
-    # for r in regionList:
+    xRegions = [] #count of regions containing x
+    yRegions = 0
+    totalProb = 0
 
-    return None
+    for r in regionList:
+        if contains(r, x):
+            xRegions += [r]
+
+    condProb = len(xRegions) / len(regionList)
+
+    for xR in xRegions:
+
+        if contains(xR, y):
+            totalProb += (condProb * (1 / size(xR)))
+
+
+    return totalProb / len(xRegions) #need to confirm the normalization method
