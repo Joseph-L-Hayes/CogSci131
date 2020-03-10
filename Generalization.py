@@ -16,6 +16,7 @@ def contains(region, point):
     return (region[0] <= point) and (region[1] >= point)
 
 def size(region):
+    # print(region[1] - region[0])
     return region[1] - region[0]
 
 """Problem 2"""
@@ -23,7 +24,8 @@ def conditionalProb(regionList, x, y):
     """Takes a list of regions as intervals and returns P(y | x)"""
     xRegions = [] #count of regions containing x
     yRegions = 0
-    totalProb = 0
+    intervalProb = 0
+    norm = 0
 
     for r in regionList:
         if contains(r, x):
@@ -31,9 +33,16 @@ def conditionalProb(regionList, x, y):
 
             if contains(r, y):
                 # totalProb += (condProb * (1 / size(xR)))
-                totalProb += 1 / size(r)
+                intervalProb += 1 / size(r)
+                norm += size(r)
 
     condProb = len(xRegions) / len(regionList)
+    if norm:
+        intervalProb = intervalProb / norm
+    # print("normed: ", intervalProb)
+    # print("cond", condProb)
+
+    #still need to figure out the normalization issue
 
     # for xR in xRegions:
     #
@@ -43,7 +52,7 @@ def conditionalProb(regionList, x, y):
 
 
     # return totalProb / len(xRegions) #need to confirm the normalization method
-    return (totalProb * condProb) / len(regionList)
+    return (intervalProb * condProb)
 
 
 
