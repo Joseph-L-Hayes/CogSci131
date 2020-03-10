@@ -24,7 +24,8 @@ def conditionalProb(regionList, x, y):
     """Takes a list of regions as intervals and returns P(y | x)"""
     xRegions = [] #count of regions containing x
     yRegions = 0
-    intervalProb = 0
+    totalProb = 0
+    intervalProb = []
     norm = 0
 
     for r in regionList:
@@ -33,14 +34,18 @@ def conditionalProb(regionList, x, y):
 
             if contains(r, y):
                 # totalProb += (condProb * (1 / size(xR)))
-                intervalProb += 1 / size(r)
+                intervalProb += [1 / size(r)]
+                # print(intervalProb)
                 norm += size(r)
 
     condProb = len(xRegions) / len(regionList)
     if norm:
-        intervalProb = intervalProb / norm
-    # print("normed: ", intervalProb)
-    # print("cond", condProb)
+        # intervalProb = intervalProb / norm
+        intervalProb = [condProb * p for p in intervalProb]
+        totalProb = sum(intervalProb)
+        # print(intervalProb)
+        # print("normed: ", intervalProb, condProb)
+        # print("norm", norm)
 
     #still need to figure out the normalization issue
 
@@ -52,10 +57,11 @@ def conditionalProb(regionList, x, y):
 
 
     # return totalProb / len(xRegions) #need to confirm the normalization method
-    return (intervalProb * condProb)
+    # return (totalProb * condProb)
+    return totalProb / len(regionList) #seems to give a better answer; plot then worry
 
 
-
+"""Problem 3"""
 
 
 
