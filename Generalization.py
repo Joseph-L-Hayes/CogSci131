@@ -1,6 +1,6 @@
 import random
 import numpy as np
-import matplotlib as plt
+import matplotlib.pyplot as plt
 
 """Problem 0, Generate regions between [-10, 10]"""
 def generateRegions(numRegions, low, high):
@@ -19,7 +19,8 @@ def size(region):
     # print(region[1] - region[0])
     return region[1] - region[0]
 
-"""Problem 2"""
+"""Problem 2 What is the probability of getting x=1 for regions containing x=0?
+    Answer: 0.05782114104160832 CONFIRM, CHECK FOR ERRORS"""
 def conditionalProb(regionList, x, y):
     """Takes a list of regions as intervals and returns P(y | x)"""
     xRegions = [] #count of regions containing x
@@ -44,7 +45,7 @@ def conditionalProb(regionList, x, y):
         # intervalProb = intervalProb / norm
         intervalProb = [condProb * p for p in intervalProb]
         totalProb = sum(intervalProb)
-        result = totalProb / len(intervalProb)
+        result = totalProb / len(regionList)
         # print(intervalProb)
         # print("normed: ", intervalProb, condProb)
         # print("norm", norm)
@@ -65,6 +66,23 @@ def conditionalProb(regionList, x, y):
 
 
 """Problem 3"""
+def plotProb(z, interval, regions):
+    probList = []
+    xAxis = []
+
+    for i in range(interval + 1):
+        xAxis += [i]
+        probList += [conditionalProb(regions, z, i)]
+        print(conditionalProb(regions, z, i))
+
+    x, y = xAxis, probList
+
+    plt.plot(x, y)
+    # plt.yscale("log")
+    plt.show()
+
+plotProb(0, 10, regionList)
+
 
 
 
