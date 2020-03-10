@@ -25,6 +25,7 @@ def conditionalProb(regionList, x, y):
     xRegions = [] #count of regions containing x
     yRegions = 0
     totalProb = 0
+    result = 0
     intervalProb = []
     norm = 0
 
@@ -39,10 +40,11 @@ def conditionalProb(regionList, x, y):
                 norm += size(r)
 
     condProb = len(xRegions) / len(regionList)
-    if norm:
+    if norm: #change later
         # intervalProb = intervalProb / norm
         intervalProb = [condProb * p for p in intervalProb]
         totalProb = sum(intervalProb)
+        result = totalProb / len(intervalProb)
         # print(intervalProb)
         # print("normed: ", intervalProb, condProb)
         # print("norm", norm)
@@ -58,7 +60,8 @@ def conditionalProb(regionList, x, y):
 
     # return totalProb / len(xRegions) #need to confirm the normalization method
     # return (totalProb * condProb)
-    return totalProb / len(regionList) #seems to give a better answer; plot then worry
+    return result #seems to give a better answer; over all r given x
+    # return totalProb / len(regionList) #over all r
 
 
 """Problem 3"""
