@@ -52,7 +52,7 @@ def conditionalProb(regions, x, y):
 
     ANSWER: INCOMPLETE """
 
-def plotProb(z, interval, regions, saveName=None, scale='linear', color='blue'):
+def plotProb(z, interval, regions, saveName=None, scale='linear', color='blue', leg=None):
     probList = []
     xAxis = []
 
@@ -62,11 +62,14 @@ def plotProb(z, interval, regions, saveName=None, scale='linear', color='blue'):
 
     x, y = xAxis, probList
 
-    plt.plot(x, y, c=color)
+    plt.plot(x, y, c=color, label=leg)
     plt.yscale(scale)
     plt.title('P(x | x=' + str(z) + ' ∈ r)')
     plt.xlabel('X Range')
     plt.ylabel('Probability')
+
+    if leg:
+        plt.legend(loc=0)
 
     if saveName:
         plt.savefig(saveName + '.pdf')
@@ -87,9 +90,10 @@ def plotProb(z, interval, regions, saveName=None, scale='linear', color='blue'):
     Explain in a few sentences."""
 regionTen = generateRegions(10000, -10, 10)
 regionFive = generateRegions(10000, -5, 5)
-plotProb(0, 10, regionTen, scale='log', color='red')
-plotProb(0, 10, regionFive, scale='log')
+plotProb(0, 10, regionTen, scale='log', color='red', leg='[-10, 10]')
+plotProb(0, 10, regionFive, scale='log', leg='[-5, 5]')
 
+plt.savefig('a6_p4.pdf')
 plt.show()
 """Problem 6: In previous questions, we've been assuming that people implement the law
     perfectly and we have been trying to approximate their behavior using 10,000 regions.
