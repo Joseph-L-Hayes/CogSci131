@@ -36,7 +36,7 @@ def conditionalProb(regions, x, y):
 
     if intervalProb and xRegions:
         condProb = 1 / xRegions
-        intervalProb = [condProb * p for p in intervalProb]
+        intervalProb = [abs(condProb * p) for p in intervalProb]
         totalProb = sum(intervalProb)
 
         return totalProb
@@ -52,11 +52,11 @@ def conditionalProb(regions, x, y):
 
     ANSWER: INCOMPLETE """
 
-def plotProb(z, interval, regions, saveName=None, scale='linear', color='blue', leg=None):
+def plotProb(z, start, end, regions, saveName=None, scale='linear', color='blue', leg=None):
     probList = []
     xAxis = []
 
-    for i in range(interval + 1):
+    for i in range(start, end + 1):
         xAxis += [i]
         probList += [conditionalProb(regions, z, i)]
 
@@ -74,12 +74,12 @@ def plotProb(z, interval, regions, saveName=None, scale='linear', color='blue', 
     if saveName:
         plt.savefig(saveName + '.pdf')
 
-    # plt.show()
+    plt.show()
 
 # regionList = generateRegions(10000, -10, 10)
 # plotProb(0, 10, regionList, 'a6_p3')
-plotProb(0, 10, regionList, scale='log')
-plt.show()
+# plotProb(0, 0, 10, regionList, scale='log')
+# plt.show()
 
 """Problem 4: One way to check if the curve has an exponential decrease is to plot a
     logarithmic y axis and look for a straight line. Why does this check if the curve
@@ -95,12 +95,12 @@ regionList = generateRegions(10000, -10, 10)
 # regionFive = generateRegions(10000, -5, 5)
 # plotProb(0, 10, regionTen, scale='log', color='red', leg='[-10, 10]')
 # plotProb(0, 10, regionFive, scale='log', leg='[-5, 5]')
-plotProb(-10, 10, regionList, scale='log', color='red', leg='[-10, 10]')
-plotProb(-5, 5, regionList, scale='log', leg='[-5, 5]')
+plotProb(0, -10, 10, regionList, saveName='a6p5_-10to10', scale='log', color='red', leg='[-10, 10]')
+plotProb(0, -5, 5, regionList, saveName='a6p5_-5to5', scale='log', leg='[-5, 5]')
 
 # plt.savefig('a6_p4.pdf')
-plt.savefig('test.pdf')
-plt.show()
+# plt.savefig('test.pdf')
+# plt.show()
 """Problem 6: In previous questions, we've been assuming that people implement the law
     perfectly and we have been trying to approximate their behavior using 10,000 regions.
     However, people themselves have limited resources. What if people themselves only used
