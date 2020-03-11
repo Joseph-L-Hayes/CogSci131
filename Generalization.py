@@ -76,23 +76,25 @@ def plotProb(z, start, end, regions, saveName=None, scale='linear', color='blue'
 
     plt.show()
 
-# regionList = generateRegions(10000, -10, 10)
-# plotProb(0, 10, regionList, 'a6_p3')
-# plotProb(0, 0, 10, regionList, scale='log')
-# plt.show()
+# plotProb(0, 0, 10, regionList, saveName='a6_p3')
 
 """Problem 4: One way to check if the curve has an exponential decrease is to plot a
     logarithmic y axis and look for a straight line. Why does this check if the curve
     is exponential?
-    ANSWER: ???"""
+    
+    ANSWER: Plotting y values on a log scale gives all intervals of y the same 'tick'
+    distance. So an interval of 1 to 10 has the same y distance as 10 to 100; log scale
+    gives all y values a constant ratio between ticks. """
+
+# plotProb(0, 0, 10, regionList, saveName='a6_p4', scale='log')
 
 """Problem 5: Plot Q3 with a logarithmic y axis for x ranging from -5 to 5, and x
     ranging from -10 to 10. What do these two plots show? How do you interpret them?
     Explain in a few sentences.
     With this plot we can see that...??? """
 regionList = generateRegions(10000, -10, 10)
-plotProb(0, -10, 10, regionList, saveName='a6p5_-10to10', scale='log', color='red', leg='[-10, 10]')
-plotProb(0, -5, 5, regionList, saveName='a6p5_-5to5', scale='log', leg='[-5, 5]')
+# plotProb(0, -10, 10, regionList, saveName='a6p5_-10to10', scale='log', color='red', leg='[-10, 10]')
+# plotProb(0, -5, 5, regionList, saveName='a6p5_-5to5', scale='log', leg='[-5, 5]')
 
 
 """Problem 6: In previous questions, we've been assuming that people implement the law
