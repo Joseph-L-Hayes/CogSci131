@@ -19,70 +19,66 @@ def size(region):
     # print(region[1] - region[0])
     return region[1] - region[0]
 
-"""Problem 2 What is the probability of getting x=1 for regions containing x=0?
-    Answer: 0.05782114104160832 CONFIRM, CHECK FOR ERRORS"""
-def conditionalProb(regionList, x, y):
-    """Takes a list of regions as intervals and returns P(y | x)"""
-    xRegions = [] #count of regions containing x
-    yRegions = 0
-    totalProb = 0
-    result = 0
-    intervalProb = []
-    norm = 0
+"""Problem 2:  What is the probability of getting x=1 for regions containing x=0?
+    ANSWER: ~0.10613579023117636 """
 
-    for r in regionList:
+def conditionalProb(regions, x, y):
+    """Takes a list of regions as intervals and returns P(y | x ∈ r)"""
+
+    xRegions = 0
+    totalProb = 0
+    intervalProb = []
+
+    for r in regions:
         if contains(r, x):
-            xRegions += [r]
+            xRegions += 1
 
             if contains(r, y):
-                # totalProb += (condProb * (1 / size(xR)))
                 intervalProb += [1 / size(r)]
-                # print(intervalProb)
-                norm += size(r)
 
-    condProb = len(xRegions) / len(regionList)
-    if norm: #change later
-        # intervalProb = intervalProb / norm
+    if intervalProb and xRegions:
+        condProb = 1 / xRegions
         intervalProb = [condProb * p for p in intervalProb]
         totalProb = sum(intervalProb)
-        result = totalProb / len(regionList)
-        # print(intervalProb)
-        # print("normed: ", intervalProb, condProb)
-        # print("norm", norm)
 
-    #still need to figure out the normalization issue
+        return totalProb
+    else:
+        return 0
 
-    # for xR in xRegions:
-    #
-    #     if contains(xR, y):
-    #         # totalProb += (condProb * (1 / size(xR)))
-    #         totalProb += 1 / size(xR)
+# regionList = generateRegions(10000, -10, 10)
+# print(conditionalProb(regionList, 0, 1))
 
+"""Problem 3: Plot the probability of getting x for x ranging from 0 to 10, for regions
+    containing x=0. What does this function look like? Write a sentence explaining why
+    intuitively.
 
-    # return totalProb / len(xRegions) #need to confirm the normalization method
-    # return (totalProb * condProb)
-    return result #seems to give a better answer; over all r given x
-    # return totalProb / len(regionList) #over all r
+    ANSWER: INCOMPLETE """
 
-
-"""Problem 3"""
-def plotProb(z, interval, regions):
+def plotProb(z, interval, regions, saveName=None, scale='linear'):
     probList = []
     xAxis = []
 
     for i in range(interval + 1):
         xAxis += [i]
         probList += [conditionalProb(regions, z, i)]
-        print(conditionalProb(regions, z, i))
 
     x, y = xAxis, probList
 
     plt.plot(x, y)
-    # plt.yscale("log")
+    plt.yscale(scale)
+    plt.title('P(x | x=' + str(z) + ' ∈ r)')
+    plt.xlabel('X Range')
+    plt.ylabel('Probability')
+
+    if saveName:
+        plt.savefig(saveName + '.pdf')
+
     plt.show()
 
-plotProb(0, 10, regionList)
+# regionList = generateRegions(10000, -10, 10)
+# plotProb(0, 10, regionList, 'a6_p3')
 
+"""Problem 4: """
 
 
 
