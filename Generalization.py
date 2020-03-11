@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 
 """Problem 0, Generate regions between [-10, 10]"""
 def generateRegions(numRegions, low, high):
-    #numpy.random.uniform(low=0.0, high=1.0, size=None)
     regions = [sorted((np.random.uniform(low, high), np.random.uniform(low, high))) for n in range(numRegions)]
     return regions
 
@@ -16,7 +15,6 @@ def contains(region, point):
     return (region[0] <= point) and (region[1] >= point)
 
 def size(region):
-    # print(region[1] - region[0])
     return region[1] - region[0]
 
 """Problem 2:  What is the probability of getting x=1 for regions containing x=0?
