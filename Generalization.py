@@ -52,7 +52,7 @@ def conditionalProb(regions, x, y):
 
     ANSWER: INCOMPLETE """
 
-def plotProb(z, interval, regions, saveName=None, scale='linear'):
+def plotProb(z, interval, regions, saveName=None, scale='linear', color='blue'):
     probList = []
     xAxis = []
 
@@ -62,7 +62,7 @@ def plotProb(z, interval, regions, saveName=None, scale='linear'):
 
     x, y = xAxis, probList
 
-    plt.plot(x, y)
+    plt.plot(x, y, c=color)
     plt.yscale(scale)
     plt.title('P(x | x=' + str(z) + ' ∈ r)')
     plt.xlabel('X Range')
@@ -71,7 +71,7 @@ def plotProb(z, interval, regions, saveName=None, scale='linear'):
     if saveName:
         plt.savefig(saveName + '.pdf')
 
-    plt.show()
+    # plt.show()
 
 # regionList = generateRegions(10000, -10, 10)
 # plotProb(0, 10, regionList, 'a6_p3')
@@ -80,12 +80,17 @@ def plotProb(z, interval, regions, saveName=None, scale='linear'):
 """Problem 4: One way to check if the curve has an exponential decrease is to plot a
     logarithmic y axis and look for a straight line. Why does this check if the curve
     is exponential?
-    ANSWER: """
+    ANSWER: ???"""
 
 """Problem 5: Plot Q3 with a logarithmic y axis for x ranging from -5 to 5, and x
     ranging from -10 to 10. What do these two plots show? How do you interpret them?
     Explain in a few sentences."""
+regionTen = generateRegions(10000, -10, 10)
+regionFive = generateRegions(10000, -5, 5)
+plotProb(0, 10, regionTen, scale='log', color='red')
+plotProb(0, 10, regionFive, scale='log')
 
+plt.show()
 """Problem 6: In previous questions, we've been assuming that people implement the law
     perfectly and we have been trying to approximate their behavior using 10,000 regions.
     However, people themselves have limited resources. What if people themselves only used
