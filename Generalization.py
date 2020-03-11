@@ -69,7 +69,7 @@ def plotProb(z, start, end, regions, saveName=None, scale='linear', color='blue'
     plt.ylabel('Probability')
 
     if leg:
-        plt.legend(loc=0, title='Regions Intervals')
+        plt.legend(loc=0, title='R Intervals')
 
     if saveName:
         plt.savefig(saveName + '.pdf')
@@ -81,7 +81,7 @@ def plotProb(z, start, end, regions, saveName=None, scale='linear', color='blue'
 """Problem 4: One way to check if the curve has an exponential decrease is to plot a
     logarithmic y axis and look for a straight line. Why does this check if the curve
     is exponential?
-    
+
     ANSWER: Plotting y values on a log scale gives all intervals of y the same 'tick'
     distance. So an interval of 1 to 10 has the same y distance as 10 to 100; log scale
     gives all y values a constant ratio between ticks. """
