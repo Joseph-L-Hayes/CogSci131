@@ -78,7 +78,8 @@ def plotProb(z, interval, regions, saveName=None, scale='linear', color='blue', 
 
 # regionList = generateRegions(10000, -10, 10)
 # plotProb(0, 10, regionList, 'a6_p3')
-# plotProb(0, 10, regionList, scale='log')
+plotProb(0, 10, regionList, scale='log')
+plt.show()
 
 """Problem 4: One way to check if the curve has an exponential decrease is to plot a
     logarithmic y axis and look for a straight line. Why does this check if the curve
@@ -87,13 +88,18 @@ def plotProb(z, interval, regions, saveName=None, scale='linear', color='blue', 
 
 """Problem 5: Plot Q3 with a logarithmic y axis for x ranging from -5 to 5, and x
     ranging from -10 to 10. What do these two plots show? How do you interpret them?
-    Explain in a few sentences."""
-regionTen = generateRegions(10000, -10, 10)
-regionFive = generateRegions(10000, -5, 5)
-plotProb(0, 10, regionTen, scale='log', color='red', leg='[-10, 10]')
-plotProb(0, 10, regionFive, scale='log', leg='[-5, 5]')
+    Explain in a few sentences.
+    With this plot we can see that...??? """
+regionList = generateRegions(10000, -10, 10)
+# regionTen = generateRegions(10000, -10, 10)
+# regionFive = generateRegions(10000, -5, 5)
+# plotProb(0, 10, regionTen, scale='log', color='red', leg='[-10, 10]')
+# plotProb(0, 10, regionFive, scale='log', leg='[-5, 5]')
+plotProb(-10, 10, regionList, scale='log', color='red', leg='[-10, 10]')
+plotProb(-5, 5, regionList, scale='log', leg='[-5, 5]')
 
-plt.savefig('a6_p4.pdf')
+# plt.savefig('a6_p4.pdf')
+plt.savefig('test.pdf')
 plt.show()
 """Problem 6: In previous questions, we've been assuming that people implement the law
     perfectly and we have been trying to approximate their behavior using 10,000 regions.
@@ -104,8 +110,6 @@ plt.show()
 """Problem 7: Describe a way you could test how many consequential regions people actually
     made use of in this kind of generalization. Could you tell the difference between 10 and
     10,000? Could you tell the difference between 10,000 and 20,000, why or why not?"""
-
-
 
 
 
