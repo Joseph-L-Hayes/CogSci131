@@ -69,7 +69,7 @@ def plotProb(z, interval, regions, saveName=None, scale='linear', color='blue', 
     plt.ylabel('Probability')
 
     if leg:
-        plt.legend(loc=0)
+        plt.legend(loc=0, title='Regions Intervals')
 
     if saveName:
         plt.savefig(saveName + '.pdf')
