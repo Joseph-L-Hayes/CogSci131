@@ -110,11 +110,11 @@ def plotProb(z, start, end, regions, saveName=None, scale='linear', color='blue'
     if saveName:
         plt.savefig(saveName + '.pdf')
 
-    # plt.show()
+    plt.show()
 
 # region10k = generateRegions(10000, -10, 10)
 # # plotProb(0, 0, 10, region20k, saveName='a6_p3_20k', legTitle='10000 Regions')
-# plotProb(0, 0, 10, region10k, saveName='a6_p3_ans2', leg='Answer 2', color='red', legTitle='10000 Regions', func=conditionalProbTwo)
+# plotProb(0, 0, 10, region10k,  leg='Answer 2', color='red', legTitle='10000 Regions', func=conditionalProbTwo)
 
 """Problem 4: One way to check if the curve has an exponential decrease is to plot a
     logarithmic y axis and look for a straight line. Why does this check if the curve
@@ -171,7 +171,19 @@ def plotProb(z, start, end, regions, saveName=None, scale='linear', color='blue'
     made use of in this kind of generalization. Could you tell the difference between 10 and
     10,000? Could you tell the difference between 10,000 and 20,000, why or why not?
 
-    ANSWER: backtrack the math to pull out the 1/regionsWithX=0 probs"""
+    ANSWER: You could make a standard plot of regions ranging from 1 to 20000 or more
+    and then plot the data from people doing generalization. The plot of people data
+    could then be compared to other known plots to see how close they were. Telling the
+    difference between 10,000 and 20,000 would be difficult visually. I actually plotted
+    20,000 and compared it to my 10,000 plot from problem 3 and I could not tell a difference
+    just by looking. I imagine that there is a fancier way to do the comparison on a data
+    level that could check from signs of exponential decay at many points on the 10,000 curve
+    and compare it to the points on the 20,000 curve. For exponential decaying graphs/data,
+    there should be a fraction that, when multiplied by the y value at some x value,
+    equals the y value at x + 1. The closer the y is to the next y using this method,
+    the closer to having exponential decay a curve is. This could be used to compare graph
+    data with different numbers of regions to people data to see which known data the people
+    data is closest to. """
 
 
 
