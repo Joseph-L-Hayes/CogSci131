@@ -110,7 +110,7 @@ def plotProb(z, start, end, regions, saveName=None, scale='linear', color='blue'
     if saveName:
         plt.savefig(saveName + '.pdf')
 
-    plt.show()
+    # plt.show()
 
 # region10k = generateRegions(10000, -10, 10)
 # # plotProb(0, 0, 10, region20k, saveName='a6_p3_20k', legTitle='10000 Regions')
@@ -136,11 +136,11 @@ def plotProb(z, start, end, regions, saveName=None, scale='linear', color='blue'
     probability. This means that the probabilities exhibit (approximately) exponential decay.
     The y-axis scale is shorter for the -5 to 5 plot as you are more likely to get each number than you
     are for the -10 to 10 plot. The plots overlap each other when plotted together showing that the probabilities
-    for -5 to 5 are the same even if the range we check is -10 to 10. """
+    for -5 to 5 are the same even if the range we check is -10 to 10."""
 
-regionList = generateRegions(10000, -10, 10)
-plotProb(0, -10, 10, regionList, saveName='a6p5_-10to10_ans2', scale='log', color='red', leg='[-10, 10]', func=conditionalProbTwo, legTitle='X Range')
-plotProb(0, -5, 5, regionList, saveName='a6p5_-5to5_ans2', scale='log', leg='[-5, 5]', func=conditionalProbTwo, legTitle='X Range')
+# regionList = generateRegions(10000, -10, 10)
+# plotProb(0, -10, 10, regionList, saveName='a6p5_-10to10_ans2', scale='log', color='red', leg='[-10, 10]', func=conditionalProbTwo, legTitle='X Range')
+# plotProb(0, -5, 5, regionList, saveName='a6p5_-5to5_ans2', scale='log', leg='[-5, 5]', func=conditionalProbTwo, legTitle='X Range')
 
 """Problem 6: In previous questions, we've been assuming that people implement the law
     perfectly and we have been trying to approximate their behavior using 10,000 regions.
@@ -162,9 +162,9 @@ plotProb(0, -5, 5, regionList, saveName='a6p5_-5to5_ans2', scale='log', leg='[-5
 # region10 = generateRegions(10, -10, 10)
 # region100 = generateRegions(100, -10, 10)
 # region1000 = generateRegions(1000, -10, 10)
-# plotProb(0, 0, 10, region10, color='red', leg='10 Regions', legTitle='Number of Regions')
-# plotProb(0, 0, 10, region100, color='green', leg='100 Regions', legTitle='Number of Regions')
-# plotProb(0, 0, 10, region1000, saveName='a6p6',color='blue',leg='1000 Regions', legTitle='Number of Regions')
+# plotProb(0, 0, 10, region10, color='red', leg='10 Regions', legTitle='Number of Regions', func=conditionalProbTwo)
+# plotProb(0, 0, 10, region100, color='green', leg='100 Regions', legTitle='Number of Regions', func=conditionalProbTwo)
+# plotProb(0, 0, 10, region1000, saveName='a6p6_ans2',color='blue',leg='1000 Regions', legTitle='Number of Regions', func=conditionalProbTwo)
 # plt.show()
 
 """Problem 7: Describe a way you could test how many consequential regions people actually
