@@ -52,7 +52,7 @@ def conditionalProb(regions, x, y):
 
     ANSWER: INCOMPLETE """
 
-def plotProb(z, start, end, regions, saveName=None, scale='linear', color='blue', leg=None, title='Enter Title'):
+def plotProb(z, start, end, regions, saveName=None, scale='linear', color='blue', leg=None, legTitle='Enter Title'):
     probList = []
     xAxis = []
 
@@ -64,19 +64,19 @@ def plotProb(z, start, end, regions, saveName=None, scale='linear', color='blue'
 
     plt.plot(x, y, c=color, label=leg)
     plt.yscale(scale)
-    plt.title('P(x | x=' + str(z) + ' ∈ r)')
+    plt.title('P(x ∈ r | x=' + str(z) + ' ∈ r)')
     plt.xlabel('X Range')
     plt.ylabel('Probability')
 
     if leg:
-        plt.legend(loc=0, title=title)
+        plt.legend(loc=0, title=legTitle)
 
     if saveName:
         plt.savefig(saveName + '.pdf')
 
     # plt.show()
 
-# plotProb(0, 0, 10, regionList, saveName='a6_p3')
+# plotProb(0, 0, 10, regionList, saveName='a6_p3', title='')
 
 """Problem 4: One way to check if the curve has an exponential decrease is to plot a
     logarithmic y axis and look for a straight line. Why does this check if the curve
@@ -102,14 +102,15 @@ def plotProb(z, start, end, regions, saveName=None, scale='linear', color='blue'
     a few consequential regions in order to compute generalizations? Re-plot Question 3
     using only 10, 100, and 1000 consequential regions. What patterns do you see?
 
-    ANSWER: The curves are not as smooth going from 10 to 1000 """
+    ANSWER: The curves are not as smooth going from 10 to 1000 as when there were 10000
+    regions. With fewer regions to choose from """
 
 region10 = generateRegions(10, -10, 10)
 region100 = generateRegions(100, -10, 10)
 region1000 = generateRegions(1000, -10, 10)
-plotProb(0, 0, 10, region10, color='red', leg='10 Regions', title='Number of Regions')
-plotProb(0, 0, 10, region100, color='green', leg='100 Regions', title='Number of Regions')
-plotProb(0, 0, 10, region1000, saveName='a6p6',color='blue',leg='1000 Regions', title='Number of Regions')
+plotProb(0, 0, 10, region10, color='red', leg='10 Regions', legTitle='Number of Regions')
+plotProb(0, 0, 10, region100, color='green', leg='100 Regions', legTitle='Number of Regions')
+plotProb(0, 0, 10, region1000, saveName='a6p6',color='blue',leg='1000 Regions', legTitle='Number of Regions')
 plt.show()
 """Problem 7: Describe a way you could test how many consequential regions people actually
     made use of in this kind of generalization. Could you tell the difference between 10 and
