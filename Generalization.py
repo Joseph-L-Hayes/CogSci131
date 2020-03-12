@@ -52,7 +52,7 @@ def conditionalProb(regions, x, y):
 
     ANSWER: INCOMPLETE """
 
-def plotProb(z, start, end, regions, saveName=None, scale='linear', color='blue', leg=None):
+def plotProb(z, start, end, regions, saveName=None, scale='linear', color='blue', leg=None, title='Enter Title'):
     probList = []
     xAxis = []
 
@@ -69,12 +69,12 @@ def plotProb(z, start, end, regions, saveName=None, scale='linear', color='blue'
     plt.ylabel('Probability')
 
     if leg:
-        plt.legend(loc=0, title='R Intervals')
+        plt.legend(loc=0, title=title)
 
     if saveName:
         plt.savefig(saveName + '.pdf')
 
-    plt.show()
+    # plt.show()
 
 # plotProb(0, 0, 10, regionList, saveName='a6_p3')
 
@@ -91,18 +91,26 @@ def plotProb(z, start, end, regions, saveName=None, scale='linear', color='blue'
 """Problem 5: Plot Q3 with a logarithmic y axis for x ranging from -5 to 5, and x
     ranging from -10 to 10. What do these two plots show? How do you interpret them?
     Explain in a few sentences.
-    With this plot we can see that...??? """
-regionList = generateRegions(10000, -10, 10)
+    ANSWER...??? """
+# regionList = generateRegions(10000, -10, 10)
 # plotProb(0, -10, 10, regionList, saveName='a6p5_-10to10', scale='log', color='red', leg='[-10, 10]')
 # plotProb(0, -5, 5, regionList, saveName='a6p5_-5to5', scale='log', leg='[-5, 5]')
-
 
 """Problem 6: In previous questions, we've been assuming that people implement the law
     perfectly and we have been trying to approximate their behavior using 10,000 regions.
     However, people themselves have limited resources. What if people themselves only used
-    a few consequential regions in order to compute generalizations? Re-plot Question 2
-    using only 10, 100, and 1000 consequential regions. What patterns do you see?"""
+    a few consequential regions in order to compute generalizations? Re-plot Question 3
+    using only 10, 100, and 1000 consequential regions. What patterns do you see?
 
+    ANSWER: The curves are not as smooth going from 10 to 1000 """
+
+region10 = generateRegions(10, -10, 10)
+region100 = generateRegions(100, -10, 10)
+region1000 = generateRegions(1000, -10, 10)
+plotProb(0, 0, 10, region10, color='red', leg='10 Regions', title='Number of Regions')
+plotProb(0, 0, 10, region100, color='green', leg='100 Regions', title='Number of Regions')
+plotProb(0, 0, 10, region1000, saveName='a6p6',color='blue',leg='1000 Regions', title='Number of Regions')
+plt.show()
 """Problem 7: Describe a way you could test how many consequential regions people actually
     made use of in this kind of generalization. Could you tell the difference between 10 and
     10,000? Could you tell the difference between 10,000 and 20,000, why or why not?"""
