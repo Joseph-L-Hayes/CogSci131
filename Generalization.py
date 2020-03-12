@@ -50,7 +50,8 @@ def conditionalProb(regions, x, y):
     containing x=0. What does this function look like? Write a sentence explaining why
     intuitively.
 
-    ANSWER: INCOMPLETE """
+    ANSWER: The maximum probability is the chance of choosing x=0 given x=0 ∈ r at about
+    0.14 and then the graph decays  """
 
 def plotProb(z, start, end, regions, saveName=None, scale='linear', color='blue', leg=None, legTitle='Enter Title'):
     probList = []
