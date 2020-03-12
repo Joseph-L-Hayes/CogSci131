@@ -21,7 +21,7 @@ def size(region):
     ANSWER: ~0.10613579023117636 """
 
 def conditionalProb(regions, x, y):
-    """Takes a list of regions as intervals and returns P(y | x ∈ r)"""
+    """Takes a list of regions as intervals and returns P(y ∈ r | x ∈ r)"""
 
     xRegions = 0
     totalProb = 0
@@ -74,9 +74,10 @@ def plotProb(z, start, end, regions, saveName=None, scale='linear', color='blue'
     if saveName:
         plt.savefig(saveName + '.pdf')
 
-    # plt.show()
+    plt.show()
 
-# plotProb(0, 0, 10, regionList, saveName='a6_p3', title='')
+# region20k = generateRegions(20000, -10, 10)
+# plotProb(0, 0, 10, region20k, saveName='a6_p3_20k', legTitle='20000 Regions')
 
 """Problem 4: One way to check if the curve has an exponential decrease is to plot a
     logarithmic y axis and look for a straight line. Why does this check if the curve
@@ -84,8 +85,9 @@ def plotProb(z, start, end, regions, saveName=None, scale='linear', color='blue'
 
     ANSWER: Plotting y values on a log scale gives all intervals of y the same 'tick'
     distance. So an interval of 1 to 10 has the same y distance as 10 to 100; log scale
-    gives all y values a constant ratio between ticks. """
-
+    gives all y values a constant ratio between ticks. Assuming the x and y axis have
+    the same tick distances and number of intervals, an exponential decrease should
+    appear as a straight line. """
 # plotProb(0, 0, 10, regionList, saveName='a6_p4', scale='log')
 
 """Problem 5: Plot Q3 with a logarithmic y axis for x ranging from -5 to 5, and x
@@ -105,7 +107,7 @@ def plotProb(z, start, end, regions, saveName=None, scale='linear', color='blue'
     ANSWER: The curves are not as smooth going from 10 to 1000 as when there were 10000
     regions and the probabilities from 0 to 10 should all be the same but they aren't; some
     x higher/lower for a given distance from 0.
-    
+
     With fewer regions to choose from, people are more likely to generalize to a region
     that doesn't fit the subject; they will have less accuracy. We are using a uniform
     distribution meaning that all numbers should be equally as likely in the random sample.
@@ -123,7 +125,11 @@ def plotProb(z, start, end, regions, saveName=None, scale='linear', color='blue'
 
 """Problem 7: Describe a way you could test how many consequential regions people actually
     made use of in this kind of generalization. Could you tell the difference between 10 and
-    10,000? Could you tell the difference between 10,000 and 20,000, why or why not?"""
+    10,000? Could you tell the difference between 10,000 and 20,000, why or why not?
+
+    ANSWER: backtrack the math to pull out the 1/regionsWithX=0 probs"""
+
+
 
 
 
