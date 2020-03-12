@@ -103,9 +103,15 @@ def plotProb(z, start, end, regions, saveName=None, scale='linear', color='blue'
     using only 10, 100, and 1000 consequential regions. What patterns do you see?
 
     ANSWER: The curves are not as smooth going from 10 to 1000 as when there were 10000
-    regions. With fewer regions to choose from, people are more likely to generalize to
-    a region that doesn't fit the situation. More regions means the probability
-    distributions will be more accurate. """
+    regions and the probabilities from 0 to 10 should all be the same but they aren't; some
+    x higher/lower for a given distance from 0.
+    
+    With fewer regions to choose from, people are more likely to generalize to a region
+    that doesn't fit the subject; they will have less accuracy. We are using a uniform
+    distribution meaning that all numbers should be equally as likely in the random sample.
+    Generating more regions increases the likelihood that we will see the true probability
+    distribution; ie generalize to the correct category.
+    """
 
 # region10 = generateRegions(10, -10, 10)
 # region100 = generateRegions(100, -10, 10)
