@@ -103,15 +103,18 @@ def plotProb(z, start, end, regions, saveName=None, scale='linear', color='blue'
     using only 10, 100, and 1000 consequential regions. What patterns do you see?
 
     ANSWER: The curves are not as smooth going from 10 to 1000 as when there were 10000
-    regions. With fewer regions to choose from """
+    regions. With fewer regions to choose from, people are more likely to generalize to
+    a region that doesn't fit the situation. More regions means the probability
+    distributions will be more accurate. """
 
-region10 = generateRegions(10, -10, 10)
-region100 = generateRegions(100, -10, 10)
-region1000 = generateRegions(1000, -10, 10)
-plotProb(0, 0, 10, region10, color='red', leg='10 Regions', legTitle='Number of Regions')
-plotProb(0, 0, 10, region100, color='green', leg='100 Regions', legTitle='Number of Regions')
-plotProb(0, 0, 10, region1000, saveName='a6p6',color='blue',leg='1000 Regions', legTitle='Number of Regions')
-plt.show()
+# region10 = generateRegions(10, -10, 10)
+# region100 = generateRegions(100, -10, 10)
+# region1000 = generateRegions(1000, -10, 10)
+# plotProb(0, 0, 10, region10, color='red', leg='10 Regions', legTitle='Number of Regions')
+# plotProb(0, 0, 10, region100, color='green', leg='100 Regions', legTitle='Number of Regions')
+# plotProb(0, 0, 10, region1000, saveName='a6p6',color='blue',leg='1000 Regions', legTitle='Number of Regions')
+# plt.show()
+
 """Problem 7: Describe a way you could test how many consequential regions people actually
     made use of in this kind of generalization. Could you tell the difference between 10 and
     10,000? Could you tell the difference between 10,000 and 20,000, why or why not?"""
