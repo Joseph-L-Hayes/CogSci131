@@ -84,9 +84,13 @@ def conditionalProbTwo(regions, x, y):
 
     ANSWER 2: The maximum probability is the chance of choosing x=0 given x=0 ∈ r is 1.0
     and then the graph decays somewhat exponentially though it doesn't look perfect.
-    All regions with x=0 are guaranteed to have x=0 but the other are less likely to
-    contain x=1-10. The farther out from x=0 you go, the less likely it is that the region
-    will contain that number."""
+    All regions with x=0 are guaranteed to have x=0 (probability of 1) and less likely to
+    contain x=1-10 and x=0. The farther out from x=0 you go, the less likely it is that the region
+    will contain that number. There is likely some average width for a region given a
+    uniform distribution, numbers in that average width are more likely with diminishing
+    probability as you go towards the bounds of the average width and beyond. For example,
+    if it is given x=0 is in the region and the average width is 2, -1 to 1 is more likely
+    than -2 and 2 even though there will be some wider regions that include -2 to 2. """
 
 def plotProb(z, start, end, regions, saveName=None, scale='linear', color='blue', leg=None, legTitle='Enter Title', func=conditionalProb):
     probList = []
@@ -132,7 +136,7 @@ def plotProb(z, start, end, regions, saveName=None, scale='linear', color='blue'
     Explain in a few sentences.
 
     ANSWER: For both versions of generating the probability, the plots are both approximately straight lines
-    (matplotlib doesn't like to give eqaul scale to linear and log axis) on both sides of 0 which has the maximum
+    (matplotlib doesn't like to give equal scale to linear and log axis) on both sides of 0 which has the maximum
     probability. This means that the probabilities exhibit (approximately) exponential decay.
     The y-axis scale is shorter for the -5 to 5 plot as you are more likely to get each number than you
     are for the -10 to 10 plot. The plots overlap each other when plotted together showing that the probabilities
@@ -150,13 +154,19 @@ def plotProb(z, start, end, regions, saveName=None, scale='linear', color='blue'
 
     ANSWER: The curves are not as smooth going from 10 to 1000 as when there were 10000
     regions and the probabilities from 0 to 10 should all be the same but they aren't; some
-    x higher/lower for a given distance from 0.
+    x higher/lower for a given distance from 0. As the number of regions approaches +inf, the
+    law of large numbers takes effect and the curve begins to reflect the true probability of
+    the dataset. For a small number of regions, the probabilities are very inaccurate.
 
     With fewer regions to choose from, people are more likely to generalize to a region
     that doesn't fit the subject; they will have less accuracy. We are using a uniform
     distribution meaning that all numbers should be equally as likely in the random sample.
     Generating more regions increases the likelihood that we will see the true probability
     distribution; ie generalize to the correct category.
+
+    An extreme example would be if people only had one consequential region for animals.
+    Every animal would fit into that one category. Cats and people would be the same as would
+    cows, dogs, birds, etc.
     """
 
 # region10 = generateRegions(10, -10, 10)
@@ -171,19 +181,19 @@ def plotProb(z, start, end, regions, saveName=None, scale='linear', color='blue'
     made use of in this kind of generalization. Could you tell the difference between 10 and
     10,000? Could you tell the difference between 10,000 and 20,000, why or why not?
 
-    ANSWER: You could make a standard plot of regions ranging from 1 to 20000 or more
+    ANSWER: You could make a standard plot of regions ranging from 10 to 20000 or more
     and then plot the data from people doing generalization. The plot of people data
     could then be compared to other known plots to see how close they were. Telling the
     difference between 10,000 and 20,000 would be difficult visually. I actually plotted
     20,000 and compared it to my 10,000 plot from problem 3 and I could not tell a difference
     just by looking. I imagine that there is a fancier way to do the comparison on a data
-    level that could check from signs of exponential decay at many points on the 10,000 curve
+    level that could check exponential decay at many points on the 10,000 curve
     and compare it to the points on the 20,000 curve. For exponential decaying graphs/data,
     there should be a fraction that, when multiplied by the y value at some x value,
     equals the y value at x + 1. The closer the y is to the next y using this method,
-    the closer to having exponential decay a curve is. This could be used to compare graph
-    data with different numbers of regions to people data to see which known data the people
-    data is closest to. """
+    the closer to having exponential decay a curve is. This could be used to compare known
+    data with different numbers of regions to people data to approximate the number of
+    regions people are using. """
 
 
 
