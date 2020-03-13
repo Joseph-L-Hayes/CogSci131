@@ -25,8 +25,14 @@ def load_image_files(n, path="images/"):
 
 # Load up these image files
 #a list of numpy vectors
-A = load_image_files(0) #each element in the list is a flattened array with shape (784,), is it all the text for number 0?
-B = load_image_files(1) #also (784,)
+# A = load_image_files(0)
+# B = load_image_files(1)
+
+A = np.load('Zero.npy') #each element in the list is a flattened array with shape (784,), is it all the text for number 0?
+B = np.load('One.npy') #also (784,)
+
+# print(B1 == B) so far so good!
+
 
 N = len(A[0]) # the total size
 assert N == DIM[0]*DIM[1] # just check our sizes to be sure
@@ -93,7 +99,7 @@ def update_weights(x, weights, prediction):
 # totals, weights = perceptron(A, weights, numTrials)
 
 
-class Perceptron(Object):
+class Perceptron(object):
 
     def __init__(self, dimensions):
         self.weights = np.random.normal(0,1,size=dimensions)
