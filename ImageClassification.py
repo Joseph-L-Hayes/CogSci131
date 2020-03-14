@@ -116,12 +116,12 @@ class Perceptron(object):
     def get_weights(self): #may not be necessary
         return self.weights
 
-    def dotProd(self, x):
+    def dotProd(self, w, x):
 
-        return np.dot(self.weights, x) #changed to indexed weights w[i]
+        return np.dot(w, x) #changed to indexed weights w[i]
 
-    def predict(self, x):
-        dot = self.dotProd(x) #change to w[i]
+    def predict(self, w, x):
+        dot = self.dotProd(w, x) #change to w[i]
 
         if dot >= 0:
             return 1
@@ -139,34 +139,48 @@ class Perceptron(object):
         """Returns a random dataset label"""
         labels = list(self.data_set.keys())
         #seems to be working, needs testing
-
         return random.choice(labels)
 
     def train(self, threshold):
         """Data_set is a dictionary of lists containing (784,) arrays"""
+        wTest = np.copy(self.weights)
         #
 
         while True: #rewrite entire logic here
-            #get random dataset number 1 or 0 in this case get_label
-            intended = self.get_label()
-            # print(intended)
             trained = True
-            label = list(self.data_set.keys())[0] #change due to change to dictionary type
-            data = self.data_set[label] #change due to change to dictionary type
+            intended = self.get_label()
+            label = self.get_label()
+            data = self.data_set[label] #this should give data for 0 or 1, then random into that
+            sub_data = random.choice(data) #this should be one of the (784,) arrays
+            # print("intended :", intended)
+            # print("label: ", label)
+            # print("sub_data: ", sub_data.shape)
 
-            for i in range(len(data)):
+            for i in range(len(sub_data)):
 
-                if self.predict(data[i]) != 1:
-                    self.update(data[i])
+                if (label == intended) and (self.predict(self.weights[i], sub_data[i]) == 1):
+                    self.weights[i] += sub_data[i]
                     trained = False
+                elif (label == intended) and (self.predict(self.weights[i], sub_data[i]) == 0):
+                    self.weights[i] -= sub_data[i]
+                    trained = False
+                elif (label != intended) and (self.predict(self.weights[i], sub_data[i]) == 1):
+                    self.weights[i] -= sub_data[i]
+                    trained = False
+                elif (label != intended) and (self.predict(self.weights[i], sub_data[i]) == 0):
+                    self.weights[i] += sub_data[i]
+                    trained = False
+                #the above doesn't error out... now to see what's going on inside; weights definitely getting changed
+
+                #next step is to graph the accuracy of the changes?
 
             if trained:
                 break
 
 # print(data_set[0][783]) #access method checks out
 zeroPercept = Perceptron(N, A, B)
-# zeroPercept.train(0)
-print(zeroPercept.get_label())
+zeroPercept.train(0)
+# print(zeroPercept.get_label())
 
 #use len(data_set for total number of keys)
 
