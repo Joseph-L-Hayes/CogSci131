@@ -28,14 +28,11 @@ def load_image_files(n, path="images/"):
 # A = load_image_files(0)
 # B = load_image_files(1)
 
-A = np.load('Zero.npy') #each element in the list is a flattened array with shape (784,), is it all the text for number 0?
+A = {0: np.load('Zero.npy')} #each element in the list is a flattened array with shape (784,), is it all the text for number 0?
 B = np.load('One.npy') #also (784,)
 
-# print(B1 == B) so far so good!
-
-
 N = len(A[0]) # the total size
-assert N == DIM[0]*DIM[1] # just check our sizes to be sure
+# assert N == DIM[0]*DIM[1] # just check our sizes to be sure
 
 # set up some random initial weights
 weights = np.random.normal(0,1,size=N) #shape (784,)
@@ -113,6 +110,7 @@ class Perceptron(object):
 
     def predict(self, x):
         dot = self.dotProd(x)
+        print(x)
 
         if dot >= 0:
             return 1
@@ -122,16 +120,29 @@ class Perceptron(object):
         return None
 
     def update(self, x):
-        return None
+        self.weights += x
 
-    def train(self, threshold):
-        return None
+    def train(self, data_set, threshold):
+        #will need to add a label to the datasets for comparison. Append a label '0' or '1', etc to each data_set
+        #make sure to skip the first element in the dataset below in the for loop
+
+        while True:
+            trained = True
+            label = list(data_set.keys())[0]
+            for feature in data_set[label]:
+
+                if self.predict(feature) != label:
+                    self.update(feature)
+                    trained = False
+
+            if trained:
+                break
 
 
 
 
-
-
+zeroPercept = Perceptron(N)
+zeroPercept.train(A, 0)
 
 
 
