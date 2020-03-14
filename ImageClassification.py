@@ -1,5 +1,6 @@
 import os
 import numpy as np
+import random
 
 # Functions that might be useful (please read the documentation)
 # x.flatten() (take a N-dimensional numpy array and make it one-dimensional)
@@ -100,15 +101,19 @@ class Perceptron(object):
 
     def __init__(self, dimensions, *args):
         self.weights = np.random.normal(0,1,size=dimensions)
-        self.data_set = self.buildData(args)
+        self.data_set = self.buildData(*args)
 
     def buildData(self, *args):
+        """Takes in a list of data sets and returns a dictionary with keys as labels for the data sets.
+            The key labels are generated based on index in args, so they must be input in the correct order.
+            For example: data set for 0 images must be first arg in args, 1 images must be next"""
         data = dict()
         for k in range(len(args)):
+            # print(k)
             data[k] = args[k]
         return data
 
-    def get_weights(self):
+    def get_weights(self): #may not be necessary
         return self.weights
 
     def dotProd(self, x):
@@ -130,18 +135,23 @@ class Perceptron(object):
         self.weights += x #need to change to weights[i], passed in
         #logic for how to update weights here
 
-    def get_label(self, data):
-        """Returns the label of the dataset"""
-        return list(data.keys())[0]
+    def get_label(self):
+        """Returns a random dataset label"""
+        labels = list(self.data_set.keys())
+        #seems to be working, needs testing
+
+        return random.choice(labels)
 
     def train(self, threshold):
         """Data_set is a dictionary of lists containing (784,) arrays"""
-        #will need to add a label to the datasets for comparison. Append a label '0' or '1', etc to each data_set
-        #make sure to skip the first element in the dataset below in the for loop
+        #
 
         while True: #rewrite entire logic here
+            #get random dataset number 1 or 0 in this case get_label
+            intended = self.get_label()
+            # print(intended)
             trained = True
-            label = list(self.data_set.keys())[0]
+            label = list(self.data_set.keys())[0] #change due to change to dictionary type
             data = self.data_set[label] #change due to change to dictionary type
 
             for i in range(len(data)):
@@ -155,7 +165,8 @@ class Perceptron(object):
 
 # print(data_set[0][783]) #access method checks out
 zeroPercept = Perceptron(N, A, B)
-zeroPercept.train(0)
+# zeroPercept.train(0)
+print(zeroPercept.get_label())
 
 #use len(data_set for total number of keys)
 
