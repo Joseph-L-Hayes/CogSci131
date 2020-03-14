@@ -31,7 +31,7 @@ def load_image_files(n, path="images/"):
 A = {0: np.load('Zero.npy')} #each element in the list is a flattened array with shape (784,), is it all the text for number 0?
 B = np.load('One.npy') #also (784,)
 
-N = len(A[0]) # the total size
+N = len(A[0][0]) # the total size
 # assert N == DIM[0]*DIM[1] # just check our sizes to be sure
 
 # set up some random initial weights
@@ -110,10 +110,10 @@ class Perceptron(object):
 
     def predict(self, x):
         dot = self.dotProd(x)
-        print(x)
 
         if dot >= 0:
             return 1
+
         else: return 0
 
     def accuracy(self):
@@ -129,10 +129,12 @@ class Perceptron(object):
         while True:
             trained = True
             label = list(data_set.keys())[0]
-            for feature in data_set[label]:
+            data = data_set[label]
 
-                if self.predict(feature) != label:
-                    self.update(feature)
+            for i in range(len(data)):
+
+                if self.predict(data[i]) != 1:
+                    self.update(data[i])
                     trained = False
 
             if trained:
