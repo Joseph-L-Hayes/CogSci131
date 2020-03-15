@@ -135,16 +135,21 @@ class Perceptron(object):
             self.plot_accuracy(xAxis, accuracy_trace)
 
 # zeroOnePercept = Perceptron(N, images, 0, 1)
+# beforeWeight = np.copy(zeroOnePercept.get_weights())
 # zeroOnePercept.train(.98, 5, 25)
 # zeroOneWeight = np.copy(zeroOnePercept.get_weights())
+
+# np.save('pre_zero_one', beforeWeight)
 # np.save('zero_one', zeroOneWeight)
+
 """Problem 2: Does your solution in Q1 converge on 100% accuracy or not? What does this
     mean in terms of the linear separability of “0” and “1” on this feature space?
 
     ANSWER: INCOMPLETE"""
 
 """Problem 3: """
-def weightMatrix(weights, dims, save=False, method=None, bounds=[0, 1]):
+def weightMatrix(weights, dims, save=False, fileName='TITLE',method=None, bounds=[0, 1]):
+    # weights= weights[10]
     weights = weights.reshape(dims, dims)
     fig, im = plt.subplots(figsize=(10, 10))
     wm = plt.imshow(weights, interpolation=ir.interpol_methods[method], cmap=plt.get_cmap(ir.color_maps[ir.color_maps.index('inferno')]), vmin=bounds[0], vmax=bounds[1])
@@ -154,12 +159,12 @@ def weightMatrix(weights, dims, save=False, method=None, bounds=[0, 1]):
     plt.title('Heat Map of Trained Weight Matrix For Digits 0 and 1', fontsize=15)
     fig.colorbar(wm, orientation='horizontal', fraction=.0415)
     if save:
-        plt.savefig('a7p3_0-1_1.pdf')
+        plt.savefig(fileName + '.pdf')
 
     plt.show()
 
-# weightMatrix(np.load('zero_one.npy'), 28, method=4, bounds=[-1, 1])
-# weightMatrix(np.random.normal(0, 1, size=N), 28, method=4, bounds=[-1, 1])
+boundList = [-1, 1]
+weightMatrix(np.load('zero_one.npy'), 28, method=4, bounds=boundList)
 
 
 
