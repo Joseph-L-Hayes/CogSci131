@@ -36,7 +36,7 @@ def saveImages(files, show=False):
         if show:
             print(files[j] + '.npy saved')
 
-def uploadImages(files, show=False):
+def loadImages(files, show=False):
     """Returns a dictionary of image files """
     imageDict = dict()
 
@@ -47,7 +47,7 @@ def uploadImages(files, show=False):
     return imageDict
 
 fileNames = ['Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine']
-images = uploadImages(fileNames)
+images = loadImages(fileNames)
 N = len(images[0][0])
 assert N == DIM[0]*DIM[1] # just check our sizes to be sure
 
@@ -116,7 +116,7 @@ class Perceptron(object):
         acc_delta = 1
         getcontext().prec = precision
 
-        while accuracy < threshold or acc_delta:
+        while (accuracy < threshold) or acc_delta:
         #From Piazza: Train your perceptron algorithm on ALL images in your dataset
             xAxis += [all_blocks // 25]
             acc_delta = accuracy
@@ -143,12 +143,11 @@ class Perceptron(object):
             all_blocks += blocks
             accuracy_trace.append(accuracy)
 
-        print("Final Accuracy: ", accuracy, acc_delta)
         self.plot_accuracy(xAxis, accuracy_trace)
 
 
-zeroOnePercept = Perceptron(N, images, 0, 1)
-zeroOnePercept.train(.9998, 5, 25)
+# zeroOnePercept = Perceptron(N, images, 0, 1)
+# zeroOnePercept.train(.99, 5, 25)
 
 # oneTwoPercept = Perceptron(N, images, 1, 2)
 # oneTwoPercept.train(.9998, 5, 25)
