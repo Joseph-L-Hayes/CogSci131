@@ -1,7 +1,7 @@
 import numpy as np
 import random
 import matplotlib.pyplot as plt
-
+import time
 
 interpol_methods = [None, 'none', 'nearest', 'bilinear', 'bicubic', 'spline16',
            'spline36', 'hanning', 'hamming', 'hermite', 'kaiser', 'quadric',
@@ -12,6 +12,30 @@ color_maps = ['Accent', 'Accent_r', 'Blues', 'Blues_r', 'BrBG', 'BrBG_r', 'BuGn'
 #Good ones: 4, 3 best for this assignment
 #Good cmaps (in order best to worst): 'inferno', 'plasma', 'seismic_r' (very clear), 'gist_heat', 'Accent', 'gist_stern' (interesting), 'brg'
 #cmaps cont: 'afmhot', 'magma'
+
+# def live_update_demo():
+#
+#     plt.subplot(2, 1, 1)
+#     h1 = plt.imshow(np.random.randn(30, 30))
+#     redraw_figure()
+#     # plt.subplot(2, 1, 2)
+#     # h2, = plt.plot(np.random.randn(50))
+#     # redraw_figure()
+#
+#     t_start = time.time()
+#     for i in range(1000):
+#         h1.set_data(np.random.randn(30, 30))
+#         redraw_figure()
+#         # h2.set_ydata(np.random.randn(50))
+#         # redraw_figure()
+#         print('Mean Frame Rate: %.3gFPS' % ((i+1) / (time.time() - t_start)))
+#
+# def redraw_figure():
+#     plt.draw()
+#     plt.pause(0.00001)
+#
+# live_update_demo()
+
 
 
 #scrap:

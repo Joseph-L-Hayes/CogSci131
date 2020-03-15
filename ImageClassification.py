@@ -155,10 +155,11 @@ def weightMatrix(weights, dims, save=False, method=None, bounds=[0, 1]):
     fig.colorbar(wm, orientation='horizontal', fraction=.0415)
     if save:
         plt.savefig('a7p3_0-1_1.pdf')
-    # plt.show()
+
+    plt.show()
 
 # weightMatrix(np.load('zero_one.npy'), 28, method=4, bounds=[-1, 1])
-
+# weightMatrix(np.random.normal(0, 1, size=N), 28, method=4, bounds=[-1, 1])
 
 
 
