@@ -2,6 +2,7 @@ import os
 import numpy as np
 import random
 import matplotlib.pyplot as plt
+import image_resources as ir
 from decimal import *
 
 # Functions that might be useful (please read the documentation)
@@ -63,15 +64,6 @@ class Perceptron(object):
         self.data_set = {0: data[digit0], 1: data[digit1]}
         self.digits = [digit0, digit1]
 
-    # def buildData(self, *args):
-    #     """Takes in a list of data sets and returns a dictionary with keys as labels for the data sets.
-    #         The key labels are generated based on index in args, so they must be input in the correct order.
-    #         For example: data set for 0 images must be first arg in args, 1 images must be next"""
-    #     data = dict()
-    #     for k in range(len(args)):
-    #         data[k] = args[k]
-    #     return data
-
     def get_weights(self):
         return self.weights
 
@@ -106,7 +98,7 @@ class Perceptron(object):
         plt.show()
         plt.close()
 
-    def train(self, threshold, precision, blocks):
+    def train(self, threshold, precision, blocks, plot=False):
         """Data_set is a dictionary of lists containing (784,) arrays"""
         accuracy = .5
         all_blocks = blocks
@@ -135,33 +127,44 @@ class Perceptron(object):
                     correct += 1
 
             accuracy = correct / all_blocks
-            # print("Accuracy: ", accuracy)
-            # print("Total Blocks: ", all_blocks)
-
             acc_delta = abs(round(Decimal(accuracy), precision) - round(Decimal(acc_delta), precision))
-            # acc_delta = abs(round(accuracy, precision) - round(acc_delta, precision))
             all_blocks += blocks
             accuracy_trace.append(accuracy)
 
-        self.plot_accuracy(xAxis, accuracy_trace)
-
+        if plot:
+            self.plot_accuracy(xAxis, accuracy_trace)
 
 # zeroOnePercept = Perceptron(N, images, 0, 1)
-# zeroOnePercept.train(.99, 5, 25)
+# zeroOnePercept.train(.98, 5, 25)
+# zeroOneWeight = np.copy(zeroOnePercept.get_weights())
+# np.save('zero_one', zeroOneWeight)
+"""Problem 2: Does your solution in Q1 converge on 100% accuracy or not? What does this
+    mean in terms of the linear separability of “0” and “1” on this feature space?
 
-# oneTwoPercept = Perceptron(N, images, 1, 2)
-# oneTwoPercept.train(.9998, 5, 25)
+    ANSWER: INCOMPLETE"""
 
-"""Problem 2: """
+"""Problem 3: """
+def weightMatrix(weights, dims, save=False, method=None, bounds=[0, 1]):
+    weights = weights.reshape(dims, dims)
+    fig, im = plt.subplots(figsize=(10, 10))
+    wm = plt.imshow(weights, interpolation=ir.interpol_methods[method], cmap=plt.get_cmap(ir.color_maps[ir.color_maps.index('inferno')]), vmin=bounds[0], vmax=bounds[1])
+
+    wm.axes.get_xaxis().set_visible(False)
+    wm.axes.get_yaxis().set_visible(False)
+    plt.title('Heat Map of Trained Weight Matrix For Digits 0 and 1', fontsize=15)
+    fig.colorbar(wm, orientation='horizontal', fraction=.0415)
+    if save:
+        plt.savefig('a7p3_0-1_1.pdf')
+    # plt.show()
+
+# weightMatrix(np.load('zero_one.npy'), 28, method=4, bounds=[-1, 1])
+
+
+
+
+
+
+
 
 
 #end
-#scrap:
-            # label = self.get_label()
-            # data = self.data_set[label] #this should give data for 0 or 1, then random into that
-            #if the data is label 1 and we get 0 as output, that means it was incorrect
-            #if data is label 0 and we get 1 as output, weights incorrect
-            # sub_data = random.choice(data) #this should be one of the (784,) arrays
-            # print("intended :", intended)
-            # print("label: ", label)
-            # print("sub_data: ", sub_data.shape)
