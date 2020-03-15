@@ -1,6 +1,7 @@
 import os
 import numpy as np
 import random
+import matplotlib.pyplot as plt
 
 # Functions that might be useful (please read the documentation)
 # x.flatten() (take a N-dimensional numpy array and make it one-dimensional)
@@ -82,14 +83,19 @@ class Perceptron(object):
         #seems to be working, needs testing
         return random.choice(labels)
 
-    def train(self, threshold, runs):
+    def train(self, threshold, blocks):
         """Data_set is a dictionary of lists containing (784,) arrays"""
         accuracy = 0
+        all_blocks = blocks
+        correct = 0
+        xAxis = []
 
         while accuracy < threshold: #change accuracy to error or diff in accuracy
-            correct = 0
+        #From Piazza: Train your perceptron algorithm on ALL images in your dataset
+            # correct = 0
+            xAxis += [all_blocks]
 
-            for i in range(runs):
+            for i in range(blocks):
                 label = self.random_label()
                 data = self.data_set[label] #image set 0 or 1
                 sub_data = random.choice(data) #a (784,) array from image set 0 or 1
@@ -102,12 +108,22 @@ class Perceptron(object):
                 else:
                     correct += 1
                 #next step is to graph the accuracy of the changes?
-            accuracy = correct / runs
+            accuracy = correct / all_blocks
+
+            all_blocks += blocks #could be calc accuracy incorrectly
+
             self.accuracy_trace.append(accuracy)
-        print(self.accuracy_trace)
+        plt.xlabel('Blocks')
+        plt.ylabel('Accuracy')
+        plt.plot(xAxis, self.accuracy_trace, c='red')
+        plt.show()
+        plt.close()
+
+        #     print(accuracy)
+        # print(self.accuracy_trace)
 
 zeroPercept = Perceptron(N, A, B)
-zeroPercept.train(1, 25)
+zeroPercept.train(.99, 25)
 
 
 """Problem 2: """
