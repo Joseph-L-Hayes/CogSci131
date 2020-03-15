@@ -52,7 +52,11 @@ assert N == DIM[0]*DIM[1] # just check our sizes to be sure
 """Problem 1: Write an implementation of the perceptron learning algorithm that first
     loads images for the digit “0” and then for the digit “1”. Start with random weights
     from a normal distribution. Compute the average accuracy on blocks of 25 items and plot
-    this accuracy until you think it won’t get better."""
+    this accuracy until you think it won’t get better.
+
+    ANSWER: The answer to how many images it takes to train my model varies depending
+        one the random weights I start with but it usually takes around 500 blocks which
+        is about 13000 images between the 0 and 1 training sets. """
 
 class Perceptron(object):
 
@@ -114,6 +118,9 @@ class Perceptron(object):
                 label = self.random_label()
                 data = self.data_set[label] #image set 0 or 1
                 sub_data = random.choice(data) #a (784,) array from image set 0 or 1
+                #for problem 4 and 5, may need to change the sub_data method and use
+                #a random number. Store the label and the index used so we can test
+                #on unseen images
                 y = self.predict(self.weights, sub_data)
 
                 if label == 0 and y == 1:
@@ -164,6 +171,9 @@ def weightMatrix(weights, dims, save=False, fileName='TITLE',method=None, bounds
 # weightMatrix(np.load('zero_one.npy'), 28, method=4, bounds=boundList)
 
 """Problem 4: """
+#for training on digits I haven't seen for 4 and 5, maybe store the indices
+#seen during training, then skipping those for this question?
+#may have to rewrite code instead of using random choice
 
 """Problem 5: """
 
