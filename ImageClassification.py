@@ -33,10 +33,10 @@ A = np.load('Zero.npy') #each element in the list is a flattened array with shap
 B = np.load('One.npy') #also (784,)
 
 N = len(A[0]) # the total size
-# assert N == DIM[0]*DIM[1] # just check our sizes to be sure
+assert N == DIM[0]*DIM[1] # just check our sizes to be sure
 
 # set up some random initial weights
-weights = np.random.normal(0,1,size=N) #shape (784,)
+# weights = np.random.normal(0,1,size=N) #shape (784,)
 
 ## Your code here:
 """Problem 1: Write an implementation of the perceptron learning algorithm that first
@@ -44,64 +44,12 @@ weights = np.random.normal(0,1,size=N) #shape (784,)
     from a normal distribution. Compute the average accuracy on blocks of 25 items and plot
     this accuracy until you think it won’t get better."""
 
-def perceptron(data_set, weights, trials): #seems like updating the weights to improve accuracy only
-    #I'm guessing we process 25 blocks at a time and for '0' we should get some
-    #level of accuracy as num1/25 or the positive over total because we know this
-    #data is from a 0 training set.
-    products = list(range(trials))
-    weightsN = np.random.normal(0,1,size=len(data_set[0]))
-
-    # for i in range(trials): #start by computing current classification
-    #     products += [prediction(np.dot(weights, data_set[i]))]
-        # print(products[i])
-
-        #where does sum come in???
-        #turn this into a while loop and put update inside until convergence?
-
-    while get_accuracy(products, 1) < .90:
-
-        for i in range(trials):
-            pred = prediction(np.dot(weightsN, data_set[i]))
-            products[i] = [pred] #just for accuracy right now, may need to change
-            # print(pred)
-            # if pred != 1: #for right now we are only training on one number so want all 1?
-            update_weights(data_set[i], weightsN, pred) #returns nothing duh
-        print(get_accuracy(products, 1)) #SOMETHING WRONG HERE
-
-
-
-    total = sum(products)
-
-    return total, weights
-
-def get_accuracy(lst, y):
-
-    return lst.count(y) / len(lst)
-
-def prediction(x):
-
-    if x >= 0:
-        return 1
-    else:
-        return 0
-
-def update_weights(x, weights, prediction):
-
-    if prediction:
-        weights += x
-    else:
-        weights -= x
-
-# numTrials = 25
-#
-# totals, weights = perceptron(A, weights, numTrials)
-
-
 class Perceptron(object):
 
     def __init__(self, dimensions, image0, image1):
-        self.weights = np.random.normal(0,1,size=dimensions)
+        self.weights = np.random.normal(0, 1, size=dimensions)
         self.data_set = self.buildData(image0, image1)
+        self.accuracy_trace = []
 
     def buildData(self, *args):
         """Takes in a list of data sets and returns a dictionary with keys as labels for the data sets.
@@ -128,60 +76,41 @@ class Perceptron(object):
 
         else: return 0
 
-    def accuracy(self):
-        return None
-
-    def update(self, x): #this should take intended label and a data label along with prediction
-        self.weights += x #need to change to weights[i], passed in
-        #logic for how to update weights here
-
-    def get_label(self):
+    def random_label(self):
         """Returns a random dataset label"""
         labels = list(self.data_set.keys())
         #seems to be working, needs testing
         return random.choice(labels)
 
-    def train(self, threshold):
+    def train(self, threshold, runs):
         """Data_set is a dictionary of lists containing (784,) arrays"""
-        runs = 25
         accuracy = 0
 
-        while accuracy < threshold:
-            trained = True
+        while accuracy < threshold: #change accuracy to error or diff in accuracy
             correct = 0
 
-            for i in range(runs): #25 is the number of images being tested
-                runs += 1
-                label = self.get_label()
-                data = self.data_set[label]
-                sub_data = random.choice(data)
-                #they "simplify" things by assigning a digit to 0 or 1. So 1 and 1 is correct, w+=x, 0 and 1 is incorrect, w-=x
-                #if there is no change, then count toward accuracy
+            for i in range(runs):
+                label = self.random_label()
+                data = self.data_set[label] #image set 0 or 1
+                sub_data = random.choice(data) #a (784,) array from image set 0 or 1
                 y = self.predict(self.weights, sub_data)
 
                 if label == 0 and y == 1:
                     self.weights -= sub_data
-                    trained = False
                 elif label == 1 and y == 0:
                     self.weights += sub_data
-                    trained = False
                 else:
                     correct += 1
-                #the above doesn't error out... now to see what's going on inside; weights definitely getting changed
-
                 #next step is to graph the accuracy of the changes?
             accuracy = correct / runs
-            print("accuracy? ", accuracy)
-
+            self.accuracy_trace.append(accuracy)
+        print(self.accuracy_trace)
 
 zeroPercept = Perceptron(N, A, B)
-zeroPercept.train(.5)
+zeroPercept.train(1, 25)
 
 
-
-
-
-
+"""Problem 2: """
 
 
 #end
