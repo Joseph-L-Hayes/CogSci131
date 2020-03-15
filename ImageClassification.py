@@ -26,21 +26,31 @@ def load_image_files(n, path="images/"):
     return images
 
 
-# Load up these image files
-#a list of numpy vectors
-# A = load_image_files(0)
-# B = load_image_files(1)
-
-A = np.load('Zero.npy') #each element in the list is a flattened array with shape (784,), is it all the text for number 0?
-B = np.load('One.npy') #also (784,)
-
-N = len(A[0]) # the total size
-assert N == DIM[0]*DIM[1] # just check our sizes to be sure
-
-# set up some random initial weights
-# weights = np.random.normal(0,1,size=N) #shape (784,)
+# N = len(A[0]) # the total size
+# assert N == DIM[0]*DIM[1] # just check our sizes to be sure
 
 ## Your code here:
+def saveImages(files, show=False):
+    for j in range(len(files)):
+        np.save(files[j], load_image_files(j))
+        if show:
+            print(files[j] + '.npy saved')
+
+def uploadImages(files, show=False):
+    """Returns a dictionary of image files """
+    imageDict = dict()
+
+    for f in range(len(files)):
+        imageDict[f] = np.load(files[f] + '.npy')
+        if show:
+            print(files[f] + '.npy loaded')
+    return imageDict
+
+fileNames = ['Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine']
+images = uploadImages(fileNames)
+N = len(images[0][0])
+assert N == DIM[0]*DIM[1] # just check our sizes to be sure
+
 """Problem 1: Write an implementation of the perceptron learning algorithm that first
     loads images for the digit “0” and then for the digit “1”. Start with random weights
     from a normal distribution. Compute the average accuracy on blocks of 25 items and plot
@@ -48,21 +58,21 @@ assert N == DIM[0]*DIM[1] # just check our sizes to be sure
 
 class Perceptron(object):
 
-    def __init__(self, dimensions, image0, image1):
+    def __init__(self, dimensions, data, digit0, digit1):
         self.weights = np.random.normal(0, 1, size=dimensions)
-        self.data_set = self.buildData(image0, image1)
+        self.data_set = {0: data[digit0], 1: data[digit1]}
+        self.digits = [digit0, digit1]
 
-    def buildData(self, *args):
-        """Takes in a list of data sets and returns a dictionary with keys as labels for the data sets.
-            The key labels are generated based on index in args, so they must be input in the correct order.
-            For example: data set for 0 images must be first arg in args, 1 images must be next"""
-        data = dict()
-        for k in range(len(args)):
-            # print(k)
-            data[k] = args[k]
-        return data
+    # def buildData(self, *args):
+    #     """Takes in a list of data sets and returns a dictionary with keys as labels for the data sets.
+    #         The key labels are generated based on index in args, so they must be input in the correct order.
+    #         For example: data set for 0 images must be first arg in args, 1 images must be next"""
+    #     data = dict()
+    #     for k in range(len(args)):
+    #         data[k] = args[k]
+    #     return data
 
-    def get_weights(self): #may not be necessary
+    def get_weights(self):
         return self.weights
 
     def dotProd(self, w, x):
@@ -82,21 +92,23 @@ class Perceptron(object):
         labels = list(self.data_set.keys())
         return random.choice(labels)
 
-    def plot_accuracy(self, x, y, save=False, name=None):
+    def plot_accuracy(self, x, y, save=False, name=None, color='red'):
 
-        plt.xlabel('Blocks')
+        plt.xlabel('Blocks of 25')
         plt.ylabel('Accuracy')
-        plt.title('P1: Accuracy Over Training Blocks of 25')
+        plt.title('P1: Training Accuracy for Digits {0} and {1}'.format(self.digits[0], self.digits[1]))
         plt.legend(loc=0, title='Converged to {0} Accuracy in {1} Blocks'.format(round(y[-1], 5), x[-1]))
-        plt.plot(x, y, c='red', label='')
+        plt.plot(x, y, c=color, label='')
+
         if save:
             plt.savefig(name + '.pdf')
+
         plt.show()
         plt.close()
 
     def train(self, threshold, precision, blocks):
         """Data_set is a dictionary of lists containing (784,) arrays"""
-        accuracy = 0
+        accuracy = .5
         all_blocks = blocks
         correct = 0
         accuracy_trace = []
@@ -104,8 +116,7 @@ class Perceptron(object):
         acc_delta = 1
         getcontext().prec = precision
 
-        # while accuracy < threshold: #change accuracy to error or diff in accuracy
-        while acc_delta and (accuracy < threshold):
+        while accuracy < threshold or acc_delta:
         #From Piazza: Train your perceptron algorithm on ALL images in your dataset
             xAxis += [all_blocks // 25]
             acc_delta = accuracy
@@ -124,18 +135,24 @@ class Perceptron(object):
                     correct += 1
 
             accuracy = correct / all_blocks
+            # print("Accuracy: ", accuracy)
+            # print("Total Blocks: ", all_blocks)
 
             acc_delta = abs(round(Decimal(accuracy), precision) - round(Decimal(acc_delta), precision))
+            # acc_delta = abs(round(accuracy, precision) - round(acc_delta, precision))
             all_blocks += blocks
             accuracy_trace.append(accuracy)
 
-        # self.plot_accuracy(xAxis, accuracy_trace, save=True, name='a7p1')
+        print("Final Accuracy: ", accuracy, acc_delta)
+        self.plot_accuracy(xAxis, accuracy_trace)
 
 
-zeroPercept = Perceptron(N, A, B)
-zeroPercept.train(.9998, 5, 25)
+zeroOnePercept = Perceptron(N, images, 0, 1)
+zeroOnePercept.train(.9998, 5, 25)
 
-plt.show()
+# oneTwoPercept = Perceptron(N, images, 1, 2)
+# oneTwoPercept.train(.9998, 5, 25)
+
 """Problem 2: """
 
 
