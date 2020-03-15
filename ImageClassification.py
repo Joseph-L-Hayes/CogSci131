@@ -163,8 +163,12 @@ def weightMatrix(weights, dims, save=False, fileName='TITLE',method=None, bounds
 
     plt.show()
 
-boundList = [-1, 1]
-weightMatrix(np.load('zero_one.npy'), 28, method=4, bounds=boundList)
+# boundList = [-1, 1]
+# weightMatrix(np.load('zero_one.npy'), 28, method=4, bounds=boundList)
+
+"""Problem 4: """
+
+"""Problem 5: """
 
 
 
