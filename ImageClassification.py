@@ -45,7 +45,7 @@ def loadImages(files, show=False):
     return imageDict
 
 fileNames = ['Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine']
-images = loadImages(fileNames, show=True)
+images = loadImages(fileNames)
 N = len(images[0][0])
 assert N == DIM[0]*DIM[1] # just check our sizes to be sure
 
