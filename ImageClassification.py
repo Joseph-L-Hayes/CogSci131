@@ -26,19 +26,16 @@ def load_image_files(n, path="images/"):
             images.append(i.flatten())
     return images
 
-
-# N = len(A[0]) # the total size
-# assert N == DIM[0]*DIM[1] # just check our sizes to be sure
-
 ## Your code here:
 def saveImages(files, show=False):
+    """Saves digit image matrices for faster access during training"""
     for j in range(len(files)):
         np.save(files[j], load_image_files(j))
         if show:
             print(files[j] + '.npy saved')
 
 def loadImages(files, show=False):
-    """Returns a dictionary of image files """
+    """Returns a dictionary of image files with digits as keys"""
     imageDict = dict()
 
     for f in range(len(files)):
@@ -48,7 +45,7 @@ def loadImages(files, show=False):
     return imageDict
 
 fileNames = ['Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine']
-images = loadImages(fileNames)
+images = loadImages(fileNames, show=True)
 N = len(images[0][0])
 assert N == DIM[0]*DIM[1] # just check our sizes to be sure
 
