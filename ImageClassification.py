@@ -2,6 +2,7 @@ import os
 import numpy as np
 import random
 import matplotlib.pyplot as plt
+from decimal import *
 
 # Functions that might be useful (please read the documentation)
 # x.flatten() (take a N-dimensional numpy array and make it one-dimensional)
@@ -50,7 +51,6 @@ class Perceptron(object):
     def __init__(self, dimensions, image0, image1):
         self.weights = np.random.normal(0, 1, size=dimensions)
         self.data_set = self.buildData(image0, image1)
-        self.accuracy_trace = []
 
     def buildData(self, *args):
         """Takes in a list of data sets and returns a dictionary with keys as labels for the data sets.
@@ -80,20 +80,35 @@ class Perceptron(object):
     def random_label(self):
         """Returns a random dataset label"""
         labels = list(self.data_set.keys())
-        #seems to be working, needs testing
         return random.choice(labels)
 
-    def train(self, threshold, blocks):
+    def plot_accuracy(self, x, y, save=False, name=None):
+
+        plt.xlabel('Blocks')
+        plt.ylabel('Accuracy')
+        plt.title('P1: Accuracy Over Training Blocks of 25')
+        plt.legend(loc=0, title='Converged to {0} Accuracy in {1} Blocks'.format(round(y[-1], 5), x[-1]))
+        plt.plot(x, y, c='red', label='')
+        if save:
+            plt.savefig(name + '.pdf')
+        plt.show()
+        plt.close()
+
+    def train(self, threshold, precision, blocks):
         """Data_set is a dictionary of lists containing (784,) arrays"""
         accuracy = 0
         all_blocks = blocks
         correct = 0
+        accuracy_trace = []
         xAxis = []
+        acc_delta = 1
+        getcontext().prec = precision
 
-        while accuracy < threshold: #change accuracy to error or diff in accuracy
+        # while accuracy < threshold: #change accuracy to error or diff in accuracy
+        while acc_delta and (accuracy < threshold):
         #From Piazza: Train your perceptron algorithm on ALL images in your dataset
-            # correct = 0
-            xAxis += [all_blocks]
+            xAxis += [all_blocks // 25]
+            acc_delta = accuracy
 
             for i in range(blocks):
                 label = self.random_label()
@@ -107,25 +122,20 @@ class Perceptron(object):
                     self.weights += sub_data
                 else:
                     correct += 1
-                #next step is to graph the accuracy of the changes?
+
             accuracy = correct / all_blocks
 
-            all_blocks += blocks #could be calc accuracy incorrectly
+            acc_delta = abs(round(Decimal(accuracy), precision) - round(Decimal(acc_delta), precision))
+            all_blocks += blocks
+            accuracy_trace.append(accuracy)
 
-            self.accuracy_trace.append(accuracy)
-        plt.xlabel('Blocks')
-        plt.ylabel('Accuracy')
-        plt.plot(xAxis, self.accuracy_trace, c='red')
-        plt.show()
-        plt.close()
+        # self.plot_accuracy(xAxis, accuracy_trace, save=True, name='a7p1')
 
-        #     print(accuracy)
-        # print(self.accuracy_trace)
 
 zeroPercept = Perceptron(N, A, B)
-zeroPercept.train(.99, 25)
+zeroPercept.train(.9998, 5, 25)
 
-
+plt.show()
 """Problem 2: """
 
 
