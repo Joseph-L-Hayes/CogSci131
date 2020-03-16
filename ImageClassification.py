@@ -55,8 +55,10 @@ assert N == DIM[0]*DIM[1] # just check our sizes to be sure
     this accuracy until you think it won’t get better.
 
     ANSWER: The answer to how many images it takes to train my model varies depending
-        one the random weights I start with but it usually takes around 500 blocks which
-        is about 13000 images between the 0 and 1 training sets. """
+        on the random weights I start with but it usually takes around 400 blocks to
+        achieve achieve .99 accuracy. This is about 10,000 images between the 0 and 1
+        training sets. I attempted to get .9999 accuracy but it takes 10x longer
+        and doesn't seem to produce significantly better results. """
 
 class Perceptron(object):
 
@@ -64,6 +66,7 @@ class Perceptron(object):
         self.weights = np.random.normal(0, 1, size=dimensions)
         self.data_set = {0: data[digit0], 1: data[digit1]}
         self.digits = [digit0, digit1]
+        self.bias = np.zeros(dimensions)
 
     def get_weights(self):
         return self.weights
@@ -124,9 +127,11 @@ class Perceptron(object):
                 y = self.predict(self.weights, sub_data)
 
                 if label == 0 and y == 1:
-                    self.weights -= sub_data
+                    self.bias -= sub_data
+                    self.weights -= sub_data - self.bias
                 elif label == 1 and y == 0:
-                    self.weights += sub_data
+                    self.bias += sub_data
+                    self.weights += sub_data + self.bias
                 else:
                     correct += 1
 
@@ -140,9 +145,9 @@ class Perceptron(object):
 
 # zeroOnePercept = Perceptron(N, images, 0, 1)
 # beforeWeight = np.copy(zeroOnePercept.get_weights())
-# zeroOnePercept.train(.98, 5, 25)
+# zeroOnePercept.train(.99, 5, 25, plot=True)
 # zeroOneWeight = np.copy(zeroOnePercept.get_weights())
-
+#
 # np.save('pre_zero_one', beforeWeight)
 # np.save('zero_one', zeroOneWeight)
 
