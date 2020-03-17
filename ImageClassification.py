@@ -67,6 +67,7 @@ class Perceptron(object):
         self.data_set = {0: data[digit0], 1: data[digit1]}
         self.digits = [digit0, digit1]
         self.bias = np.zeros(dimensions)
+        self.overall_accuracy = 0
 
     def get_weights(self):
         return self.weights
@@ -140,12 +141,15 @@ class Perceptron(object):
             all_blocks += blocks
             accuracy_trace.append(accuracy)
 
+        self.overall_accuracy = accuracy
+
         if plot:
             self.plot_accuracy(xAxis, accuracy_trace)
 
 # zeroOnePercept = Perceptron(N, images, 0, 1)
 # beforeWeight = np.copy(zeroOnePercept.get_weights())
 # zeroOnePercept.train(.99, 5, 25, plot=True)
+# # print(zeroOnePercept.overall_accuracy) #will give the last accuracy number aka overall_accuracy
 # zeroOneWeight = np.copy(zeroOnePercept.get_weights())
 #
 # np.save('pre_zero_one', beforeWeight)
@@ -180,7 +184,9 @@ def weightMatrix(weights, dims, save=False, fileName='TITLE',method=None, bounds
 #seen during training, then skipping those for this question?
 #may have to rewrite code instead of using random choice
 
-"""Problem 5: """
+"""Problem 5:
+
+    Essentially, repeat question 1 for """
 
 
 
