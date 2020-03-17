@@ -113,8 +113,9 @@ class Perceptron(object):
         acc_delta = 1
         getcontext().prec = precision
 
-        while (accuracy < threshold) or acc_delta:
-        #From Piazza: Train your perceptron algorithm on ALL images in your dataset
+        # while accuracy <= threshold or acc_delta > 0:
+        while (all_blocks // 25) < 400: #400 blocks from problem 1 convergence
+
             xAxis += [all_blocks // 25]
             acc_delta = accuracy
 
@@ -122,9 +123,6 @@ class Perceptron(object):
                 label = self.random_label()
                 data = self.data_set[label] #image set 0 or 1
                 sub_data = random.choice(data) #a (784,) array from image set 0 or 1
-                #for problem 4 and 5, may need to change the sub_data method and use
-                #a random number. Store the label and the index used so we can test
-                #on unseen images
                 y = self.predict(self.weights, sub_data)
 
                 if label == 0 and y == 1:
@@ -148,8 +146,8 @@ class Perceptron(object):
 
 # zeroOnePercept = Perceptron(N, images, 0, 1)
 # beforeWeight = np.copy(zeroOnePercept.get_weights())
-# zeroOnePercept.train(.99, 5, 25, plot=True)
-# # print(zeroOnePercept.overall_accuracy) #will give the last accuracy number aka overall_accuracy
+# zeroOnePercept.train(.97, 5, 25, plot=True)
+# print(zeroOnePercept.overall_accuracy) #will give the last accuracy number aka overall_accuracy
 # zeroOneWeight = np.copy(zeroOnePercept.get_weights())
 #
 # np.save('pre_zero_one', beforeWeight)
@@ -186,7 +184,8 @@ def weightMatrix(weights, dims, save=False, fileName='TITLE',method=None, bounds
 
 """Problem 5:
 
-    Essentially, repeat question 1 for """
+    Essentially, repeat question 1 for training weights. Then train on an unseen
+    data set for each pair, make matrix of accuracy on unseen data"""
 
 
 
