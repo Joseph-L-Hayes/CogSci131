@@ -114,7 +114,7 @@ class Perceptron(object):
         getcontext().prec = precision
 
         # while accuracy <= threshold or acc_delta > 0:
-        while (all_blocks // 25) < 400: #400 blocks from problem 1 convergence
+        while (all_blocks // 25) <= 500: #400 blocks from problem 1 convergence
 
             xAxis += [all_blocks // 25]
             acc_delta = accuracy
@@ -144,11 +144,11 @@ class Perceptron(object):
         if plot:
             self.plot_accuracy(xAxis, accuracy_trace)
 
-# zeroOnePercept = Perceptron(N, images, 0, 1)
-# beforeWeight = np.copy(zeroOnePercept.get_weights())
-# zeroOnePercept.train(.97, 5, 25, plot=True)
-# print(zeroOnePercept.overall_accuracy) #will give the last accuracy number aka overall_accuracy
-# zeroOneWeight = np.copy(zeroOnePercept.get_weights())
+zeroOnePercept = Perceptron(N, images, 4, 9)
+beforeWeight = np.copy(zeroOnePercept.get_weights())
+zeroOnePercept.train(.97, 5, 25, plot=True)
+print(zeroOnePercept.overall_accuracy) #will give the last accuracy number aka overall_accuracy
+zeroOneWeight = np.copy(zeroOnePercept.get_weights())
 #
 # np.save('pre_zero_one', beforeWeight)
 # np.save('zero_one', zeroOneWeight)
