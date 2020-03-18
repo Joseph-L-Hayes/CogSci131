@@ -44,28 +44,22 @@ def loadImages(files, show=False, unseen=False): #if unseen, save 1000 into anot
         trainingDict[f] = np.load(files[f] + '.npy')
         if show:
             print(files[f] + '.npy loaded')
-    print(trainingDict[0].shape)
 
     if unseen:
         for x in range(len(trainingDict)):
             unseenDict[x] = np.empty((500, 784))
-            print('digit ' + str(x))
+
             for i in range(500):
                 randomIndex = random.randint(0, len(trainingDict[x]) - 1)
-                print(unseenDict[x].shape)
-                print(trainingDict[x][randomIndex].shape)
-                unseenDict[x] = np.append(unseenDict[x], trainingDict[x][randomIndex], axis=0)
+                unseenDict[x][i] = trainingDict[x][randomIndex]
                 trainingDict[x] = np.delete(trainingDict[x], randomIndex, 0)
             print('...')
-    print(len(trainingDict[0]))
-    print(len(unseenDict[0]))
 
 
     return trainingDict, unseenDict
 
 fileNames = ['Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine']
-# saveImages(fileNames, unseen=True, show=True)
-# saveImages()
+
 images, unseenImages = loadImages(fileNames, show=True, unseen=True)
 N = len(images[0][0])
 assert N == DIM[0]*DIM[1] # just check our sizes to be sure
