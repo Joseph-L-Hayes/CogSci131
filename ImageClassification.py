@@ -27,14 +27,14 @@ def load_image_files(n, path="images/"):
     return images
 
 ## Your code here:
-def saveImages(files, show=False):
+def saveImages(files, show=False): #modify to save unseen images before saving training images
     """Saves digit image matrices for faster access during training"""
     for j in range(len(files)):
         np.save(files[j], load_image_files(j))
         if show:
             print(files[j] + '.npy saved')
 
-def loadImages(files, show=False):
+def loadImages(files, show=False, unseen=False):
     """Returns a dictionary of image files with digits as keys"""
     imageDict = dict()
 
@@ -45,6 +45,7 @@ def loadImages(files, show=False):
     return imageDict
 
 fileNames = ['Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine']
+unseenImages = loadImages(fileNames, unseen=True)
 images = loadImages(fileNames)
 N = len(images[0][0])
 assert N == DIM[0]*DIM[1] # just check our sizes to be sure
