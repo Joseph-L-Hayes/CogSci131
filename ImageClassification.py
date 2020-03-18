@@ -144,11 +144,11 @@ class Perceptron(object):
         if plot:
             self.plot_accuracy(xAxis, accuracy_trace)
 
-zeroOnePercept = Perceptron(N, images, 4, 9)
-beforeWeight = np.copy(zeroOnePercept.get_weights())
-zeroOnePercept.train(.97, 5, 25, plot=True)
-print(zeroOnePercept.overall_accuracy) #will give the last accuracy number aka overall_accuracy
-zeroOneWeight = np.copy(zeroOnePercept.get_weights())
+# zeroOnePercept = Perceptron(N, images, 4, 9)
+# beforeWeight = np.copy(zeroOnePercept.get_weights())
+# zeroOnePercept.train(.97, 5, 25, plot=True)
+# print(zeroOnePercept.overall_accuracy) #will give the last accuracy number aka overall_accuracy
+# zeroOneWeight = np.copy(zeroOnePercept.get_weights())
 #
 # np.save('pre_zero_one', beforeWeight)
 # np.save('zero_one', zeroOneWeight)
@@ -182,16 +182,51 @@ def weightMatrix(weights, dims, save=False, fileName='TITLE',method=None, bounds
 #seen during training, then skipping those for this question?
 #may have to rewrite code instead of using random choice
 
-"""Problem 5:
+"""Problem 5: Next show a matrix of the classification accuracy of each pair of digits
+    after enough training. Make this a plot (with colors for accuracy rather than numbers).
+    Does it match your intuitions about which pairs should be easy vs. hard? Why or why not?
 
     Essentially, repeat question 1 for training weights. Then train on an unseen
     data set for each pair, make matrix of accuracy on unseen data"""
 
+def allDigits(imageDict, N):
+    digitArray = np.zeros(100)
+    digitArray = digitArray.reshape(10, 10)
+    xlabels = np.arange(0, 10)
+    ylabels = np.arange(0, 10)
+
+    for k in range(len(imageDict.items())):
+        for j in range(len(imageDict.items())):
+            percept = Perceptron(N, imageDict, k, j)
+            percept.train(.97, 5, 25)
+            digitArray[k, j] = percept.overall_accuracy
+
+    return digitArray, xlabels, ylabels
 
 
+# grid, xAx, yAx = allDigits(images, N)
+# np.save('accMatrix', grid)
+# np.save('accMatrix_X', xAx)
+# np.save('accMatrix_Y', yAx)
 
 
+grid = np.load('accMatrix.npy')
+xAx = np.load('accMatrix_X.npy')
+yAx = np.load('accMatrix_Y.npy')
 
+plt.rcParams['xtick.bottom'] = plt.rcParams['xtick.labelbottom'] = False
+plt.rcParams['xtick.top'] = plt.rcParams['xtick.labeltop'] = True
+
+fig, ax = plt.subplots() #figsize=(10,10)
+matrix = plt.imshow(grid, cmap='coolwarm', extent=[0, 9, 9, 0])
+fig.colorbar(matrix, orientation='horizontal', fraction=.05, ticks=[.50, .60, .70, .80, .90, 1.0])
+# ax.xticks(ha='middle')
+ax.set_xticks(xAx)
+ax.set_yticks(yAx)
+
+# plt.savefig('a7p5accuracy.pdf')
+
+plt.show()
 
 
 #end
