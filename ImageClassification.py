@@ -27,26 +27,46 @@ def load_image_files(n, path="images/"):
     return images
 
 ## Your code here:
-def saveImages(files, show=False): #modify to save unseen images before saving training images
+def saveImages(files, show=False):
     """Saves digit image matrices for faster access during training"""
+
     for j in range(len(files)):
         np.save(files[j], load_image_files(j))
         if show:
             print(files[j] + '.npy saved')
 
-def loadImages(files, show=False, unseen=False):
+def loadImages(files, show=False, unseen=False): #if unseen, save 1000 into another dict and return separately
     """Returns a dictionary of image files with digits as keys"""
-    imageDict = dict()
+    trainingDict = dict()
+    unseenDict = dict()
 
     for f in range(len(files)):
-        imageDict[f] = np.load(files[f] + '.npy')
+        trainingDict[f] = np.load(files[f] + '.npy')
         if show:
             print(files[f] + '.npy loaded')
-    return imageDict
+    print(trainingDict[0].shape)
+
+    if unseen:
+        for x in range(len(trainingDict)):
+            unseenDict[x] = np.empty((500, 784))
+            print('digit ' + str(x))
+            for i in range(500):
+                randomIndex = random.randint(0, len(trainingDict[x]) - 1)
+                print(unseenDict[x].shape)
+                print(trainingDict[x][randomIndex].shape)
+                unseenDict[x] = np.append(unseenDict[x], trainingDict[x][randomIndex], axis=0)
+                trainingDict[x] = np.delete(trainingDict[x], randomIndex, 0)
+            print('...')
+    print(len(trainingDict[0]))
+    print(len(unseenDict[0]))
+
+
+    return trainingDict, unseenDict
 
 fileNames = ['Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine']
-unseenImages = loadImages(fileNames, unseen=True)
-images = loadImages(fileNames)
+# saveImages(fileNames, unseen=True, show=True)
+# saveImages()
+images, unseenImages = loadImages(fileNames, show=True, unseen=True)
 N = len(images[0][0])
 assert N == DIM[0]*DIM[1] # just check our sizes to be sure
 
