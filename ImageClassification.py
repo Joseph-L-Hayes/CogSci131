@@ -94,7 +94,7 @@ class Perceptron(object):
         return np.dot(w, x)
 
     def predict(self, w, x):
-        dot = self.dotProd(w, x + self.bias) #added self.bias, needs testing
+        dot = self.dotProd(w, x) #added self.bias, needs testing
 
         if dot >= 0:
             return 1
@@ -221,14 +221,14 @@ def allDigitsAcc(trainDict, unseenDict, N):
             #just call percept.predict(w, x)
             for i in range(1000):
                 index = np.random.choice([k, j])#need to pick k or j randomly i.e. k=0, j=1, test the result
-                print(index)
+                # print(index)
 
                 result = percept.predict(percept.get_weights(), unseenDict[index][i % 500])
-                print(result)
-                if index == k and result == 1:
+                # print(result)
+                if index == k and result == 0:
                     correct += 1
 
-                elif index == j and result == 0:
+                elif index == j and result == 1:
                     correct += 1
 
             digitArray[k, j] = correct / 1000
@@ -252,7 +252,7 @@ plt.rcParams['xtick.top'] = plt.rcParams['xtick.labeltop'] = True
 
 fig, ax = plt.subplots() #figsize=(10,10)
 matrix = plt.imshow(grid, cmap='coolwarm', extent=[0, 9, 9, 0])
-fig.colorbar(matrix, orientation='horizontal', fraction=.05, ticks=[.50, .60, .70, .80, .90, 1])
+fig.colorbar(matrix, orientation='horizontal', fraction=.05) #, ticks=[.50, .60, .70, .80, .90, 1]
 ax.set_xticks(xAx)
 ax.set_yticks(yAx)
 
