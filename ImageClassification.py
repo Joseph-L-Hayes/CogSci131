@@ -93,12 +93,19 @@ class Perceptron(object):
 
         return np.dot(w, x)
 
-    def predict(self, w, x):
+    def predict(self, w, x, b):
         dot = self.dotProd(w, x) #added self.bias, needs testing
 
         if dot >= 0:
             return 1
 
+        else: return 0
+
+    def classify(self, w, x):
+        dot = self.dotProd(w, x)
+
+        if dot >= 0:
+            return 1
         else: return 0
 
     def random_label(self):
@@ -140,7 +147,7 @@ class Perceptron(object):
                 label = self.random_label()
                 data = self.data_set[label] #image set 0 or 1
                 sub_data = random.choice(data) #a (784,) array from image set 0 or 1
-                y = self.predict(self.weights, sub_data)
+                y = self.predict(self.weights, sub_data, self.bias)
 
                 if label == 0 and y == 1:
                     self.bias -= sub_data
@@ -191,13 +198,18 @@ def weightMatrix(weights, dims, save=False, fileName='TITLE',method=None, bounds
 
     plt.show()
 
-# boundList = [-1, 1]
-# weightMatrix(np.load('zero_one.npy'), 28, method=4, bounds=boundList)
+boundList = [-1, 1]
+weightMatrix(np.load('zero_one.npy'), 28, method=4, bounds=boundList)
 
-"""Problem 4: """
-#for training on digits I haven't seen for 4 and 5, maybe store the indices
-#seen during training, then skipping those for this question?
-#may have to rewrite code instead of using random choice
+"""Problem 4: What should you expect to happen if you set the elements of the weight vector
+    which are close to zero to be actually zero? Do this for the 10, 20, 30, ... 780 weight
+    values closest to zero (in absolute value) and plot the resulting accuracies on 1000 random
+    classifications of “0” vs “1”. What does this tell you about the proportion of the image
+    which is diagnostic about “0” vs “1”?"""
+
+#train on 0,1 using training and unseen dictionaries
+#change 10 * i (1 - 78) 'closest weights to 0'
+#for each change, classify
 
 """Problem 5: Next show a matrix of the classification accuracy of each pair of digits
     after enough training. Make this a plot (with colors for accuracy rather than numbers).
@@ -222,7 +234,7 @@ def allDigitsAcc(trainDict, unseenDict, N):
                 # index = np.random.choice([k, j])#need to pick k or j randomly i.e. k=0, j=1, test the result
                 # print(index)
 
-                result = percept.predict(percept.get_weights(), unseenDict[index][i % 500])
+                result = percept.classify(percept.get_weights(), unseenDict[index][i % 500])
                 # print(result)
                 if index == k and result == 0:
                     correct += 1
@@ -240,10 +252,10 @@ def allDigitsAcc(trainDict, unseenDict, N):
 
 
 # grid, xAx, yAx = allDigitsAcc(trainingImages, unseenImages, N)
-# np.save('accMatrix', grid)
-# np.save('accMatrix_X', xAx)
-# np.save('accMatrix_Y', yAx)
-
+# # np.save('accMatrix', grid)
+# # np.save('accMatrix_X', xAx)
+# # np.save('accMatrix_Y', yAx)
+#
 # grid = np.load('accMatrix.npy')
 # xAx = np.load('accMatrix_X.npy')
 # yAx = np.load('accMatrix_Y.npy')
@@ -262,7 +274,7 @@ def allDigitsAcc(trainDict, unseenDict, N):
 # ax.set_xticks(xAx)
 # ax.set_yticks(yAx)
 #
-# plt.savefig('a7p5accuracy_2.pdf')
+# # plt.savefig('a7p5accuracy_2.pdf')
 #
 # plt.show()
 
