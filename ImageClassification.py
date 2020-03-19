@@ -62,8 +62,8 @@ def loadImages(files, show=False, unseen=False): #if unseen, save 1000 into anot
 
 fileNames = ['Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine']
 
-# trainingImages, unseenImages = loadImages(fileNames, unseen=True)
-# N = len(trainingImages[0][0])
+trainingImages, unseenImages = loadImages(fileNames, unseen=True)
+N = len(trainingImages[0][0])
 # assert N == DIM[0]*DIM[1] # just check our sizes to be sure
 
 """Problem 1: Write an implementation of the perceptron learning algorithm that first
@@ -207,10 +207,28 @@ def weightMatrix(weights, dims, save=False, fileName='TITLE',method=None, bounds
     classifications of “0” vs “1”. What does this tell you about the proportion of the image
     which is diagnostic about “0” vs “1”?"""
 
+def setToZero(trainDict, unseenDict, N):
+    perceptron01 = Perceptron(N, trainDict, 0, 1)
+    perceptron01.train(.97, 5, 25)
+    return None
 #train on 0,1 using training and unseen dictionaries
 #change 10 * i (1 - 78) 'closest weights to 0'
 #for each change, classify
+def testClassification(numIters, index, digit0, digit1, perceptron, unseenDict):
+    numCorrect = 0
 
+    for i in range(numIters):
+        result = perceptron.classify(perceptron.get_weights(), unseenDict[index][i % (numIters // 2)])
+
+        if index == digit0 and result == 0:
+            numCorrect += 1
+            index = digit1
+        elif index == digit1 and result == 1:
+            numCorrect += 1
+            index = digit0
+
+    return numCorrect, index
+    
 """Problem 5: Next show a matrix of the classification accuracy of each pair of digits
     after enough training. Make this a plot (with colors for accuracy rather than numbers).
     Does it match your intuitions about which pairs should be easy vs. hard? Why or why not?
@@ -228,55 +246,59 @@ def allDigitsAcc(trainDict, unseenDict, N):
             percept = Perceptron(N, trainDict, k, j)
             percept.train(.97, 5, 25)
             index = k
-            # digitArray[k, j] = percept.overall_accuracy #training accuracy
-            #just call percept.predict(w, x)
-            for i in range(1000):
-                # index = np.random.choice([k, j])#need to pick k or j randomly i.e. k=0, j=1, test the result
-                # print(index)
 
-                result = percept.classify(percept.get_weights(), unseenDict[index][i % 500])
-                # print(result)
-                if index == k and result == 0:
-                    correct += 1
-                    index = j
-
-                elif index == j and result == 1:
-                    correct += 1
-                    index = k
-
-            digitArray[k, j] = correct / 1000
-            print(digitArray[k, j])
-
+            result, index = testClassification(1000, index, k, j, percept, unseenDict)
+            digitArray[k, j] = result / 1000
 
     return digitArray, xlabels, ylabels
 
 
 # grid, xAx, yAx = allDigitsAcc(trainingImages, unseenImages, N)
-# # np.save('accMatrix', grid)
-# # np.save('accMatrix_X', xAx)
-# # np.save('accMatrix_Y', yAx)
-#
-# grid = np.load('accMatrix.npy')
-# xAx = np.load('accMatrix_X.npy')
-# yAx = np.load('accMatrix_Y.npy')
-#
-# plt.rcParams['xtick.bottom'] = plt.rcParams['xtick.labelbottom'] = False
-# plt.rcParams['xtick.top'] = plt.rcParams['xtick.labeltop'] = True
-#
-# fig, ax = plt.subplots() #figsize=(10,10)
-# matrix = plt.imshow(grid, cmap='inferno', extent=[0, 9, 9, 0]) #'coolwarm'
-# figure_title = 'Classification Accuracy For Each Pair of Digits'
-# plt.text(0.5, 1.13, figure_title,
-#          horizontalalignment='center',
-#          fontsize=12,
-#          transform = ax.transAxes)
-# fig.colorbar(matrix, orientation='horizontal', fraction=.05) #, ticks=[.50, .60, .70, .80, .90, 1]
-# ax.set_xticks(xAx)
-# ax.set_yticks(yAx)
-#
-# # plt.savefig('a7p5accuracy_2.pdf')
-#
-# plt.show()
+# np.save('accMatrix', grid)
+# np.save('accMatrix_X', xAx)
+# np.save('accMatrix_Y', yAx)
+
+grid = np.load('accMatrix.npy')
+xAx = np.load('accMatrix_X.npy')
+yAx = np.load('accMatrix_Y.npy')
+
+plt.rcParams['xtick.bottom'] = plt.rcParams['xtick.labelbottom'] = False
+plt.rcParams['xtick.top'] = plt.rcParams['xtick.labeltop'] = True
+
+fig, ax = plt.subplots() #figsize=(10,10)
+matrix = plt.imshow(grid, cmap='inferno', extent=[0, 9, 9, 0]) #'coolwarm'
+figure_title = 'Classification Accuracy For Each Pair of Digits'
+plt.text(0.5, 1.13, figure_title,
+         horizontalalignment='center',
+         fontsize=12,
+         transform = ax.transAxes)
+fig.colorbar(matrix, orientation='horizontal', fraction=.05) #, ticks=[.50, .60, .70, .80, .90, 1]
+ax.set_xticks(xAx)
+ax.set_yticks(yAx)
+
+plt.savefig('a7p5accuracy_3.pdf')
+
+plt.show()
 
 
 #end
+
+
+# digitArray[k, j] = percept.overall_accuracy #training accuracy
+#just call percept.predict(w, x)
+
+# for i in range(1000):
+#     # index = np.random.choice([k, j])#need to pick k or j randomly i.e. k=0, j=1, test the result
+#     # print(index)
+#
+#     result = percept.classify(percept.get_weights(), unseenDict[index][i % 500])
+#     # print(result)
+#     if index == k and result == 0:
+#         correct += 1
+#         index = j
+#
+#     elif index == j and result == 1:
+#         correct += 1
+#         index = k
+#
+# digitArray[k, j] = correct / 1000
