@@ -207,13 +207,6 @@ def weightMatrix(weights, dims, save=False, fileName='TITLE',method=None, bounds
     classifications of “0” vs “1”. What does this tell you about the proportion of the image
     which is diagnostic about “0” vs “1”?"""
 
-def setToZero(trainDict, unseenDict, N):
-    perceptron01 = Perceptron(N, trainDict, 0, 1)
-    perceptron01.train(.97, 5, 25)
-    return None
-#train on 0,1 using training and unseen dictionaries
-#change 10 * i (1 - 78) 'closest weights to 0'
-#for each change, classify
 def testClassification(numIters, index, digit0, digit1, perceptron, unseenDict):
     numCorrect = 0
 
@@ -228,7 +221,31 @@ def testClassification(numIters, index, digit0, digit1, perceptron, unseenDict):
             index = digit0
 
     return numCorrect, index
-    
+
+def setToZero(trainDict, unseenDict, N, digit0, digit1):
+    accuracyList = []
+    xList = [10 * i for i in range(1, 79)]
+    perceptron01 = Perceptron(N, trainDict, digit0, digit1)
+    perceptron01.train(.97, 5, 25)
+    modWeights = np.copy(percepttron01.get_weights())
+
+    #do testClassification 78 times
+    for x in range(78):
+        #some way to set weights closest to 0 for 10,20,30, etc.
+
+        result, index = testClassification(1000, digit0, digit0, digit1, perceptron01, unseenDict)
+        accuracyList += [result / 1000]
+
+    return accuracyList, xList
+
+#train on 0,1 using training and unseen dictionaries
+#change 10 * i (1 - 78) 'closest weights to 0'
+#for each change, classify
+accList, xList = setToZero(trainingImages, unseenImages, N, 0, 1)
+print(accList)
+print(len(accList))
+print(xList)
+
 """Problem 5: Next show a matrix of the classification accuracy of each pair of digits
     after enough training. Make this a plot (with colors for accuracy rather than numbers).
     Does it match your intuitions about which pairs should be easy vs. hard? Why or why not?
@@ -258,32 +275,32 @@ def allDigitsAcc(trainDict, unseenDict, N):
 # np.save('accMatrix_X', xAx)
 # np.save('accMatrix_Y', yAx)
 
-grid = np.load('accMatrix.npy')
-xAx = np.load('accMatrix_X.npy')
-yAx = np.load('accMatrix_Y.npy')
-
-plt.rcParams['xtick.bottom'] = plt.rcParams['xtick.labelbottom'] = False
-plt.rcParams['xtick.top'] = plt.rcParams['xtick.labeltop'] = True
-
-fig, ax = plt.subplots() #figsize=(10,10)
-matrix = plt.imshow(grid, cmap='inferno', extent=[0, 9, 9, 0]) #'coolwarm'
-figure_title = 'Classification Accuracy For Each Pair of Digits'
-plt.text(0.5, 1.13, figure_title,
-         horizontalalignment='center',
-         fontsize=12,
-         transform = ax.transAxes)
-fig.colorbar(matrix, orientation='horizontal', fraction=.05) #, ticks=[.50, .60, .70, .80, .90, 1]
-ax.set_xticks(xAx)
-ax.set_yticks(yAx)
-
-plt.savefig('a7p5accuracy_3.pdf')
-
-plt.show()
+# grid = np.load('accMatrix.npy')
+# xAx = np.load('accMatrix_X.npy')
+# yAx = np.load('accMatrix_Y.npy')
+#
+# plt.rcParams['xtick.bottom'] = plt.rcParams['xtick.labelbottom'] = False
+# plt.rcParams['xtick.top'] = plt.rcParams['xtick.labeltop'] = True
+#
+# fig, ax = plt.subplots() #figsize=(10,10)
+# matrix = plt.imshow(grid, cmap='inferno', extent=[0, 9, 9, 0]) #'coolwarm'
+# figure_title = 'Classification Accuracy For Each Pair of Digits'
+# plt.text(0.5, 1.13, figure_title,
+#          horizontalalignment='center',
+#          fontsize=12,
+#          transform = ax.transAxes)
+# fig.colorbar(matrix, orientation='horizontal', fraction=.05) #, ticks=[.50, .60, .70, .80, .90, 1]
+# ax.set_xticks(xAx)
+# ax.set_yticks(yAx)
+#
+# plt.savefig('a7p5accuracy_3.pdf')
+#
+# plt.show()
 
 
 #end
 
-
+#DELETE BELOW BEFORE SUBMISSION
 # digitArray[k, j] = percept.overall_accuracy #training accuracy
 #just call percept.predict(w, x)
 
