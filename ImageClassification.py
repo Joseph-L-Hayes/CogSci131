@@ -198,8 +198,8 @@ def weightMatrix(weights, dims, save=False, fileName='TITLE',method=None, bounds
 
     plt.show()
 
-boundList = [-1, 1]
-weightMatrix(np.load('zero_one.npy'), 28, method=4, bounds=boundList)
+# boundList = [-1, 1]
+# weightMatrix(np.load('zero_one.npy'), 28, method=4, bounds=boundList)
 
 """Problem 4: What should you expect to happen if you set the elements of the weight vector
     which are close to zero to be actually zero? Do this for the 10, 20, 30, ... 780 weight
