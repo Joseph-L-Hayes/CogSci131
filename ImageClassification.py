@@ -46,6 +46,7 @@ def loadImages(files, show=False, unseen=False): #if unseen, save 1000 into anot
             print(files[f] + '.npy loaded')
 
     if unseen:
+        print('Creating a dictionary of test images, 500 for each digit...')
         for x in range(len(trainingDict)):
             unseenDict[x] = np.empty((500, 784))
 
@@ -54,14 +55,15 @@ def loadImages(files, show=False, unseen=False): #if unseen, save 1000 into anot
                 unseenDict[x][i] = trainingDict[x][randomIndex]
                 trainingDict[x] = np.delete(trainingDict[x], randomIndex, 0)
             print('...')
+    print('Test dictionary complete')
 
 
     return trainingDict, unseenDict
 
 fileNames = ['Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine']
 
-images, unseenImages = loadImages(fileNames, show=True, unseen=True)
-N = len(images[0][0])
+trainingImages, unseenImages = loadImages(fileNames, unseen=True)
+N = len(trainingImages[0][0])
 assert N == DIM[0]*DIM[1] # just check our sizes to be sure
 
 """Problem 1: Write an implementation of the perceptron learning algorithm that first
@@ -89,10 +91,10 @@ class Perceptron(object):
 
     def dotProd(self, w, x):
 
-        return np.dot(w, x) #changed to indexed weights w[i]
+        return np.dot(w, x)
 
     def predict(self, w, x):
-        dot = self.dotProd(w, x) #change to w[i]
+        dot = self.dotProd(w, x + self.bias) #added self.bias, needs testing
 
         if dot >= 0:
             return 1
@@ -159,7 +161,7 @@ class Perceptron(object):
         if plot:
             self.plot_accuracy(xAxis, accuracy_trace)
 
-# zeroOnePercept = Perceptron(N, images, 4, 9)
+# zeroOnePercept = Perceptron(N, trainingImages, 4, 9)
 # beforeWeight = np.copy(zeroOnePercept.get_weights())
 # zeroOnePercept.train(.97, 5, 25, plot=True)
 # print(zeroOnePercept.overall_accuracy) #will give the last accuracy number aka overall_accuracy
@@ -204,38 +206,53 @@ def weightMatrix(weights, dims, save=False, fileName='TITLE',method=None, bounds
     Essentially, repeat question 1 for training weights. Then train on an unseen
     data set for each pair, make matrix of accuracy on unseen data"""
 
-def allDigits(imageDict, N):
+def allDigitsAcc(trainDict, unseenDict, N):
     digitArray = np.zeros(100)
     digitArray = digitArray.reshape(10, 10)
     xlabels = np.arange(0, 10)
     ylabels = np.arange(0, 10)
 
-    for k in range(len(imageDict.items())):
-        for j in range(len(imageDict.items())):
-            percept = Perceptron(N, imageDict, k, j)
+    for k in range(len(trainDict.items())):
+        for j in range(len(trainDict.items())):
+            correct = 0
+            percept = Perceptron(N, trainDict, k, j)
             percept.train(.97, 5, 25)
-            digitArray[k, j] = percept.overall_accuracy
+            # digitArray[k, j] = percept.overall_accuracy #training accuracy
+            #just call percept.predict(w, x)
+            for i in range(1000):
+                index = np.random.choice([k, j])#need to pick k or j randomly i.e. k=0, j=1, test the result
+                print(index)
+
+                result = percept.predict(percept.get_weights(), unseenDict[index][i % 500])
+                print(result)
+                if index == k and result == 1:
+                    correct += 1
+
+                elif index == j and result == 0:
+                    correct += 1
+
+            digitArray[k, j] = correct / 1000
+            print(digitArray[k, j])
+
 
     return digitArray, xlabels, ylabels
 
 
-# grid, xAx, yAx = allDigits(images, N)
+grid, xAx, yAx = allDigitsAcc(trainingImages, unseenImages, N)
 # np.save('accMatrix', grid)
 # np.save('accMatrix_X', xAx)
 # np.save('accMatrix_Y', yAx)
 
-
-grid = np.load('accMatrix.npy')
-xAx = np.load('accMatrix_X.npy')
-yAx = np.load('accMatrix_Y.npy')
+# grid = np.load('accMatrix.npy')
+# xAx = np.load('accMatrix_X.npy')
+# yAx = np.load('accMatrix_Y.npy')
 
 plt.rcParams['xtick.bottom'] = plt.rcParams['xtick.labelbottom'] = False
 plt.rcParams['xtick.top'] = plt.rcParams['xtick.labeltop'] = True
 
 fig, ax = plt.subplots() #figsize=(10,10)
 matrix = plt.imshow(grid, cmap='coolwarm', extent=[0, 9, 9, 0])
-fig.colorbar(matrix, orientation='horizontal', fraction=.05, ticks=[.50, .60, .70, .80, .90, 1.0])
-# ax.xticks(ha='middle')
+fig.colorbar(matrix, orientation='horizontal', fraction=.05, ticks=[.50, .60, .70, .80, .90, 1])
 ax.set_xticks(xAx)
 ax.set_yticks(yAx)
 
