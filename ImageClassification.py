@@ -313,11 +313,11 @@ def allDigitsAcc(trainDict, unseenDict, N):
     return digitArray, xlabels, ylabels
 
 #uncomment below to run code for Problem 5
-grid, xAx, yAx = allDigitsAcc(trainingImages, unseenImages, N)
-np.save('accMatrix', grid)
-np.save('accMatrix_X', xAx)
-np.save('accMatrix_Y', yAx)
-
+# grid, xAx, yAx = allDigitsAcc(trainingImages, unseenImages, N)
+# np.save('accMatrix', grid)
+# np.save('accMatrix_X', xAx)
+# np.save('accMatrix_Y', yAx)
+#
 grid = np.load('accMatrix.npy')
 xAx = np.load('accMatrix_X.npy')
 yAx = np.load('accMatrix_Y.npy')
