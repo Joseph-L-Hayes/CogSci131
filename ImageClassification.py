@@ -182,7 +182,12 @@ class Perceptron(object):
 
     ANSWER: INCOMPLETE"""
 
-"""Problem 3: """
+"""Problem 3: What do large negative and large positive values mean, intuitively? What
+    do numbers near zero mean? Why does this matrix look the way that it does, in terms
+    of where large positive and negative terms are located?
+
+    ANSWER: INCOMPLETE """
+
 def weightMatrix(weights, dims, save=False, fileName='TITLE',method=None, bounds=[0, 1]):
     # weights= weights[10]
     weights = weights.reshape(dims, dims)
@@ -205,7 +210,9 @@ def weightMatrix(weights, dims, save=False, fileName='TITLE',method=None, bounds
     which are close to zero to be actually zero? Do this for the 10, 20, 30, ... 780 weight
     values closest to zero (in absolute value) and plot the resulting accuracies on 1000 random
     classifications of “0” vs “1”. What does this tell you about the proportion of the image
-    which is diagnostic about “0” vs “1”?"""
+    which is diagnostic about “0” vs “1”?
+
+    ANSWER: INCOMPLETE"""
 
 def testClassification(numIters, index, digit0, digit1, perceptron, unseenDict, weights):
     numCorrect = 0
@@ -257,12 +264,14 @@ plt.xlabel('Weight Values Changed to 0 (smallest first)')
 plt.show()
 plt.close()
 
-plt.imshow(moddedWeights[11])
-plt.savefig('mod_at_11.pdf')
+# plt.imshow(moddedWeights[11])
+# plt.savefig('mod_at_11.pdf')
 
 """Problem 5: Next show a matrix of the classification accuracy of each pair of digits
     after enough training. Make this a plot (with colors for accuracy rather than numbers).
     Does it match your intuitions about which pairs should be easy vs. hard? Why or why not?
+
+    ANSWER: INCOMPLETE
     """
 
 def allDigitsAcc(trainDict, unseenDict, N):
