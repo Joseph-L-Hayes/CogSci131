@@ -207,11 +207,11 @@ def weightMatrix(weights, dims, save=False, fileName='TITLE',method=None, bounds
     classifications of “0” vs “1”. What does this tell you about the proportion of the image
     which is diagnostic about “0” vs “1”?"""
 
-def testClassification(numIters, index, digit0, digit1, perceptron, unseenDict):
+def testClassification(numIters, index, digit0, digit1, perceptron, unseenDict, weights):
     numCorrect = 0
 
     for i in range(numIters):
-        result = perceptron.classify(perceptron.get_weights(), unseenDict[index][i % (numIters // 2)])
+        result = perceptron.classify(weights, unseenDict[index][i % (numIters // 2)])
 
         if index == digit0 and result == 0:
             numCorrect += 1
@@ -224,27 +224,41 @@ def testClassification(numIters, index, digit0, digit1, perceptron, unseenDict):
 
 def setToZero(trainDict, unseenDict, N, digit0, digit1):
     accuracyList = []
+    weightsList = []
     xList = [10 * i for i in range(1, 79)]
     perceptron01 = Perceptron(N, trainDict, digit0, digit1)
     perceptron01.train(.97, 5, 25)
-    modWeights = np.copy(percepttron01.get_weights())
+    modWeights = np.copy(perceptron01.get_weights())
+    modWeights = np.absolute(modWeights) #convert all to positive values
+    modWeights[modWeights == 0] = 1000
 
-    #do testClassification 78 times
-    for x in range(78):
-        #some way to set weights closest to 0 for 10,20,30, etc.
+    for x in range(1, 79):
+        k = 0
 
-        result, index = testClassification(1000, digit0, digit0, digit1, perceptron01, unseenDict)
+        while k < (len(range(x * 10))):
+            index = np.argmin(modWeights)
+            perceptron01.weights[index] = 0
+            modWeights[index] = 1000
+            k += 1
+
+        result, index = testClassification(1000, digit0, digit0, digit1, perceptron01, unseenDict, perceptron01.weights)
         accuracyList += [result / 1000]
+        weightsList += [np.copy(perceptron01.weights.reshape(28, 28))]
 
-    return accuracyList, xList
+    return accuracyList, xList, weightsList
 
-#train on 0,1 using training and unseen dictionaries
-#change 10 * i (1 - 78) 'closest weights to 0'
-#for each change, classify
-accList, xList = setToZero(trainingImages, unseenImages, N, 0, 1)
+accList, xList, moddedWeights = setToZero(trainingImages, unseenImages, N, 0, 1)
 print(accList)
-print(len(accList))
-print(xList)
+plt.plot(xList, accList)
+plt.title('Modified Weight Values at Intervals 10, 20, 30, ..., 780')
+plt.ylabel('Average Accuracy')
+plt.xlabel('Weight Values Changed to 0 (smallest first)')
+# plt.savefig('a7p4.pdf')
+plt.show()
+plt.close()
+
+plt.imshow(moddedWeights[11])
+plt.savefig('mod_at_11.pdf')
 
 """Problem 5: Next show a matrix of the classification accuracy of each pair of digits
     after enough training. Make this a plot (with colors for accuracy rather than numbers).
@@ -264,12 +278,12 @@ def allDigitsAcc(trainDict, unseenDict, N):
             percept.train(.97, 5, 25)
             index = k
 
-            result, index = testClassification(1000, index, k, j, percept, unseenDict)
+            result, index = testClassification(1000, index, k, j, percept, unseenDict, percept.get_weights())
             digitArray[k, j] = result / 1000
 
     return digitArray, xlabels, ylabels
 
-
+#uncomment below to run code for Problem 5
 # grid, xAx, yAx = allDigitsAcc(trainingImages, unseenImages, N)
 # np.save('accMatrix', grid)
 # np.save('accMatrix_X', xAx)
@@ -299,23 +313,3 @@ def allDigitsAcc(trainDict, unseenDict, N):
 
 
 #end
-
-#DELETE BELOW BEFORE SUBMISSION
-# digitArray[k, j] = percept.overall_accuracy #training accuracy
-#just call percept.predict(w, x)
-
-# for i in range(1000):
-#     # index = np.random.choice([k, j])#need to pick k or j randomly i.e. k=0, j=1, test the result
-#     # print(index)
-#
-#     result = percept.classify(percept.get_weights(), unseenDict[index][i % 500])
-#     # print(result)
-#     if index == k and result == 0:
-#         correct += 1
-#         index = j
-#
-#     elif index == j and result == 1:
-#         correct += 1
-#         index = k
-#
-# digitArray[k, j] = correct / 1000
