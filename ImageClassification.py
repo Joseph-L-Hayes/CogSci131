@@ -230,7 +230,7 @@ def setToZero(trainDict, unseenDict, N, digit0, digit1):
     perceptron01.train(.97, 5, 25)
     modWeights = np.copy(perceptron01.get_weights())
     modWeights = np.absolute(modWeights) #convert all to positive values
-    modWeights[modWeights == 0] = 1000
+    modWeights[modWeights == 0] = 1000 #make all 0's into 1000, if any
 
     for x in range(1, 79):
         k = 0
