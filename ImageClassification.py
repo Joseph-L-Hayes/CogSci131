@@ -35,7 +35,7 @@ def saveImages(files, show=False):
         if show:
             print(files[j] + '.npy saved')
 
-def loadImages(files, show=False, unseen=False): #if unseen, save 1000 into another dict and return separately
+def loadImages(files, show=False, unseen=False):
     """Returns a dictionary of image files with digits as keys"""
     trainingDict = dict()
     unseenDict = dict()
@@ -64,7 +64,7 @@ fileNames = ['Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eig
 
 trainingImages, unseenImages = loadImages(fileNames, unseen=True)
 N = len(trainingImages[0][0])
-# assert N == DIM[0]*DIM[1] # just check our sizes to be sure
+assert N == DIM[0]*DIM[1] # just check our sizes to be sure
 
 """Problem 1: Write an implementation of the perceptron learning algorithm that first
     loads images for the digit “0” and then for the digit “1”. Start with random weights
@@ -94,7 +94,7 @@ class Perceptron(object):
         return np.dot(w, x)
 
     def predict(self, w, x, b):
-        dot = self.dotProd(w, x) #added self.bias, needs testing
+        dot = self.dotProd(w, x)
 
         if dot >= 0:
             return 1
@@ -137,16 +137,15 @@ class Perceptron(object):
         acc_delta = 1
         getcontext().prec = precision
 
-        # while accuracy <= threshold or acc_delta > 0:
-        while (all_blocks // 25) <= 500: #400 blocks from problem 1 convergence
+        while (all_blocks // 25) <= 500:
 
             xAxis += [all_blocks // 25]
             acc_delta = accuracy
 
             for i in range(blocks):
                 label = self.random_label()
-                data = self.data_set[label] #image set 0 or 1
-                sub_data = random.choice(data) #a (784,) array from image set 0 or 1
+                data = self.data_set[label]
+                sub_data = random.choice(data)
                 y = self.predict(self.weights, sub_data, self.bias)
 
                 if label == 0 and y == 1:
@@ -224,6 +223,13 @@ def weightMatrix(weights, dims, save=False, fileName='FILENAME',method=None, bou
     accuracy up to about 120 elements set to 0 and then the accuracy falls to and hovers around 50%.
     When the accuracy falls to 50% the perceptron is essentially guessing as it doesn't have enough
     feature data to know which digit is which.
+
+    Seeing that about 121 elements of the weight array can essentially be ignored tells me that
+    a low proportion of the image is diagnostic about 0 vs 1 especially when you consider
+    that a large portion of the weights were not effected by training in the first place.
+    I created a matrix of the weight array using the last version with ~98% accuracy and
+    it contained only 4 or 5 elements in the area of the digits but it was enough for linear
+    separation.
     """
 
 def testClassification(numIters, digit0, digit1, perceptron, unseenDict, weights):
@@ -306,7 +312,6 @@ def allDigitsAcc(trainDict, unseenDict, N):
             correct = 0
             percept = Perceptron(N, trainDict, k, j)
             percept.train(.97, 5, 25)
-            #remove label, does nothing, needed to mod for P4!
             result = testClassification(1000, k, j, percept, unseenDict, percept.get_weights())
             digitArray[k, j] = result / 1000
 
@@ -332,7 +337,7 @@ plt.text(0.5, 1.13, figure_title,
          horizontalalignment='center',
          fontsize=12,
          transform = ax.transAxes)
-fig.colorbar(matrix, orientation='horizontal', fraction=.05) #, ticks=[.50, .60, .70, .80, .90, 1]
+fig.colorbar(matrix, orientation='horizontal', fraction=.05)
 ax.set_xticks(xAx)
 ax.set_yticks(yAx)
 
