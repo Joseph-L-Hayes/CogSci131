@@ -4,6 +4,8 @@ import random
 import matplotlib.pyplot as plt
 import image_resources as ir
 from decimal import *
+import time
+import matplotlib.animation as animation
 
 # Functions that might be useful (please read the documentation)
 # x.flatten() (take a N-dimensional numpy array and make it one-dimensional)
@@ -62,7 +64,7 @@ def loadImages(files, show=False, unseen=False):
 
 fileNames = ['Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine']
 
-trainingImages, unseenImages = loadImages(fileNames, unseen=True)
+trainingImages, unseenImages = loadImages(fileNames, unseen=False)
 N = len(trainingImages[0][0])
 assert N == DIM[0]*DIM[1] # just check our sizes to be sure
 
@@ -87,6 +89,7 @@ class Perceptron(object):
         self.overall_accuracy = 0
 
     def get_weights(self):
+        #changed this to a copy when live plotting; may cause issues with other functions already written
         return self.weights
 
     def dotProd(self, w, x):
@@ -154,8 +157,9 @@ class Perceptron(object):
                 elif label == 1 and y == 0:
                     self.bias += sub_data
                     self.weights += sub_data + self.bias
-                else:
+                elif (label == 0 and y == 0) or (label == 1 and y == 1):
                     correct += 1
+
 
             accuracy = correct / all_blocks
             acc_delta = abs(round(Decimal(accuracy), precision) - round(Decimal(acc_delta), precision))
@@ -167,8 +171,9 @@ class Perceptron(object):
         if plot:
             self.plot_accuracy(xAxis, accuracy_trace)
 
-# zeroOnePercept = Perceptron(N, trainingImages, 0, 1)
-# zeroOnePercept.train(.97, 5, 25, plot=True)
+
+zeroOnePercept = Perceptron(N, trainingImages, 0, 1)
+zeroOnePercept.train(.97, 5, 25, plot=False)
 #
 # np.save('zero_one_weights', zeroOnePercept.get_weights())
 
@@ -323,27 +328,27 @@ def allDigitsAcc(trainDict, unseenDict, N):
 # np.save('accMatrix_X', xAx)
 # np.save('accMatrix_Y', yAx)
 #
-grid = np.load('accMatrix.npy')
-xAx = np.load('accMatrix_X.npy')
-yAx = np.load('accMatrix_Y.npy')
-
-plt.rcParams['xtick.bottom'] = plt.rcParams['xtick.labelbottom'] = False
-plt.rcParams['xtick.top'] = plt.rcParams['xtick.labeltop'] = True
-
-fig, ax = plt.subplots() #figsize=(10,10)
-matrix = plt.imshow(grid, cmap='inferno', extent=[0, 9, 9, 0]) #'coolwarm'
-figure_title = 'Classification Accuracy For Each Pair of Digits'
-plt.text(0.5, 1.13, figure_title,
-         horizontalalignment='center',
-         fontsize=12,
-         transform = ax.transAxes)
-fig.colorbar(matrix, orientation='horizontal', fraction=.05)
-ax.set_xticks(xAx)
-ax.set_yticks(yAx)
-
-plt.savefig('a7p5accuracy_4.pdf')
-
-plt.show()
+# grid = np.load('accMatrix.npy')
+# xAx = np.load('accMatrix_X.npy')
+# yAx = np.load('accMatrix_Y.npy')
+#
+# plt.rcParams['xtick.bottom'] = plt.rcParams['xtick.labelbottom'] = False
+# plt.rcParams['xtick.top'] = plt.rcParams['xtick.labeltop'] = True
+#
+# fig, ax = plt.subplots() #figsize=(10,10)
+# matrix = plt.imshow(grid, cmap='inferno', extent=[0, 9, 9, 0]) #'coolwarm'
+# figure_title = 'Classification Accuracy For Each Pair of Digits'
+# plt.text(0.5, 1.13, figure_title,
+#          horizontalalignment='center',
+#          fontsize=12,
+#          transform = ax.transAxes)
+# fig.colorbar(matrix, orientation='horizontal', fraction=.05)
+# ax.set_xticks(xAx)
+# ax.set_yticks(yAx)
+#
+# plt.savefig('a7p5accuracy_4.pdf')
+#
+# plt.show()
 
 
 #end
