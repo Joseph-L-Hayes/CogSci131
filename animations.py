@@ -107,15 +107,44 @@ digit0, digit1 = 1, 0
 trainingImages, unseenImages = loadImages(fileNames, unseen=False)
 percept = Perceptron(np.load('animationWeights.npy'), 784, trainingImages, digit0, digit1)
 
+# class AnimateMatrix(object):
+#     def __init__(self, perceptron, digit0, digit1):
+#         self.perceptron = perceptron
+#         self.digit0 = digit0
+#         self.digit1 = digit1
+#         self.im = plt.imshow(perceptron.aniTrain(), animated=True, interpolation=ir.interpol_methods[9], cmap=plt.get_cmap(ir.color_maps[ir.color_maps.index('inferno')])) #, cmap=plt.get_cmap(ir.color_maps[ir.color_maps.index('inferno')])
+#         self.numIters = 0
+#
+#     def updatefig(self, *args):
+#
+#         self.im.set_array(self.perceptron.aniTrain())
+#         self.numIters += 1
+#         plt.xlabel('Training iterations: ' + str(self.numIters))
+#
+#         return self.im,
+#
+#     def animateMatrix(self):
+#         fig = plt.figure(figsize=(5, 5))
+#         # im.axes.get_xaxis().set_visible(False)
+#         self.im.axes.get_yaxis().set_visible(False)
+#         #put aniTrain as function in imshow, first arg
+#         fig.colorbar(self.im, orientation='horizontal', fraction=.0415)
+#         plt.title('Perceptron Training For Digits ' + str(self.digit0) + ' and ' + str(self.digit1), fontsize=10)
+#         ani = animation.FuncAnimation(fig, self.updatefig, frames=1, interval=10, blit=False)
+#         plt.show()
+#
+#
+# model = AnimateMatrix(percept, digit0, digit1)
+# model.animateMatrix()
 
 def updatefig(*args):
-    global im, numIters, digit0, digit1
-
+    global im, numIters
     im.set_array(percept.aniTrain())
     numIters += 1
     plt.xlabel('Training iterations: ' + str(numIters))
 
     return im,
+
 numIters = 0
 fig = plt.figure(figsize=(5, 5))
 im = plt.imshow(percept.aniTrain(), animated=True, interpolation=ir.interpol_methods[9], cmap=plt.get_cmap(ir.color_maps[ir.color_maps.index('inferno')])) #, cmap=plt.get_cmap(ir.color_maps[ir.color_maps.index('inferno')])
@@ -123,6 +152,6 @@ im = plt.imshow(percept.aniTrain(), animated=True, interpolation=ir.interpol_met
 im.axes.get_yaxis().set_visible(False)
 #put aniTrain as function in imshow, first arg
 # fig.colorbar(im, orientation='horizontal', fraction=.0415)
-plt.title('Perceptron Training Digits ' + str(digit0) + ' and ' + str(digit1), fontsize=10)
-ani = animation.FuncAnimation(fig, updatefig, frames=1000, interval=10, blit=False)
+plt.title('Perceptron Training For Digits ' + str(digit0) + ' and ' + str(digit1), fontsize=10)
+ani = animation.FuncAnimation(fig, updatefig, frames=1, interval=10, blit=False)
 plt.show()
