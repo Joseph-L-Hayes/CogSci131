@@ -33,8 +33,8 @@ trainingImages, unseenImages = loadImages(fileNames, unseen=False)
 
 class Perceptron(object):
 
-    def __init__(self, dimensions, data, digit0, digit1):
-        self.weights = np.random.normal(0, 1, size=dimensions)
+    def __init__(self, weights, dimensions, data, digit0, digit1):
+        self.weights = weights
         self.data_set = {0: data[digit0], 1: data[digit1]}
         self.digits = [digit0, digit1]
         self.bias = np.zeros(dimensions)
@@ -102,26 +102,27 @@ class Perceptron(object):
 
         return self.weights.reshape(28, 28)
 
-
+# np.save('animationWeights.npy', np.random.normal(0, 1, size=784))
+digit0, digit1 = 1, 0
 trainingImages, unseenImages = loadImages(fileNames, unseen=False)
-percept = Perceptron(784, trainingImages, 1, 0)
+percept = Perceptron(np.load('animationWeights.npy'), 784, trainingImages, digit0, digit1)
 
 
 def updatefig(*args):
-    global im, numIters
+    global im, numIters, digit0, digit1
 
     im.set_array(percept.aniTrain())
     numIters += 1
-    plt.xlabel('Number of training iterations: ' + str(numIters))
+    plt.xlabel('Training iterations: ' + str(numIters))
 
     return im,
 numIters = 0
 fig = plt.figure(figsize=(5, 5))
-im = plt.imshow(percept.aniTrain(), animated=True, interpolation=ir.interpol_methods[10], cmap=plt.get_cmap(ir.color_maps[ir.color_maps.index('inferno')])) #, cmap=plt.get_cmap(ir.color_maps[ir.color_maps.index('inferno')])
+im = plt.imshow(percept.aniTrain(), animated=True, interpolation=ir.interpol_methods[9], cmap=plt.get_cmap(ir.color_maps[ir.color_maps.index('inferno')])) #, cmap=plt.get_cmap(ir.color_maps[ir.color_maps.index('inferno')])
 # im.axes.get_xaxis().set_visible(False)
 im.axes.get_yaxis().set_visible(False)
 #put aniTrain as function in imshow, first arg
 # fig.colorbar(im, orientation='horizontal', fraction=.0415)
-plt.title('Heat Map of Trained Weight Matrix For Digits 0 and 1', fontsize=10)
-ani = animation.FuncAnimation(fig, updatefig, frames=500, interval=10, blit=False)
+plt.title('Perceptron Training Digits ' + str(digit0) + ' and ' + str(digit1), fontsize=10)
+ani = animation.FuncAnimation(fig, updatefig, frames=1000, interval=10, blit=False)
 plt.show()
