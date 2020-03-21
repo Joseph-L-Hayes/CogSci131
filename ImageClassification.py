@@ -59,7 +59,6 @@ def loadImages(files, show=False, unseen=False):
             print('...')
     print('Test dictionary complete')
 
-
     return trainingDict, unseenDict
 
 fileNames = ['Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine']
