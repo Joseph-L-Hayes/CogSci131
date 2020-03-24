@@ -71,64 +71,50 @@ class Perceptron(object):
         return self.weights.reshape(28, 28)
 
 # np.save('animationWeights.npy', np.random.normal(0, 1, size=784))
-digit0, digit1 = 1, 0
-trainingImages, unseenImages = loadImages(fileNames, unseen=False)
-percept = Perceptron(np.load('animationWeights.npy'), 784, trainingImages, digit0, digit1)
-
 
 def updatefig(*args):
-    global im, numIters
-    im.set_array(percept.aniTrain())
-    numIters += 1
-    plt.xlabel('Training iterations: ' + str(numIters))
+    global im, im2, im3, numIters
+
+    if numIters <= 10:
+        numIters += 1
+        return im,
+    else:
+        im.set_array(percept.aniTrain())
+        plt.xlabel('Training iterations: ' + str(numIters))
+        im.set_array(percept.aniTrain()), im2.set_array(percept2.aniTrain()), im3.set_array(percept3.aniTrain())
+        # cbar.update_normal(im)
+        cbar.ax.set_xlabel('Weight Range\nBatches: ' + str(numIters), rotation=0, ha='center', fontsize=15)
+        numIters += 1
 
     return im,
 
+trainingImages, unseenImages = loadImages(fileNames, unseen=False)
+percept = Perceptron(np.load('animationWeights.npy'), 784, trainingImages, 0, 1)
+percept2 = Perceptron(np.load('animationWeights.npy'), 784, trainingImages, 0, 2)
+percept3 = Perceptron(np.load('animationWeights.npy'), 784, trainingImages, 0, 3)
 Writer = animation.writers['ffmpeg']
 writer = Writer(fps=15, metadata=dict(artist='JS'), bitrate=1800)
 
 numIters = 0
-fig = plt.figure(figsize=(5, 5))
-im = plt.imshow(percept.aniTrain(), animated=True, interpolation=ir.interpol_methods[9], cmap=plt.get_cmap(ir.color_maps[ir.color_maps.index('tab10')])) #, cmap=plt.get_cmap(ir.color_maps[ir.color_maps.index('inferno')])
-# im.axes.get_xaxis().set_visible(False)
+fig, axs = plt.subplots(1, 3, figsize=(13, 6))
+cmap='inferno_r'
+interpol = ir.interpol_methods[2]
+# fig, = plt.figure(figsize=(5, 5))
+im = axs[0].imshow(np.load('animationWeights.npy').reshape(28, 28), animated=True, interpolation=interpol, cmap=cmap)
+im2 = axs[1].imshow(np.load('animationWeights.npy').reshape(28, 28), animated=True, interpolation=interpol, cmap=cmap)
+im3 = axs[2].imshow(np.load('animationWeights.npy').reshape(28, 28), animated=True, interpolation=interpol, cmap=cmap)
+im.axes.get_xaxis().set_visible(False)
 im.axes.get_yaxis().set_visible(False)
-#put aniTrain as function in imshow, first arg
-# fig.colorbar(im, orientation='horizontal', fraction=.0415)
-plt.title('Perceptron Training For Digits ' + str(digit0) + ' and ' + str(digit1), fontsize=10)
-ani = animation.FuncAnimation(fig, updatefig, frames=2500, interval=10, blit=True)
-ani.save('1-0_weight_training_FUNKS.mp4', writer=writer)
+im2.axes.get_xaxis().set_visible(False)
+im2.axes.get_yaxis().set_visible(False)
+im3.axes.get_xaxis().set_visible(False)
+im3.axes.get_yaxis().set_visible(False)
+axs[0].set_title('Digits 0 and 1', fontsize=15)
+axs[1].set_title('Digits 0 and 2', fontsize=15)
+axs[2].set_title('Digits 0 and 3', fontsize=15)
+
+cbar = fig.colorbar(im, ax=axs.ravel().tolist(), shrink=0.98, orientation='horizonal', aspect=50)
+fig.suptitle('Perceptron Training', fontsize=20, y=.96)
+ani = animation.FuncAnimation(fig, updatefig, frames=1000, interval=10, blit=False)
+# ani.save('0-3_multi_weight_LOFI.mp4', writer=writer)
 plt.show()
-
-
-
-
-#Scrap?
-# class AnimateMatrix(object):
-#     def __init__(self, perceptron, digit0, digit1):
-#         self.perceptron = perceptron
-#         self.digit0 = digit0
-#         self.digit1 = digit1
-#         self.im = plt.imshow(perceptron.aniTrain(), animated=True, interpolation=ir.interpol_methods[9], cmap=plt.get_cmap(ir.color_maps[ir.color_maps.index('inferno')])) #, cmap=plt.get_cmap(ir.color_maps[ir.color_maps.index('inferno')])
-#         self.numIters = 0
-#
-#     def updatefig(self, *args):
-#
-#         self.im.set_array(self.perceptron.aniTrain())
-#         self.numIters += 1
-#         plt.xlabel('Training iterations: ' + str(self.numIters))
-#
-#         return self.im,
-#
-#     def animateMatrix(self):
-#         fig = plt.figure(figsize=(5, 5))
-#         # im.axes.get_xaxis().set_visible(False)
-#         self.im.axes.get_yaxis().set_visible(False)
-#         #put aniTrain as function in imshow, first arg
-#         fig.colorbar(self.im, orientation='horizontal', fraction=.0415)
-#         plt.title('Perceptron Training For Digits ' + str(self.digit0) + ' and ' + str(self.digit1), fontsize=10)
-#         ani = animation.FuncAnimation(fig, self.updatefig, frames=1, interval=10, blit=False)
-#         plt.show()
-#
-#
-# model = AnimateMatrix(percept, digit0, digit1)
-# model.animateMatrix()
