@@ -73,48 +73,49 @@ class Perceptron(object):
 # np.save('animationWeights.npy', np.random.normal(0, 1, size=784))
 
 def updatefig(*args):
-    global im, im2, im3, numIters
+    # global im, im2, im3, numIters
+    global images, numIters, perceptron_list, fig, weights
+    percent_change = int(np.sum(perceptron_list[0].weights != weights) / weights.size * 100)
 
-    if numIters <= 10:
+    print(str(percent_change) + '% diff')
+
+    if numIters <= 20:
         numIters += 1
-        return im,
     else:
-        im.set_array(percept.aniTrain())
         plt.xlabel('Training iterations: ' + str(numIters))
-        im.set_array(percept.aniTrain()), im2.set_array(percept2.aniTrain()), im3.set_array(percept3.aniTrain())
-        # cbar.update_normal(im)
-        cbar.ax.set_xlabel('Weight Range\nBatches: ' + str(numIters), rotation=0, ha='center', fontsize=15)
+        fig.suptitle('Perceptron Training\nIterations: ' + str(numIters), fontsize=15, y=.98)
         numIters += 1
+        for index in range(len(images)):
+            images[index].set_array(perceptron_list[index].aniTrain())
+        # im.set_array(percept.aniTrain()), im2.set_array(percept2.aniTrain()), im3.set_array(percept3.aniTrain())
+        # cbar.update_normal(im)
+        # cbar.ax.set_xlabel('Weight Range\nBatches: ' + str(numIters), rotation=0, ha='center', fontsize=15)
 
-    return im,
+    return images,
 
 trainingImages, unseenImages = loadImages(fileNames, unseen=False)
-percept = Perceptron(np.load('animationWeights.npy'), 784, trainingImages, 0, 1)
-percept2 = Perceptron(np.load('animationWeights.npy'), 784, trainingImages, 0, 2)
-percept3 = Perceptron(np.load('animationWeights.npy'), 784, trainingImages, 0, 3)
+weights = np.load('animationWeights.npy')
+perceptron_list = [Perceptron(np.copy(weights), 784, trainingImages, 0, i) for i in range(1, 10)]
 Writer = animation.writers['ffmpeg']
-writer = Writer(fps=15, metadata=dict(artist='JS'), bitrate=1800)
+writer = Writer(fps=30, metadata=dict(artist='JS'), bitrate=1800) #fps=15
 
 numIters = 0
-fig, axs = plt.subplots(1, 3, figsize=(13, 6))
+fig, axs = plt.subplots(nrows=3, ncols=3, figsize=(10, 10))
 cmap='inferno_r'
-interpol = ir.interpol_methods[2]
-# fig, = plt.figure(figsize=(5, 5))
-im = axs[0].imshow(np.load('animationWeights.npy').reshape(28, 28), animated=True, interpolation=interpol, cmap=cmap)
-im2 = axs[1].imshow(np.load('animationWeights.npy').reshape(28, 28), animated=True, interpolation=interpol, cmap=cmap)
-im3 = axs[2].imshow(np.load('animationWeights.npy').reshape(28, 28), animated=True, interpolation=interpol, cmap=cmap)
-im.axes.get_xaxis().set_visible(False)
-im.axes.get_yaxis().set_visible(False)
-im2.axes.get_xaxis().set_visible(False)
-im2.axes.get_yaxis().set_visible(False)
-im3.axes.get_xaxis().set_visible(False)
-im3.axes.get_yaxis().set_visible(False)
-axs[0].set_title('Digits 0 and 1', fontsize=15)
-axs[1].set_title('Digits 0 and 2', fontsize=15)
-axs[2].set_title('Digits 0 and 3', fontsize=15)
+interpol = ir.interpol_methods[13] #13 looks good for upscaled
 
-cbar = fig.colorbar(im, ax=axs.ravel().tolist(), shrink=0.98, orientation='horizonal', aspect=50)
+row, col = 3, 3
+images = []
+for i in range(row):
+    for j in range(col):
+        images += [axs[i,j].imshow(np.copy(weights).reshape(28, 28), animated=True, interpolation=interpol, cmap=cmap)]
+        axs[i,j].axes.get_yaxis().set_visible(False)
+        axs[i,j].axes.get_xaxis().set_visible(False)
+        axs[i,j].set_title('Digits ' + str(0) + ' and ' + str((i * row) + j + 1), fontsize=15)
+
+
+# cbar = fig.colorbar(im, ax=axs.ravel().tolist(), shrink=0.98, orientation='horizonal', aspect=50)
 fig.suptitle('Perceptron Training', fontsize=20, y=.96)
 ani = animation.FuncAnimation(fig, updatefig, frames=1000, interval=10, blit=False)
-# ani.save('0-3_multi_weight_LOFI.mp4', writer=writer)
+# ani.save('0-9_multi_weight_HIFI_fpstest.mp4', writer=writer)
 plt.show()
