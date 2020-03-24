@@ -74,22 +74,23 @@ class Perceptron(object):
 
 def updatefig(*args):
     # global im, im2, im3, numIters
-    global images, numIters, perceptron_list, fig, weights
+    global images, numIters, perceptron_list, fig, weights, axis
     percent_change = int(np.sum(perceptron_list[0].weights != weights) / weights.size * 100)
 
-    print(str(percent_change) + '% diff')
+    # print(str(percent_change) + '% diff')
 
     if numIters <= 20:
         numIters += 1
     else:
         plt.xlabel('Training iterations: ' + str(numIters))
-        fig.suptitle('Perceptron Training\nIterations: ' + str(numIters), fontsize=15, y=.98)
+        # fig.suptitle('Perceptron Training', fontsize=20, y=.95)
         numIters += 1
         for index in range(len(images)):
             images[index].set_array(perceptron_list[index].aniTrain())
-        # im.set_array(percept.aniTrain()), im2.set_array(percept2.aniTrain()), im3.set_array(percept3.aniTrain())
-        # cbar.update_normal(im)
-        # cbar.ax.set_xlabel('Weight Range\nBatches: ' + str(numIters), rotation=0, ha='center', fontsize=15)
+            percent_change = int(np.sum(perceptron_list[index].weights != weights) / weights.size * 100)
+            axis[index].set_ylabel('Weight Change: ' + str(percent_change) + '%')
+        cbar.update_normal(images[5])
+        cbar.ax.set_xlabel('Weight Range\nBatches: ' + str(numIters), rotation=0, ha='center', fontsize=15)
 
     return images,
 
@@ -100,22 +101,25 @@ Writer = animation.writers['ffmpeg']
 writer = Writer(fps=30, metadata=dict(artist='JS'), bitrate=1800) #fps=15
 
 numIters = 0
-fig, axs = plt.subplots(nrows=3, ncols=3, figsize=(10, 10))
+fig, axs = plt.subplots(nrows=3, ncols=3, figsize=(12, 12))
+
 cmap='inferno_r'
-interpol = ir.interpol_methods[13] #13 looks good for upscaled
+interpol = ir.interpol_methods[2] #13 looks good for upscaled
 
 row, col = 3, 3
-images = []
+axis, images = [], []
 for i in range(row):
     for j in range(col):
         images += [axs[i,j].imshow(np.copy(weights).reshape(28, 28), animated=True, interpolation=interpol, cmap=cmap)]
-        axs[i,j].axes.get_yaxis().set_visible(False)
+        axis += [axs[i,j]]
+        axs[i,j].set_xticks([])
+        axs[i,j].set_yticks([])
         axs[i,j].axes.get_xaxis().set_visible(False)
-        axs[i,j].set_title('Digits ' + str(0) + ' and ' + str((i * row) + j + 1), fontsize=15)
+        axs[i,j].set_title('Digits ' + str(0) + ' and ' + str((i * row) + j + 1), fontsize=10)
 
-
-# cbar = fig.colorbar(im, ax=axs.ravel().tolist(), shrink=0.98, orientation='horizonal', aspect=50)
-fig.suptitle('Perceptron Training', fontsize=20, y=.96)
+cbar = fig.colorbar(images[0], ax=axs.ravel().tolist(), shrink=0.50, orientation='horizontal', aspect=50, pad=0.05)
+cbar.ax.set_xlabel('Weight Range\nBatches: ' + str(numIters), rotation=0, ha='center', fontsize=15)
+fig.suptitle('Perceptron Training', fontsize=20, y=.94)
 ani = animation.FuncAnimation(fig, updatefig, frames=1000, interval=10, blit=False)
-# ani.save('0-9_multi_weight_HIFI_fpstest.mp4', writer=writer)
-plt.show()
+ani.save('0-9_multi_weight_LOFI_cbar.mp4', writer=writer)
+# plt.show()
