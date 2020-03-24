@@ -73,17 +73,12 @@ class Perceptron(object):
 # np.save('animationWeights.npy', np.random.normal(0, 1, size=784))
 
 def updatefig(*args):
-    # global im, im2, im3, numIters
     global images, numIters, perceptron_list, fig, weights, axis
-    percent_change = int(np.sum(perceptron_list[0].weights != weights) / weights.size * 100)
-
-    # print(str(percent_change) + '% diff')
 
     if numIters <= 20:
         numIters += 1
     else:
         plt.xlabel('Training iterations: ' + str(numIters))
-        # fig.suptitle('Perceptron Training', fontsize=20, y=.95)
         numIters += 1
         for index in range(len(images)):
             images[index].set_array(perceptron_list[index].aniTrain())
@@ -98,13 +93,13 @@ trainingImages, unseenImages = loadImages(fileNames, unseen=False)
 weights = np.load('animationWeights.npy')
 perceptron_list = [Perceptron(np.copy(weights), 784, trainingImages, 0, i) for i in range(1, 10)]
 Writer = animation.writers['ffmpeg']
-writer = Writer(fps=30, metadata=dict(artist='JS'), bitrate=1800) #fps=15
+writer = Writer(fps=30, metadata=dict(artist='JS'), bitrate=1800)
 
 numIters = 0
 fig, axs = plt.subplots(nrows=3, ncols=3, figsize=(12, 12))
 
 cmap='inferno_r'
-interpol = ir.interpol_methods[2] #13 looks good for upscaled
+interpol = ir.interpol_methods[15] #13 looks good for upscaled
 
 row, col = 3, 3
 axis, images = [], []
@@ -121,5 +116,5 @@ cbar = fig.colorbar(images[0], ax=axs.ravel().tolist(), shrink=0.50, orientation
 cbar.ax.set_xlabel('Weight Range\nBatches: ' + str(numIters), rotation=0, ha='center', fontsize=15)
 fig.suptitle('Perceptron Training', fontsize=20, y=.94)
 ani = animation.FuncAnimation(fig, updatefig, frames=1000, interval=10, blit=False)
-ani.save('0-9_multi_weight_LOFI_cbar.mp4', writer=writer)
-# plt.show()
+# ani.save('0-9_multi_weight_LOFI_cbar.mp4', writer=writer)
+plt.show()
