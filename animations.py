@@ -80,12 +80,24 @@ def updatefig(*args):
     else:
         plt.xlabel('Training iterations: ' + str(numIters))
         numIters += 1
+        color = 'black'
         for index in range(len(images)):
             images[index].set_array(perceptron_list[index].aniTrain())
-            percent_change = int(np.sum(perceptron_list[index].weights != weights) / weights.size * 100)
-            axis[index].set_ylabel('Weight Change: ' + str(percent_change) + '%')
-        cbar.update_normal(images[5])
-        cbar.ax.set_xlabel('Weight Range\nBatches: ' + str(numIters), rotation=0, ha='center', fontsize=15)
+            diff = np.sum(perceptron_list[index].weights != weights)
+            percent_change = int((diff / weights.size) * 100)
+            if percent_change >= 50:
+                color = 'purple'
+            elif percent_change >= 40:
+                color = 'red'
+            elif percent_change >= 30:
+                color = 'orange'
+            elif percent_change >= 20:
+                color = 'yellow'
+                # axis[index].set_ylabel_color()
+            axis[index].set_ylabel('Weight Change: ' + str(percent_change) + '%', color=color)
+            #https://stackoverflow.com/questions/33159134/matplotlib-y-axis-label-with-multiple-colors
+        # cbar.update_normal(images[5])
+        # cbar.ax.set_xlabel('Weight Range\nBatches: ' + str(numIters), rotation=0, ha='center', fontsize=15)
 
     return images,
 
@@ -112,9 +124,10 @@ for i in range(row):
         axs[i,j].axes.get_xaxis().set_visible(False)
         axs[i,j].set_title('Digits ' + str(0) + ' and ' + str((i * row) + j + 1), fontsize=10)
 
-cbar = fig.colorbar(images[0], ax=axs.ravel().tolist(), shrink=0.50, orientation='horizontal', aspect=50, pad=0.05)
-cbar.ax.set_xlabel('Weight Range\nBatches: ' + str(numIters), rotation=0, ha='center', fontsize=15)
-fig.suptitle('Perceptron Training', fontsize=20, y=.94)
+# cbar = fig.colorbar(images[0], ax=axs.ravel().tolist(), shrink=0.50, orientation='horizontal', aspect=50, pad=0.05)
+# cbar.ax.set_xlabel('Weight Range\nBatches: ' + str(numIters), rotation=0, ha='center', fontsize=15)
+fig.suptitle('Perceptron Training', fontsize=20, y=1.2) #change back when not tight_layout
 ani = animation.FuncAnimation(fig, updatefig, frames=1000, interval=10, blit=False)
-# ani.save('0-9_multi_weight_LOFI_cbar.mp4', writer=writer)
+plt.tight_layout()
+ani.save('0-9_multi_weight_HIFI_tight.mp4', writer=writer)
 plt.show()
