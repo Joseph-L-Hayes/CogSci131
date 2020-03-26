@@ -129,5 +129,5 @@ for i in range(row):
 fig.suptitle('Perceptron Training', fontsize=20, y=1.2) #change back when not tight_layout
 ani = animation.FuncAnimation(fig, updatefig, frames=1000, interval=10, blit=False)
 plt.tight_layout()
-ani.save('0-9_multi_weight_HIFI_tight.mp4', writer=writer)
+# ani.save('0-9_multi_weight_HIFI_tight.mp4', writer=writer)
 plt.show()
