@@ -14,8 +14,8 @@ def genHypos(min, max):
     return hypoDict
 
 hypos = genHypos(1, 100)
-for i in hypos.items():
-    print(i)
+# for i in hypos.items():
+#     print(i)
 
 """Problem 1:
     Write a function that takes an argument x and a hypothesis (however you represent it)
@@ -23,14 +23,29 @@ for i in hypos.items():
     the set is equal). Write down what likelihood each hypothesis assigns to each data
     point in it. What does each hypothesis assign to data points not in it?
 
-    ANSWER: INCOMPLETE """
+    ANSWER: INCOMPLETE
+        Likelihoods for data points in each hypothesis:
+            P(D | H1) = 0.02
+            P(D | H2) = 0.02
+            P(D | H3) = 0.1
+            P(D | H4) = 0.04
+            P(D | H5) = 0.05
+            P(D | H6) = 0.1
+            P(D | H7) = 0.01
+            P(D ∉ Hx) = 0 (for data points not in the hypothesis)
+        """
 
-def likelihood(x, hypothesesDict):
-    for h in hypothesesDict.items():
-        print('Size principle likelihood for ' + str(h[0]), ' = ', 1 / len(h[1]) )
+def likelihood(x, hypothesesDict, hypothesis=None): #check for correct interpretation
+    """Returns the P(x | Hn) where Hn is a hypothesis from hypothesesDict"""
+    # for h in hypothesesDict.items(): #prints P(D | Hx)
+    #     print('P(D | ' + str(h[0]) + ') =', 1 / len(h[1]) )
+    if hypothesis and x in hypothesesDict[hypothesis]:
+        return 1 / len(hypothesesDict[hypothesis])
+    else:
+        return 0
 
 
-likelihood(2, hypos)
+print(likelihood(3, hypos, 'H4'))
 
 
 """Problem 2:
