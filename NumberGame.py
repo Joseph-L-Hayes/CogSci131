@@ -25,14 +25,14 @@ hypos = genHypos(1, 100)
 
     ANSWER: INCOMPLETE
         Likelihoods for data points in each hypothesis:
-            P(D | H1) = 0.02
-            P(D | H2) = 0.02
-            P(D | H3) = 0.1
-            P(D | H4) = 0.04
-            P(D | H5) = 0.05
-            P(D | H6) = 0.1
-            P(D | H7) = 0.01
-            P(D ∉ Hx) = 0 (for data points not in the hypothesis)
+            P(D ∈ H1 | H1) = 0.02
+            P(D ∈ H2 | H2) = 0.02
+            P(D ∈ H3 | H3) = 0.1
+            P(D ∈ H4 | H4) = 0.04
+            P(D ∈ H5 | H5) = 0.05
+            P(D ∈ H6 | H6) = 0.1
+            P(D ∈ H7 | H7) = 0.01
+            P(D ∉ Hn | Hn) = 0 (for data points not in the hypothesis)
         """
 
 def likelihood(x, hypothesesDict, hypothesis=None): #check for correct interpretation
