@@ -42,17 +42,19 @@ def likelihood(dataSet, hypothesis): #check for correct interpretation
     total = 1
     if dataSet:
         for d in dataSet:
-            if d in HYPOTHESIS_DICT[hypothesis]: #change this to process all n in list
-                total *= 1 / len(HYPOTHESIS_DICT[hypothesis])
+            if d in HYPOTHESIS_DICT[hypothesis]: #problem here!
+                total *= 1 / len(HYPOTHESIS_DICT[hypothesis]) #total should go back to 0 if there is a d NOT in the hypo
+            else:
+                total = 0
         if total == 1:
             return 0
         else:
             return total
     else:
-        return 0 #or should return 1/len to repr that any could be likely?
+        return 1.0 #from piazza: the size principle likelihood of no data is 1.0
 
 
-print(likelihood([90, 80], 'H6'))
+# print(likelihood([90, 80], 'H6'))
 
 
 """Problem 2:
@@ -88,6 +90,7 @@ def bayesRule(dataList):
 
     for key in hypo_given_data:
         hypo_given_data[key] /= norm
+    print('probs:', hypo_given_data)
 
     return hypo_given_data
 
@@ -95,26 +98,26 @@ def bayesRule(dataList):
 # a = bayesRule([80, 90])
 # print('sum:', sum([a[key] for key in a]))
 
-def pos_pred_prob(dataList, start, finish): #rewrite entire function!
-    prior_prob = 1 / len(HYPOTHESIS_DICT) #P(h)
-    hypo_given_data = [prior_prob * likelihood(d, key) for d in dataList for key in HYPOTHESIS_DICT] #P(h|D): P(H|D) proportional to P( 2,16 | H={2,4,6, 8, ... 100}) P(H) = (1/50)*(1/50) * (1/3) = 0.0001333  → P(H|D) = 0.019
+def pos_pred_prob(dataList, start, finish):
 
-    hypo_given_data = [h / sum(hypo_given_data) for h in hypo_given_data]
+    hypo_given_data = bayesRule(dataList)
     xList = list(range(start, finish + 1))
     prob_list = []
 
     for x in xList:
+        total = 0
+        for key in HYPOTHESIS_DICT: #sum over hypos
+            if x in HYPOTHESIS_DICT[key]:
+                total += hypo_given_data[key] * 1
 
-        if x in dataList:
-            prob_list += [1]
-        else:
-            prob_list += [sum([likelihood(x, key) for key in HYPOTHESIS_DICT])]
-    norm = sum(prob_list)
+        prob_list += [total]
 
-    return xList, [p / norm for p in prob_list]
+    return xList, prob_list
 
-# data = [50]
-# print(pos_pred_prob(data, 1, 100))
+xAxis, yAxis = pos_pred_prob([], 1, 100)
+
+plt.bar(xAxis, yAxis)
+plt.show()
 
 
 """Problem 3:
