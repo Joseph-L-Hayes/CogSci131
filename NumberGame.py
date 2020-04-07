@@ -37,12 +37,10 @@ HYPOTHESIS_DICT = genHypos(1, 100)
 
 def likelihood(dataSet, hypothesis): #check for correct interpretation
     """Returns the P(dataSet | Hx) where Hx is a hypothesis"""
-    # for h in hypothesesDict.items(): #prints P(D | Hx)
-    #     print('P(D | ' + str(h[0]) + ') =', 1 / len(h[1]) )
     total = 1
     if dataSet:
         for d in dataSet:
-            if d in HYPOTHESIS_DICT[hypothesis]: #problem here!
+            if d in HYPOTHESIS_DICT[hypothesis]:
                 total *= 1 / len(HYPOTHESIS_DICT[hypothesis]) #total should go back to 0 if there is a d NOT in the hypo
             else:
                 total = 0
