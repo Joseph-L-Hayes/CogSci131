@@ -3,13 +3,13 @@ import matplotlib.pyplot as plt
 def genHypos(min, max):
     hypoDict = dict()
 
-    hypoDict['H1'] = list(range(min + 1, max + 1, 2))
-    hypoDict['H2'] = list(range(min, max + 1, 2))
-    hypoDict['H3'] = [x**2 for x in range(min, max + 1) if x**2 <= 100] #is this correct or go above 100?
-    hypoDict['H4'] = [x for x in range(min + 1, max + 1) if all(x % i != 0 for i in range(min + 1, x))]
-    hypoDict['H5'] = [x * 5 for x in range(min, max + 1) if x*5 <= 100] #is this correct or go above 100?
-    hypoDict['H6'] = [x * 10 for x in range(min, max + 1) if x*10 <= 100]
-    hypoDict['H7'] = list(range(min, max + 1))
+    hypoDict['H1'] = list(range(min + 1, max + 1, 2)) #even numbers
+    hypoDict['H2'] = list(range(min, max + 1, 2)) #odd numbers
+    hypoDict['H3'] = [x**2 for x in range(min, max + 1) if x**2 <= 100] #square numbers
+    hypoDict['H4'] = [x for x in range(min + 1, max + 1) if all(x % i != 0 for i in range(min + 1, x))] #prime numbers
+    hypoDict['H5'] = [x * 5 for x in range(min, max + 1) if x*5 <= 100] #multiples of 5
+    hypoDict['H6'] = [x * 10 for x in range(min, max + 1) if x*10 <= 100] #multiples of 10
+    hypoDict['H7'] = list(range(min, max + 1)) #all numbers
 
     return hypoDict
 
@@ -35,17 +35,24 @@ HYPOTHESIS_DICT = genHypos(1, 100)
             P(D ∉ Hn | Hn) = 0 (for data points not in the hypothesis)
         """
 
-def likelihood(n, hypothesis): #check for correct interpretation
-    """Returns the P(n | Hx) where Hx is a hypothesis from hypothesesDict"""
+def likelihood(dataSet, hypothesis): #check for correct interpretation
+    """Returns the P(dataSet | Hx) where Hx is a hypothesis"""
     # for h in hypothesesDict.items(): #prints P(D | Hx)
     #     print('P(D | ' + str(h[0]) + ') =', 1 / len(h[1]) )
-    if n in HYPOTHESIS_DICT[hypothesis]: #change this to process all n in list
-        return 1 / len(HYPOTHESIS_DICT[hypothesis])
+    total = 1
+    if dataSet:
+        for d in dataSet:
+            if d in HYPOTHESIS_DICT[hypothesis]: #change this to process all n in list
+                total *= 1 / len(HYPOTHESIS_DICT[hypothesis])
+        if total == 1:
+            return 0
+        else:
+            return total
     else:
-        return 0
+        return 0 #or should return 1/len to repr that any could be likely?
 
 
-# print(likelihood(90, 'H6'))
+print(likelihood([90, 80], 'H6'))
 
 
 """Problem 2:
@@ -73,17 +80,25 @@ def bayesRule(dataList):
     """Returns a dictionary of hypotheses as keys and P(h|dataList) as values """
     prior_prob = 1 / len(HYPOTHESIS_DICT) #P(h)
     hypo_given_data = dict()
+    norm = 0
 
     for key in HYPOTHESIS_DICT:
-        for d in dataList:
-            hypo_given_data[key] = likelihood(d, key) #change likelihood function to process list, makes this easier
-            #apply prior_prob after
-    return None
+        hypo_given_data[key] = likelihood(dataList, key) * prior_prob
+        norm += hypo_given_data[key]
 
-def pos_pred_prob(dataList, start, finish):
+    for key in hypo_given_data:
+        hypo_given_data[key] /= norm
+
+    return hypo_given_data
+
+# print(bayesRule([80, 90]))
+# a = bayesRule([80, 90])
+# print('sum:', sum([a[key] for key in a]))
+
+def pos_pred_prob(dataList, start, finish): #rewrite entire function!
     prior_prob = 1 / len(HYPOTHESIS_DICT) #P(h)
     hypo_given_data = [prior_prob * likelihood(d, key) for d in dataList for key in HYPOTHESIS_DICT] #P(h|D): P(H|D) proportional to P( 2,16 | H={2,4,6, 8, ... 100}) P(H) = (1/50)*(1/50) * (1/3) = 0.0001333  → P(H|D) = 0.019
-    #need to test above
+
     hypo_given_data = [h / sum(hypo_given_data) for h in hypo_given_data]
     xList = list(range(start, finish + 1))
     prob_list = []
@@ -98,8 +113,8 @@ def pos_pred_prob(dataList, start, finish):
 
     return xList, [p / norm for p in prob_list]
 
-data = [50]
-print(pos_pred_prob(data, 1, 100))
+# data = [50]
+# print(pos_pred_prob(data, 1, 100))
 
 
 """Problem 3:
