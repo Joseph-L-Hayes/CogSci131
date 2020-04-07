@@ -35,22 +35,18 @@ HYPOTHESIS_DICT = genHypos(1, 100)
             P(D ∉ Hn | Hn) = 0 (for data points not in the hypothesis)
         """
 
-def likelihood(dataSet, hypothesis): #check for correct interpretation
+def likelihood(dataSet, hypothesis):
     """Returns the P(dataSet | Hx) where Hx is a hypothesis"""
-    total = 1
-    if dataSet:
-        for d in dataSet:
-            if d in HYPOTHESIS_DICT[hypothesis]:
-                total *= 1 / len(HYPOTHESIS_DICT[hypothesis]) #total should go back to 0 if there is a d NOT in the hypo
-            else:
-                total = 0
-        if total == 1:
-            return 0
-        else:
-            return total
-    else:
-        return 1.0 #from piazza: the size principle likelihood of no data is 1.0
+    if not dataSet:
+        return 1.0
 
+    hypo = HYPOTHESIS_DICT[hypothesis]
+
+    for d in dataSet:
+        if d not in hypo:
+            return 0
+
+    return 1 / len(hypo) ** len(dataSet)
 
 # print(likelihood([90, 80], 'H6'))
 
@@ -112,7 +108,10 @@ def pos_pred_prob(dataList, start, finish):
 
     return xList, prob_list
 
-xAxis, yAxis = pos_pred_prob([], 1, 100)
+def plotProbs():
+
+    return None
+xAxis, yAxis = pos_pred_prob([10, 20], 1, 100)
 
 plt.bar(xAxis, yAxis)
 plt.show()
