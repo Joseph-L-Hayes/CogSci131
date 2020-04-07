@@ -13,7 +13,7 @@ def genHypos(min, max):
 
     return hypoDict
 
-hypos = genHypos(1, 100)
+HYPOTHESIS_DICT = genHypos(1, 100)
 # for i in hypos.items():
 #     print(i)
 
@@ -25,27 +25,27 @@ hypos = genHypos(1, 100)
 
     ANSWER: INCOMPLETE
         Likelihoods for data points in each hypothesis:
-            P(D ∈ H1 | H1) = 0.02
-            P(D ∈ H2 | H2) = 0.02
-            P(D ∈ H3 | H3) = 0.1
-            P(D ∈ H4 | H4) = 0.04
-            P(D ∈ H5 | H5) = 0.05
-            P(D ∈ H6 | H6) = 0.1
-            P(D ∈ H7 | H7) = 0.01
+            P(D ∈ H1 | H1) = 0.02 = 1/50
+            P(D ∈ H2 | H2) = 0.02 = 1/50
+            P(D ∈ H3 | H3) = 0.1 = 1/10
+            P(D ∈ H4 | H4) = 0.04 = 1/25
+            P(D ∈ H5 | H5) = 0.05 = 1/20
+            P(D ∈ H6 | H6) = 0.1 = 1/10
+            P(D ∈ H7 | H7) = 0.01 = 1/100
             P(D ∉ Hn | Hn) = 0 (for data points not in the hypothesis)
         """
 
-def likelihood(x, hypothesesDict, hypothesis=None): #check for correct interpretation
-    """Returns the P(x | Hn) where Hn is a hypothesis from hypothesesDict"""
+def likelihood(n, hypothesis): #check for correct interpretation
+    """Returns the P(n | Hx) where Hx is a hypothesis from hypothesesDict"""
     # for h in hypothesesDict.items(): #prints P(D | Hx)
     #     print('P(D | ' + str(h[0]) + ') =', 1 / len(h[1]) )
-    if hypothesis and x in hypothesesDict[hypothesis]:
-        return 1 / len(hypothesesDict[hypothesis])
+    if n in HYPOTHESIS_DICT[hypothesis]: #change this to process all n in list
+        return 1 / len(HYPOTHESIS_DICT[hypothesis])
     else:
         return 0
 
 
-print(likelihood(3, hypos, 'H4'))
+# print(likelihood(90, 'H6'))
 
 
 """Problem 2:
@@ -68,9 +68,38 @@ print(likelihood(3, hypos, 'H4'))
     does or does not capture your intuitions about the “right” answer.
 
     ANSWER: INCOMPLETE """
-    #what posterior function? we didn't make one... ugh
-    #equal priors? So P(H) = 1/7 ?
 
+def bayesRule(dataList):
+    """Returns a dictionary of hypotheses as keys and P(h|dataList) as values """
+    prior_prob = 1 / len(HYPOTHESIS_DICT) #P(h)
+    hypo_given_data = dict()
+
+    for key in HYPOTHESIS_DICT:
+        for d in dataList:
+            hypo_given_data[key] = likelihood(d, key) #change likelihood function to process list, makes this easier
+            #apply prior_prob after
+    return None
+
+def pos_pred_prob(dataList, start, finish):
+    prior_prob = 1 / len(HYPOTHESIS_DICT) #P(h)
+    hypo_given_data = [prior_prob * likelihood(d, key) for d in dataList for key in HYPOTHESIS_DICT] #P(h|D): P(H|D) proportional to P( 2,16 | H={2,4,6, 8, ... 100}) P(H) = (1/50)*(1/50) * (1/3) = 0.0001333  → P(H|D) = 0.019
+    #need to test above
+    hypo_given_data = [h / sum(hypo_given_data) for h in hypo_given_data]
+    xList = list(range(start, finish + 1))
+    prob_list = []
+
+    for x in xList:
+
+        if x in dataList:
+            prob_list += [1]
+        else:
+            prob_list += [sum([likelihood(x, key) for key in HYPOTHESIS_DICT])]
+    norm = sum(prob_list)
+
+    return xList, [p / norm for p in prob_list]
+
+data = [50]
+print(pos_pred_prob(data, 1, 100))
 
 
 """Problem 3:
