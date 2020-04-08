@@ -11,7 +11,9 @@ def genHypos(min, max):
     hypoDict['H5'] = [x * 5 for x in range(min, max + 1) if x*5 <= 100] #multiples of 5
     hypoDict['H6'] = [x * 10 for x in range(min, max + 1) if x*10 <= 100] #multiples of 10
     hypoDict['H7'] = list(range(min, max + 1)) #all numbers
-    # hypoDict['H8'] = list(range(10, 21))
+    hypoDict['H8'] = list(range(10, 21)) #10 - 20
+    hypoDict['H9'] = list(range(90, 100)) #90 - 99
+    hypoDict['H10'] = list(range(50, 55)) #50 - 54
 
     return hypoDict
 
@@ -73,7 +75,7 @@ def likelihood(dataSet, hypothesis):
 
     ANSWER: INCOMPLETE """
 
-def bayesRule(dataList):
+def bayesRule2(dataList):
     """Returns a dictionary of hypotheses as keys and P(h|dataList) as values """
     prior_prob = 1 / len(HYPOTHESIS_DICT) #P(h)
     hypo_given_data = dict()
@@ -89,13 +91,13 @@ def bayesRule(dataList):
 
     return hypo_given_data
 
-# print(bayesRule([80, 90]))
-# a = bayesRule([80, 90])
+# print(bayesRule2([80, 90]))
+# a = bayesRule2([80, 90])
 # print('sum:', sum([a[key] for key in a]))
 
-def pos_pred_prob(dataList, start, finish):
+def pos_pred_prob(dataList, func, start, finish):
 
-    hypo_given_data = bayesRule(dataList)
+    hypo_given_data = func(dataList)
     xList = list(range(start, finish + 1))
     prob_list = []
 
@@ -109,7 +111,7 @@ def pos_pred_prob(dataList, start, finish):
 
     return xList, prob_list
 
-def plotProbs(dataList):
+def plotProbs(dataList, title, func=bayesRule2):
     # fig, axs = plt.subplots(nrows=3, ncols=3, figsize=(20, 10), sharex=True, sharey=True)
     fig = plt.figure(figsize=(20, 10))
     grid = gs.GridSpec(3, 3, figure=fig)
@@ -118,7 +120,7 @@ def plotProbs(dataList):
     colorList = ['red', 'blue', 'green', 'white', 'cyan', 'orange', 'magenta', 'pink']
 
     for d in dataList:
-        x, y = pos_pred_prob(d, 1, 100)
+        x, y = pos_pred_prob(d, func, 1, 100)
         axs = fig.add_subplot(grid[i, j])
         axs.bar(x, y, color=colorList[k])
         axs.set_facecolor('black')
@@ -139,11 +141,12 @@ def plotProbs(dataList):
 
         if i == 2 and j == 1:
             j = 2
-    fig.suptitle('P2: Posterior Predictive Probabilities, Marginalized Over All Hypotheses', fontsize=15, y=.95)
-    plt.savefig('Prob2_plot_QC.pdf')
+    fig.suptitle(title, fontsize=15, y=.95)
+    plt.savefig('Prob3_plot_TEST.pdf')
     plt.show()
 
-plotProbs(DATA_SETS)
+title = 'P2: Posterior Predictive Probabilities, Marginalized Over All Hypotheses'
+# plotProbs(DATA_SETS, title)
 # xAxis, yAxis = pos_pred_prob([10, 20], 1, 100)
 #
 # plt.bar(xAxis, yAxis)
@@ -161,4 +164,23 @@ plotProbs(DATA_SETS)
     about how to generalize and why.
 
     ANSWER: INCOMPLETE """
+
+def bayesRule3(dataList):
+    """Returns a dictionary of hypotheses as keys and P(h|dataList) as values """
+    prior_prob = 1 / 8 #P(h)
+    hypo_given_data = dict()
+    norm = 0
+
+    for key in HYPOTHESIS_DICT:
+        hypo_given_data[key] = likelihood(dataList, key) * prior_prob
+        norm += hypo_given_data[key]
+
+    for key in hypo_given_data:
+        hypo_given_data[key] /= norm
+    # print('probs:', hypo_given_data)
+
+    return hypo_given_data
+
+title = 'P3: Posterior Predictive Probabilities, Marginalized Over All Hypotheses'
+plotProbs(DATA_SETS, title, bayesRule3)
 #end
