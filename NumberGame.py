@@ -11,13 +11,24 @@ def genHypos(min, max):
     hypoDict['H5'] = [x * 5 for x in range(min, max + 1) if x*5 <= 100] #multiples of 5
     hypoDict['H6'] = [x * 10 for x in range(min, max + 1) if x*10 <= 100] #multiples of 10
     hypoDict['H7'] = list(range(min, max + 1)) #all numbers
-    hypoDict['H8'] = list(range(10, 21)) #10 - 20
-    hypoDict['H9'] = list(range(90, 100)) #90 - 99
-    hypoDict['H10'] = list(range(50, 55)) #50 - 54
+    # hypoDict['H8'] = list(range(10, 21)) #10 - 20
+    # hypoDict['H9'] = list(range(90, 100)) #90 - 99
+    # hypoDict['H10'] = list(range(50, 55)) #50 - 54
+    start = 8
+    most = 100
+    for i in range(1, 101):
+        for j in range(0, 100):
+            name = 'H' + str(start)
+            lst = list(range(i, most + 1 - j))
+            if len(lst) > 1:
+                hypoDict[name] = lst
+                start += 1
+
 
     return hypoDict
 
 HYPOTHESIS_DICT = genHypos(1, 100)
+print(len(HYPOTHESIS_DICT))
 DATA_SETS = [[], [50], [53], [50, 53], [16], [10, 20], [2, 4, 8], [2, 4, 8, 10]]
 
 """Problem 1:
@@ -52,7 +63,6 @@ def likelihood(dataSet, hypothesis):
     return 1 / len(hypo) ** len(dataSet)
 
 # print(likelihood([90, 80], 'H6'))
-
 
 """Problem 2:
     Make a plot showing the posterior predictive probability (marginalizing over hypotheses)
@@ -142,7 +152,7 @@ def plotProbs(dataList, title, func=bayesRule2):
         if i == 2 and j == 1:
             j = 2
     fig.suptitle(title, fontsize=15, y=.95)
-    plt.savefig('Prob3_plot_TEST.pdf')
+    plt.savefig('Prob3_plot_FULL.pdf')
     plt.show()
 
 title = 'P2: Posterior Predictive Probabilities, Marginalized Over All Hypotheses'
@@ -152,7 +162,6 @@ title = 'P2: Posterior Predictive Probabilities, Marginalized Over All Hypothese
 # plt.bar(xAxis, yAxis)
 # # plt.savefig('10-20_H8.pdf')
 # plt.show()
-
 
 """Problem 3:
     Re-make the plots from Q2 but now incorporate range-based hypotheses. To do this, assume
@@ -168,19 +177,40 @@ title = 'P2: Posterior Predictive Probabilities, Marginalized Over All Hypothese
 def bayesRule3(dataList):
     """Returns a dictionary of hypotheses as keys and P(h|dataList) as values """
     prior_prob = 1 / 8 #P(h)
+    next_prob = (1 / 8) / (len(HYPOTHESIS_DICT) - 7) #all 'H8' hypos share 1/8 prob equally
     hypo_given_data = dict()
     norm = 0
+    add_hypos = ['H' + str(i) for i in range(8, 4958)]
 
     for key in HYPOTHESIS_DICT:
-        hypo_given_data[key] = likelihood(dataList, key) * prior_prob
-        norm += hypo_given_data[key]
+        if key in add_hypos:
+            hypo_given_data[key] = likelihood(dataList, key) * next_prob
+            norm += hypo_given_data[key]
+        else:
+            hypo_given_data[key] = likelihood(dataList, key) * prior_prob
+            norm += hypo_given_data[key]
 
     for key in hypo_given_data:
         hypo_given_data[key] /= norm
-    # print('probs:', hypo_given_data)
 
     return hypo_given_data
 
 title = 'P3: Posterior Predictive Probabilities, Marginalized Over All Hypotheses'
 plotProbs(DATA_SETS, title, bayesRule3)
+
+# extras = []
+# most = 100
+# for i in range(1, 101):
+#     for j in range(0, 100):
+#         lst = list(range(i, most + 1 - j))
+#         if len(lst) > 1:
+#             extras.append(lst) #1-100, 1-99... 1-
+# # for y in range(len(extras)):
+# #     if len(extras[y]) == 1 or len(extras[y]) == 0:
+# #         del extras[y]
+#
+#
+# print(len(extras))
+
+
 #end
