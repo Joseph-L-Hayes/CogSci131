@@ -10,12 +10,12 @@ def genHypos(min, max):
     hypoDict['H5'] = [x * 5 for x in range(min, max + 1) if x*5 <= 100] #multiples of 5
     hypoDict['H6'] = [x * 10 for x in range(min, max + 1) if x*10 <= 100] #multiples of 10
     hypoDict['H7'] = list(range(min, max + 1)) #all numbers
+    # hypoDict['H8'] = list(range(10, 21))
 
     return hypoDict
 
 HYPOTHESIS_DICT = genHypos(1, 100)
-# for i in hypos.items():
-#     print(i)
+DATA_SETS = [[], [50], [53], [50, 53], [16], [10, 20], [2, 4, 8], [2, 4, 8, 10]]
 
 """Problem 1:
     Write a function that takes an argument x and a hypothesis (however you represent it)
@@ -84,7 +84,7 @@ def bayesRule(dataList):
 
     for key in hypo_given_data:
         hypo_given_data[key] /= norm
-    print('probs:', hypo_given_data)
+    # print('probs:', hypo_given_data)
 
     return hypo_given_data
 
@@ -108,13 +108,37 @@ def pos_pred_prob(dataList, start, finish):
 
     return xList, prob_list
 
-def plotProbs():
+def plotProbs(dataList):
+    # fig, axs = plt.subplots(nrows=3, ncols=3, figsize=(20, 10), sharex=True, sharey=True)
+    fig = plt.figure(figsize=(20, 10))
+    # i, j = 0, 0
+    i, j, k = 3, 3, 1
 
-    return None
-xAxis, yAxis = pos_pred_prob([10, 20], 1, 100)
+    for d in dataList:
+        x, y = pos_pred_prob(d, 1, 100)
+        axs = fig.add_subplot(3, 3, k)
+        axs.bar(x, y)
+        # axs[i, j].bar(x, y)
+        # axs[i, j].set_title('Posterior Probability for ' + str(d), fontsize=8)
+        axs.set_title('Posterior Probability for ' + str(d), fontsize=8)
+        # axs[i, j].set_ylabel('Probability')
+        # axs[i, j].set_xlabel('Range')
+        axs.set_xlabel('Range')
+        j += 1
+        k += 1
+        if k == 6:
+            i += 1
+            j = 1
+    # plt.tick_params(labelcolor='none', top=False, bottom=False, left=False, right=False)
+    # plt.ylabel('Test')
+    plt.show()
 
-plt.bar(xAxis, yAxis)
-plt.show()
+plotProbs(DATA_SETS)
+# xAxis, yAxis = pos_pred_prob([10, 20], 1, 100)
+#
+# plt.bar(xAxis, yAxis)
+# # plt.savefig('10-20_H8.pdf')
+# plt.show()
 
 
 """Problem 3:
