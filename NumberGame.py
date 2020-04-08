@@ -131,6 +131,7 @@ def plotProbs(dataList):
             j = 1
     # plt.tick_params(labelcolor='none', top=False, bottom=False, left=False, right=False)
     # plt.ylabel('Test')
+    # plt.savefig('Prob2_plot_test.pdf')
     plt.show()
 
 plotProbs(DATA_SETS)
