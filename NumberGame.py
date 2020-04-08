@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import matplotlib.gridspec as gs
 
 def genHypos(min, max):
     hypoDict = dict()
@@ -111,27 +112,35 @@ def pos_pred_prob(dataList, start, finish):
 def plotProbs(dataList):
     # fig, axs = plt.subplots(nrows=3, ncols=3, figsize=(20, 10), sharex=True, sharey=True)
     fig = plt.figure(figsize=(20, 10))
-    # i, j = 0, 0
-    i, j, k = 3, 3, 1
+    grid = gs.GridSpec(3, 3, figure=fig)
+    i, j, k = 0, 0, 0
+    axList = []
+    colorList = ['red', 'blue', 'green', 'white', 'cyan', 'orange', 'magenta', 'pink']
 
     for d in dataList:
         x, y = pos_pred_prob(d, 1, 100)
-        axs = fig.add_subplot(3, 3, k)
-        axs.bar(x, y)
-        # axs[i, j].bar(x, y)
-        # axs[i, j].set_title('Posterior Probability for ' + str(d), fontsize=8)
-        axs.set_title('Posterior Probability for ' + str(d), fontsize=8)
-        # axs[i, j].set_ylabel('Probability')
-        # axs[i, j].set_xlabel('Range')
-        axs.set_xlabel('Range')
-        j += 1
+        axs = fig.add_subplot(grid[i, j])
+        axs.bar(x, y, color=colorList[k])
+        axs.set_facecolor('black')
         k += 1
-        if k == 6:
+
+        axs.set_title('Posterior Probability for ' + str(d), fontsize=10, y=.98)
+
+        if j == 0:
+            axs.set_ylabel('Probability', fontsize=12)
+
+        if (i == 1 and j== 1) or i == 2:
+            axs.set_xlabel('Range', fontsize=12)
+
+        j += 1
+        if j == 3:
             i += 1
-            j = 1
-    # plt.tick_params(labelcolor='none', top=False, bottom=False, left=False, right=False)
-    # plt.ylabel('Test')
-    # plt.savefig('Prob2_plot_test.pdf')
+            j = 0
+
+        if i == 2 and j == 1:
+            j = 2
+    fig.suptitle('P2: Posterior Predictive Probabilities, Marginalized Over All Hypotheses', fontsize=15, y=.95)
+    plt.savefig('Prob2_plot_QC.pdf')
     plt.show()
 
 plotProbs(DATA_SETS)
