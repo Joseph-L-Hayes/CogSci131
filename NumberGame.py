@@ -24,7 +24,6 @@ def genHypos(min, max, P3=False):
                     hypoDict[name] = lst
                     start += 1
 
-
     return hypoDict
 
 HYPOTHESIS_DICT = genHypos(1, 100)
@@ -83,7 +82,8 @@ def likelihood(dataSet, hypothesis):
     ANSWER:
         For all plots, my intuition is that the probabilities for each number in
         the given range will have a probability that is proportional to its similarity
-        to the given data given the set of hypotheses.
+        to the given data given the set of hypotheses. I will leave out the H7 hypothesis
+        in most answers (except for [50,53] because all numbers fit into this hypothesis.
 
         (Plot a) No data:
                 With no data to test likelihood with, each hypothesis has equal
@@ -105,14 +105,29 @@ def likelihood(dataSet, hypothesis):
                 have P=1.
 
         (Plot d) 50, 53:
-                In this plot, all numbers have equal probability. Because 50 and 53 only have
-                H7 in common, we know the correct answer is all numbers.
+                In this plot, all numbers have equal probability of 1. Because 50 and 53 only have
+                H7 in common, we can infer that all numbers are in the unknown data.
 
         (Plot e) 16:
-                
+                This plot shows the P=1 for square and even numbers with odd squares being
+                next most likely. This makes intuitive sense because even squares have the most
+                in common with 16 so they are equally as likely to be true.
+
         (Plot f) 10, 20:
+                10 and 20 are both even mulitiples of 5 and 10 so it makes intuitive sense that
+                30, 40,... 100 would also have P=1 and the plot shows this. Next most probable
+                are even multiples of 5.
+
         (Plot g) 2, 4, 8:
+                see plot h explanation.
+
         (Plot h) 2, 4, 8, 10:
+                I think plots g and h are the most informative for how inferencing works. The two
+                data sets include the same numbers but h has an additional number (10) that fits into
+                the same hypothesis as set g. The plots are nearly identical but in plot h, H7 'all numbers'
+                is about half as likely as it was in plot g. The one extra data point has a big
+                effect on the probability distribution even though it didn't rule out any hypotheses
+                that were seen in plot g, it made H1 a much more probable hypothesis than H7.
 """
 
 def bayesRule2(dataList):
@@ -194,7 +209,62 @@ plotProbs(DATA_SETS, title)
     whether the including the range-based hypotheses makes them better match your own intuitions
     about how to generalize and why.
 
-    ANSWER: INCOMPLETE """
+    ANSWER:
+        There are 4950 range based hypotheses. For all plots, including range based hypotheses
+        made them fit my intuition about how humans generalize: linearly on the number line.
+        These plots illustrate 'anchoring bias' or 'anchoring heuristic', an effect seen in
+        behavioral economics whereby people use initial data (like the numbers in our data sets)
+        as a reference point which then influences decisions made later regarding the data.
+        As an example, in negotiating pay for a job or contract, if the employer offers $55k
+        the employee will counter amounts around $55k. They will likely not counter with $100k
+        even if the employer's offer is unreasonably low.
+
+        All of these plots have similar shape to those in problem 2 but the probabilities are
+        skewed towards the given data; we generalize linearly based on the number line. This is
+        particularly interesting because the probabilities for each additional hypothesis is only
+        (1/8)/4950 and yet they have a big effect on the probabilities.
+
+        (Plot a) No data:
+                Here we see the probabilities skew towards the shape of a normal distribution.
+                With no data, each number's probability is as likely as the number of hypotheses
+                it falls into times the prior. The mean of the range, 50, will fall into more
+                of the range based hypotheses so the probabilities for numbers on either side is
+                lower than in problem 2's plot.
+
+        (Plot b) 50:
+                50 is now most likely (P=1) and probability of numbers on either side are lower than in
+                problem 2. Given the number 50, my intuition would be to guess that other unknown
+                numbers are closer to 50 on the number line.
+
+        (Plot c) 53:
+                The same effect is seen as in plot b but the maximum probability is now at 53 for
+                the same reasons.
+
+        (Plot d) 50, 53:
+                This is probably the most interesting plot in problem 3. The interval around 50-53
+                now has P=1 and all other numbers have dropped in probability compared to problem 2.
+                Again, this shows the anchoring effect and generalizing based on the number line.
+
+        (Plot e) 16:
+                The plot is centered around 16 for the same reason as in other plots.
+
+        (Plot f) 10, 20:
+                The skewing towards the interval 10-20 is more difficult to see in this plot
+                because it is large but 10 and 20 have P=1 and other multiples of 10 are slightly
+                lower because they are not in the 10-20 interval.
+
+        (Plot g) 2, 4, 8:
+                Please see explanation for plot h.
+
+
+        (Plot h) 2, 4, 8, 10:
+                Non even numbers in the interval 2-10 are now more likely than in problem 2
+                and even numbers outside the interval now have lower probability than they did in
+                problem 2. There is more weight on that interval than on other hypotheses which again
+                displays how humans would generalize on to the number line rather than other possible
+                hypotheses.
+
+                """
 
 def bayesRule3(dataList):
     """Returns a dictionary of hypotheses as keys and P(h|dataList) as values """
