@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gs
 
-def genHypos(min, max):
+def genHypos(min, max, P3=False):
     hypoDict = dict()
 
     hypoDict['H1'] = list(range(min + 1, max + 1, 2)) #even numbers
@@ -11,24 +11,23 @@ def genHypos(min, max):
     hypoDict['H5'] = [x * 5 for x in range(min, max + 1) if x*5 <= 100] #multiples of 5
     hypoDict['H6'] = [x * 10 for x in range(min, max + 1) if x*10 <= 100] #multiples of 10
     hypoDict['H7'] = list(range(min, max + 1)) #all numbers
-    # hypoDict['H8'] = list(range(10, 21)) #10 - 20
-    # hypoDict['H9'] = list(range(90, 100)) #90 - 99
-    # hypoDict['H10'] = list(range(50, 55)) #50 - 54
-    start = 8
-    most = 100
-    for i in range(1, 101):
-        for j in range(0, 100):
-            name = 'H' + str(start)
-            lst = list(range(i, most + 1 - j))
-            if len(lst) > 1:
-                hypoDict[name] = lst
-                start += 1
+
+    #below code generates hypotheses H8 to H4957 for problem 3:
+    if P3:
+        start = 8
+        limit = 100
+        for i in range(1, limit + 1):
+            for j in range(0, limit):
+                name = 'H' + str(start)
+                lst = list(range(i, limit + 1 - j))
+                if len(lst) > 1:
+                    hypoDict[name] = lst
+                    start += 1
 
 
     return hypoDict
 
 HYPOTHESIS_DICT = genHypos(1, 100)
-print(len(HYPOTHESIS_DICT))
 DATA_SETS = [[], [50], [53], [50, 53], [16], [10, 20], [2, 4, 8], [2, 4, 8, 10]]
 
 """Problem 1:
@@ -37,7 +36,7 @@ DATA_SETS = [[], [50], [53], [50, 53], [16], [10, 20], [2, 4, 8], [2, 4, 8, 10]]
     the set is equal). Write down what likelihood each hypothesis assigns to each data
     point in it. What does each hypothesis assign to data points not in it?
 
-    ANSWER: INCOMPLETE
+    ANSWER:
         Likelihoods for data points in each hypothesis:
             P(D ∈ H1 | H1) = 0.02 = 1/50
             P(D ∈ H2 | H2) = 0.02 = 1/50
@@ -62,8 +61,6 @@ def likelihood(dataSet, hypothesis):
 
     return 1 / len(hypo) ** len(dataSet)
 
-# print(likelihood([90, 80], 'H6'))
-
 """Problem 2:
     Make a plot showing the posterior predictive probability (marginalizing over hypotheses)
     that each number 1...100 is “in” the concept, for each of the following data sets:
@@ -83,7 +80,40 @@ def likelihood(dataSet, hypothesis):
     should accept any list of data). Write a sentence for each plot about whether the model
     does or does not capture your intuitions about the “right” answer.
 
-    ANSWER: INCOMPLETE """
+    ANSWER:
+        For all plots, my intuition is that the probabilities for each number in
+        the given range will have a probability that is proportional to its similarity
+        to the given data given the set of hypotheses.
+
+        (Plot a) No data:
+                With no data to test likelihood with, each hypothesis has equal
+                probability (just the prior). The plot shows this as each number in the
+                prediction range has the prior probability (1/7 in this case) summed over
+                the number of hypotheses the number falls into. For example, 100 has the
+                highest probability of ~.71 because it falls into 5 hypotheses and 5*1/7
+                is ~.71. So the plot does capture my intuition about the correct answer.
+
+        (Plot b) 50:
+                This plot shows 4 different probability bars because 50 is in 4 hypotheses.
+                Multiples of 10 all have P=1 because they are all captured by the same
+                hypotheses as 50. Multiples of 5 have the next highest P because they fit
+                into 3 of the 4 possible hypotheses.
+
+        (Plot c) 53:
+                This plot is similar to plot b but with different possible hypotheses. The
+                most likely hypothesis is H4, prime numbers. Numbers that are odd and prime
+                have P=1.
+
+        (Plot d) 50, 53:
+                In this plot, all numbers have equal probability. Because 50 and 53 only have
+                H7 in common, we know the correct answer is all numbers.
+
+        (Plot e) 16:
+                
+        (Plot f) 10, 20:
+        (Plot g) 2, 4, 8:
+        (Plot h) 2, 4, 8, 10:
+"""
 
 def bayesRule2(dataList):
     """Returns a dictionary of hypotheses as keys and P(h|dataList) as values """
@@ -97,13 +127,9 @@ def bayesRule2(dataList):
 
     for key in hypo_given_data:
         hypo_given_data[key] /= norm
-    # print('probs:', hypo_given_data)
 
     return hypo_given_data
 
-# print(bayesRule2([80, 90]))
-# a = bayesRule2([80, 90])
-# print('sum:', sum([a[key] for key in a]))
 
 def pos_pred_prob(dataList, func, start, finish):
 
@@ -113,7 +139,7 @@ def pos_pred_prob(dataList, func, start, finish):
 
     for x in xList:
         total = 0
-        for key in HYPOTHESIS_DICT: #sum over hypos
+        for key in HYPOTHESIS_DICT:
             if x in HYPOTHESIS_DICT[key]:
                 total += hypo_given_data[key] * 1
 
@@ -122,7 +148,7 @@ def pos_pred_prob(dataList, func, start, finish):
     return xList, prob_list
 
 def plotProbs(dataList, title, func=bayesRule2):
-    # fig, axs = plt.subplots(nrows=3, ncols=3, figsize=(20, 10), sharex=True, sharey=True)
+
     fig = plt.figure(figsize=(20, 10))
     grid = gs.GridSpec(3, 3, figure=fig)
     i, j, k = 0, 0, 0
@@ -152,16 +178,12 @@ def plotProbs(dataList, title, func=bayesRule2):
         if i == 2 and j == 1:
             j = 2
     fig.suptitle(title, fontsize=15, y=.95)
-    plt.savefig('Prob3_plot_FULL.pdf')
+    # plt.savefig('Prob3_plot_FULL.pdf')
     plt.show()
 
 title = 'P2: Posterior Predictive Probabilities, Marginalized Over All Hypotheses'
-# plotProbs(DATA_SETS, title)
-# xAxis, yAxis = pos_pred_prob([10, 20], 1, 100)
-#
-# plt.bar(xAxis, yAxis)
-# # plt.savefig('10-20_H8.pdf')
-# plt.show()
+plotProbs(DATA_SETS, title)
+
 
 """Problem 3:
     Re-make the plots from Q2 but now incorporate range-based hypotheses. To do this, assume
@@ -195,22 +217,11 @@ def bayesRule3(dataList):
 
     return hypo_given_data
 
+HYPOTHESIS_DICT = genHypos(1, 100, P3=True)
 title = 'P3: Posterior Predictive Probabilities, Marginalized Over All Hypotheses'
 plotProbs(DATA_SETS, title, bayesRule3)
 
-# extras = []
-# most = 100
-# for i in range(1, 101):
-#     for j in range(0, 100):
-#         lst = list(range(i, most + 1 - j))
-#         if len(lst) > 1:
-#             extras.append(lst) #1-100, 1-99... 1-
-# # for y in range(len(extras)):
-# #     if len(extras[y]) == 1 or len(extras[y]) == 0:
-# #         del extras[y]
-#
-#
-# print(len(extras))
+
 
 
 #end
