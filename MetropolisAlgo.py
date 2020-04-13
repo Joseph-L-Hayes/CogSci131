@@ -3,7 +3,7 @@ from math import log, sqrt
 import scipy.stats
 import pandas as pd
 
-def log_likelihood(n1, n2, a, W): #P(W|D)
+def log_likelihood(n1, n2, a, W): #P(D|W)
     # this function takes a numpy array for n1, n2, and the accuracy (0/1), whether they answered correctly
     # as well as W (the hypothesis)
     # and returns the *log* likelihood of the responses, log P(accuracy | n1, n2, W)
@@ -18,14 +18,9 @@ n1 = df['n1'].values #behavioral stimuli
 n2 = df['n2'].values #behavioral stimuli
 a = df['correct'].values
 
-def logPrior(W): #P(W)
-    """Returns the log prior, P(W) = e^-W where W is a Weber ratio"""
-    if W < 0:
-        return 0
 
-    return np.log(np.exp(-W))
 
-# print(log_prior(-10))
+# print(logPrior(-.345))
 
 """Problem 1:
     We will implement functions that compute the logarithm of the prior and the logarithm
@@ -47,12 +42,27 @@ def logPrior(W): #P(W)
     this model. You will prevent later frustration by ensuring that your prior correctly handles
     cases when W<0 (what should it return?)."""
 
+    def logPrior(W): #P(W)
+        """Returns the log prior, P(W) = e^-W where W is a Weber ratio"""
+        if W < 0:
+            return 0
+
+        return np.log(np.exp(-W))
+
+    def logPosterior(n1, n2, a, W):
+        """Returns P(W|D)"""
+        return logPrior * log_likelihood(n1, n2, a, W)
+
+
 
 """Problem 4:
     Implement the Metropolis algorithm, starting from a random W, and plot:
     (a) the posterior score of W over the first 300 samples;
     (b) the value of W over the first 300 samples, and
     (c) a histogram of the samples of W over the first 10,000 samples after 1000 samples of “burn in.”"""
+
+    def metropolis():
+        return None
 
 
 """Problem 5:
