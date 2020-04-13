@@ -2,6 +2,7 @@ import numpy as np
 from math import log, sqrt
 import scipy.stats
 import pandas as pd
+import random
 
 def log_likelihood(n1, n2, a, W): #P(D|W)
     # this function takes a numpy array for n1, n2, and the accuracy (0/1), whether they answered correctly
@@ -17,8 +18,6 @@ df = pd.read_csv('Assignment9-data.csv')
 n1 = df['n1'].values #behavioral stimuli
 n2 = df['n2'].values #behavioral stimuli
 a = df['correct'].values
-
-
 
 # print(logPrior(-.345))
 
@@ -36,33 +35,49 @@ a = df['correct'].values
 
     ANSWER: INCOMPLETE"""
 
-
 """Problem 3:
     Write functions to compute something proportional to the log prior and log posterior in
     this model. You will prevent later frustration by ensuring that your prior correctly handles
-    cases when W<0 (what should it return?)."""
+    cases when W<0 (what should it return?).
+    ANSWER: INCOMPLETE
+    """
 
-    def logPrior(W): #P(W)
-        """Returns the log prior, P(W) = e^-W where W is a Weber ratio"""
-        if W < 0:
-            return 0
+def logPrior(W):
+    if W < 0:
+        return 0
 
-        return np.log(np.exp(-W))
+    return np.log(np.exp(-W))
 
-    def logPosterior(n1, n2, a, W):
-        """Returns P(W|D)"""
-        return logPrior * log_likelihood(n1, n2, a, W)
+
+def logPosterior(n1, n2, a, W):
+    """Returns P(W|D)"""
+    return logPrior(W) * log_likelihood(n1, n2, a, W)
 
 
 
 """Problem 4:
     Implement the Metropolis algorithm, starting from a random W, and plot:
+
     (a) the posterior score of W over the first 300 samples;
     (b) the value of W over the first 300 samples, and
     (c) a histogram of the samples of W over the first 10,000 samples after 1000 samples of “burn in.”"""
 
-    def metropolis():
-        return None
+def metropolis(n):
+    W = random.uniform(0, 1)
+    primeW, next, ratio = 0, 0, 0
+
+    for i in range(n):
+        primeW = W + random.gauss(0, 1)
+        pW = logPosterior(n1, n2, a, W)
+        pPrime = logPosterior(n1, n2, a, primeW)
+        ratio = pPrime / pW
+
+        if (pW < pPrime) | (random.random() <= ratio):
+            W = primeW
+
+    return W
+
+print(metropolis(1))
 
 
 """Problem 5:
