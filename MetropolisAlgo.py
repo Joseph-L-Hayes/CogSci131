@@ -18,12 +18,14 @@ n1 = df['n1'].values #behavioral stimuli
 n2 = df['n2'].values #behavioral stimuli
 a = df['correct'].values
 
-def weberPrior(W): #P(W)
-    """Returns the prior, P(W), for the Weber ratio: P(W) = e^-W where W is a ratio"""
+def logPrior(W): #P(W)
+    """Returns the log prior, P(W) = e^-W where W is a Weber ratio"""
+    if W < 0:
+        return 0
 
-    return np.exp(-W)
+    return np.log(np.exp(-W))
 
-# print(weberPrior(-10))
+# print(log_prior(-10))
 
 """Problem 1:
     We will implement functions that compute the logarithm of the prior and the logarithm
