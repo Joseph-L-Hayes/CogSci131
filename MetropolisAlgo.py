@@ -1,9 +1,10 @@
 import numpy as np
 from math import log, sqrt
 import scipy.stats
+import pandas as pd
 
-def log_likelihood(n1, n2, a, W):
-    # this function takes a numpy array for n1, n2, and the accuracy (0/1), whether they answerd correctly
+def log_likelihood(n1, n2, a, W): #P(W|D)
+    # this function takes a numpy array for n1, n2, and the accuracy (0/1), whether they answered correctly
     # as well as W (the hypothesis)
     # and returns the *log* likelihood of the responses, log P(accuracy | n1, n2, W)
 
@@ -12,19 +13,32 @@ def log_likelihood(n1, n2, a, W):
     p = 1.0-scipy.stats.norm.cdf(0, loc=np.abs(n1-n2), scale=W*np.sqrt(n1**2 + n2**2)) # the probability of answering correctly
     return np.sum(np.where(a, np.log(p), np.log(1.0-p)))
 
+df = pd.read_csv('Assignment9-data.csv')
+n1 = df['n1'].values #behavioral stimuli
+n2 = df['n2'].values #behavioral stimuli
+a = df['correct'].values
 
-##
-## Your code goes here ###
-##
+def weberPrior(W): #P(W)
+    """Returns the prior, P(W), for the Weber ratio: P(W) = e^-W where W is a ratio"""
+
+    return np.exp(-W)
+
+# print(weberPrior(-10))
+
 """Problem 1:
     We will implement functions that compute the logarithm of the prior and the logarithm
-    posterior, as opposed to the unlogged versions. Explain why in 1-2 sentences."""
+    posterior, as opposed to the unlogged versions. Explain why in 1-2 sentences.
+
+    ANSWER: INCOMPLETE"""
+    #see lecture video for 4/9
 
 
 """Problem 2:
     Explain in a 1-2 sentences why the form of the acceptance ratio P(W'|D)/P(W|D) is
-    convenient for us – that is, why it saves us from doing an integral."""
-    
+    convenient for us – that is, why it saves us from doing an integral.
+
+    ANSWER: INCOMPLETE"""
+
 
 """Problem 3:
     Write functions to compute something proportional to the log prior and log posterior in
