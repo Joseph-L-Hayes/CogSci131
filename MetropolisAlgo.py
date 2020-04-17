@@ -24,24 +24,34 @@ a = df['correct'].values
     We will implement functions that compute the logarithm of the prior and the logarithm
     posterior, as opposed to the unlogged versions. Explain why in 1-2 sentences.
 
-    ANSWER: INCOMPLETE"""
-    #see lecture video for 4/9 PROPORTIONALITY?
+    ANSWER:
+            The unlogged versions of the prior and posterior may be very small (close to 0).
+            Python will round these small values down to zero making them useless for
+            our calculations. Using the log function will make the values large negatives
+            allowing for computations to be made and then converting the numbers back to
+            a linear scale. """
 
 
 """Problem 2:
     Explain in a 1-2 sentences why the form of the acceptance ratio P(W'|D)/P(W|D) is
     convenient for us – that is, why it saves us from doing an integral.
 
-    ANSWER: INCOMPLETE"""
+    ANSWER:
+            The number of samples (as a time series) we take on H is proportional to P(W|D),
+            that is a discrete series rather than a continuous one that would require an
+            integral. We can just sum over the samples, cancelling out the intregral in
+            the denominator of the original sampling algorighm.
+            """
 
 """Problem 3:
     Write functions to compute something proportional to the log prior and log posterior in
     this model. You will prevent later frustration by ensuring that your prior correctly handles
     cases when W<0 (what should it return?).
 
-    ANSWER: I'm not entirely sure what the thought process is behind what should be returned
+    ANSWER:
+            I'm not entirely sure what the thought process is behind what should be returned
             when W < 0. I used 1 in order to make the prior have no effect on the Posterior
-            This doesn't seem to be an issue though as np.exp(-W) won't ever be negative causing
+            This doesn't seem to be an issue though as np.exp(-W) will ever be negative causing
             an error in np.log.
     """
 
@@ -161,7 +171,7 @@ plt.show()
     What is that probability?
 
     ANSWER:
-        ~ 0.66 """
+        P(W in [0.60, 0.65]) = ~0.66 """
 
 
 """Problem 6:
