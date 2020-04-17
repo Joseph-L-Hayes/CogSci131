@@ -63,7 +63,7 @@ def logPosterior(n1, n2, a, W):
     (b) the value of W over the first 300 samples, and
     (c) a histogram of the samples of W over the first 10,000 samples after 1000 samples of “burn in.”"""
 
-def metropolis(n, burnIn=False): #needs testing
+def metropolis(n, probFunc, burnIn=False): #needs testing
 
     W = random.uniform(0, 1)
     primeW, next, ratio = 0, 0, 0
@@ -80,8 +80,15 @@ def metropolis(n, burnIn=False): #needs testing
 
         for i in range(1000):
             primeW = W + random.gauss(0, 0.1)
-            pW = logPosterior(n1, n2, a, W)
-            pPrime = logPosterior(n1, n2, a, primeW)
+            pPrime = 0
+
+            if probFunc == logPosterior:
+                pW = probFunc(n1, n2, a, W)
+                pPrime = probFunc(n1, n2, a, primeW)
+            if probFunc == logPrior:
+                pW = probFunc(W)
+                pPrime = probFunc(pPrime)
+
             ratio = np.exp(pPrime - pW)
 
             if pW < pPrime:
@@ -92,8 +99,12 @@ def metropolis(n, burnIn=False): #needs testing
 
     for i in range(n - modifier):
         primeW = W + random.gauss(0, 0.1)
-        pW = logPosterior(n1, n2, a, W)
-        pPrime = logPosterior(n1, n2, a, primeW)
+        if probFunc == logPosterior:
+            pW = probFunc(n1, n2, a, W)
+            pPrime = probFunc(n1, n2, a, primeW)
+        if probFunc == logPrior:
+            pW = probFunc(W)
+            pPrime = probFunc(pPrime)
         ratio = np.exp(pPrime - pW)
         priorVals += [logPrior(W)]
 
@@ -114,12 +125,18 @@ def metropolis(n, burnIn=False): #needs testing
 
     return abAxis, wVals, posVals, priorVals
 
-xAxis, wData, posteriorData, priorData = metropolis(10000, burnIn =True)
-data = [priorData, posteriorData]
-plt.hist(priorData, 100)
+xAxis, wData, posteriorData, priorData = metropolis(10000, logPosterior, burnIn =True)
+xAxis, wData2, posteriorData2, priorData2 = metropolis(10000, logPrior, burnIn =True) #for Q6
+# data = [wData, wData]
+# bins = [-.70, -.60, .60, .70]
+plt.hist(wData2, 100, color='blue', label='P(W|D)')
 # xAxis, wData, posteriorData = metropolis(300)
-plt.hist(wData, 100, color='green')
-plt.title('Samples of W and P(W) after 1000 sample burn in')
+colors = ['blue', 'green']
+names = ['P(W)', 'P(W|D)']
+
+plt.hist(wData, 100, color='green', label='P(W)')
+plt.legend()
+plt.title('Samples of P(W|D) = P(W)*P(D|W) and P(W) after 1000 sample burn in')
 # plt.title(" Samples of W after 1000 sample 'burn in' ")
 plt.xlabel('Bins')
 plt.ylabel('Number of Samples')
@@ -149,7 +166,11 @@ plt.show()
 """Problem 6:
     Run your sampler on the prior (assuming no data) and plot histograms of the prior samples
     and the posterior samples (from Q4c) in the same graph. What relationship between these
-    distributions does your plot show, and what does it mean?"""
+    distributions does your plot show, and what does it mean?
+    ANSWER:
+        Using just P(W) for P(W|D) with no data results in a random W.
+        Using data, W is bound between ~[.60, .70] showing there is a pattern
+        in the data and that the Metropolis algorigthm finds this pattern. """
 
 
 """Problem 7 (Extra Credit):
