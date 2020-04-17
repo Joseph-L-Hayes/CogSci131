@@ -53,7 +53,7 @@ def logPrior(W):
 
 def logPosterior(n1, n2, a, W):
     """Returns P(W|D)"""
-    # print(logPrior(W) + log_likelihood(n1, n2, a, W))
+
     return logPrior(W) + log_likelihood(n1, n2, a, W)
 
 """Problem 4:
@@ -70,6 +70,7 @@ def metropolis(n, burnIn=False): #needs testing
     abAxis = list(range(1, n + 1))
     wVals = [] #start with W?
     posVals = []
+    priorVals = []
     intervalProb = 0
     modifier = 0
 
@@ -93,9 +94,8 @@ def metropolis(n, burnIn=False): #needs testing
         primeW = W + random.gauss(0, 0.1)
         pW = logPosterior(n1, n2, a, W)
         pPrime = logPosterior(n1, n2, a, primeW)
-        # print(pW, pPrime)
-        # ratio = pPrime / pW
         ratio = np.exp(pPrime - pW)
+        priorVals += [logPrior(W)]
 
         if pW < pPrime:
             W = primeW
@@ -106,23 +106,24 @@ def metropolis(n, burnIn=False): #needs testing
                 posVals += [pPrime]
             else:
                 posVals += [pW]
-        # posVals += [pW] #check location
-        wVals += [W] #check location
+
+        wVals += [W]
 
         if W >= .60 and W <= .65:
             intervalProb += 1
 
-    # print(intervalProb / n)
+    return abAxis, wVals, posVals, priorVals
 
-    return abAxis, wVals, posVals
-
-xAxis, wData, posteriorData = metropolis(10000, burnIn =True)
+xAxis, wData, posteriorData, priorData = metropolis(10000, burnIn =True)
+data = [priorData, posteriorData]
+plt.hist(priorData, 100)
 # xAxis, wData, posteriorData = metropolis(300)
-# plt.hist(wData, 100, color='green')
+plt.hist(wData, 100, color='green')
+plt.title('Samples of W and P(W) after 1000 sample burn in')
 # plt.title(" Samples of W after 1000 sample 'burn in' ")
-# plt.xlabel('Bins')
-# plt.ylabel('Number of Samples')
-# plt.savefig('a9_p4c.pdf')
+plt.xlabel('Bins')
+plt.ylabel('Number of Samples')
+plt.savefig('a9_p6.pdf')
 
 # plt.plot(xAxis, wData)
 # plt.plot(xAxis[1:], wData[1:], color='blue')
@@ -134,7 +135,7 @@ xAxis, wData, posteriorData = metropolis(10000, burnIn =True)
 #for histogram
 # alldata = [priordata, posteriordata]
 # plt.hist(alldata, number of bins)
-# plt.show()
+plt.show()
 
 
 """Problem 5:
