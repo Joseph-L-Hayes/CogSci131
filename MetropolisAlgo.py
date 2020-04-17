@@ -102,6 +102,7 @@ def metropolis(n, probFunc, burnIn=False): #needs testing
         if probFunc == logPosterior:
             pW = probFunc(n1, n2, a, W)
             pPrime = probFunc(n1, n2, a, primeW)
+
         if probFunc == logPrior:
             pW = probFunc(W)
             pPrime = probFunc(pPrime)
@@ -129,12 +130,12 @@ xAxis, wData, posteriorData, priorData = metropolis(10000, logPosterior, burnIn 
 xAxis, wData2, posteriorData2, priorData2 = metropolis(10000, logPrior, burnIn =True) #for Q6
 # data = [wData, wData]
 # bins = [-.70, -.60, .60, .70]
-plt.hist(wData2, 100, color='blue', label='P(W|D)')
+plt.hist(wData2, 100, color='blue', label='P(W)')
 # xAxis, wData, posteriorData = metropolis(300)
-colors = ['blue', 'green']
-names = ['P(W)', 'P(W|D)']
+# colors = ['blue', 'green']
+names = ['P(W|D)', 'P(W)']
 
-plt.hist(wData, 100, color='green', label='P(W)')
+plt.hist(wData, 100, color='green', label='P(W|D)')
 plt.legend()
 plt.title('Samples of P(W|D) = P(W)*P(D|W) and P(W) after 1000 sample burn in')
 # plt.title(" Samples of W after 1000 sample 'burn in' ")
