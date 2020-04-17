@@ -136,34 +136,34 @@ def metropolis(n, probFunc, burnIn=False): #needs testing
 
     return abAxis, wVals, posVals, priorVals
 
-xAxis, wData, posteriorData, priorData = metropolis(10000, logPosterior, burnIn =True)
-xAxis, wData2, posteriorData2, priorData2 = metropolis(10000, logPrior, burnIn =True) #for Q6
-# data = [wData, wData]
-# bins = [-.70, -.60, .60, .70]
-plt.hist(wData2, 100, color='blue', label='P(W)')
-# xAxis, wData, posteriorData = metropolis(300)
-# colors = ['blue', 'green']
-names = ['P(W|D)', 'P(W)']
-
-plt.hist(wData, 100, color='green', label='P(W|D)')
-plt.legend()
-plt.title('Samples of P(W|D) = P(W)*P(D|W) and P(W) after 1000 sample burn in')
-# plt.title(" Samples of W after 1000 sample 'burn in' ")
-plt.xlabel('Bins')
-plt.ylabel('Number of Samples')
-plt.savefig('a9_p6.pdf')
-
-# plt.plot(xAxis, wData)
-# plt.plot(xAxis[1:], wData[1:], color='blue')
-# plt.title('Value of W')
-# plt.ylabel('Value')
-# plt.xlabel('Samples')
-# plt.savefig('a9_p4b.pdf')
+# xAxis, wData, posteriorData, priorData = metropolis(10000, logPosterior, burnIn =True)
+# xAxis, wData2, posteriorData2, priorData2 = metropolis(10000, logPrior, burnIn =True) #for Q6
+# # data = [wData, wData]
+# # bins = [-.70, -.60, .60, .70]
+# plt.hist(wData2, 100, color='blue', label='P(W)')
+# # xAxis, wData, posteriorData = metropolis(300)
+# # colors = ['blue', 'green']
+# names = ['P(W|D)', 'P(W)']
+#
+# plt.hist(wData, 100, color='green', label='P(W|D)')
+# plt.legend()
+# plt.title('Samples of P(W|D) = P(W)*P(D|W) and P(W) after 1000 sample burn in')
+# # plt.title(" Samples of W after 1000 sample 'burn in' ")
+# plt.xlabel('Bins')
+# plt.ylabel('Number of Samples')
+# plt.savefig('a9_p6.pdf')
+#
+# # plt.plot(xAxis, wData)
+# # plt.plot(xAxis[1:], wData[1:], color='blue')
+# # plt.title('Value of W')
+# # plt.ylabel('Value')
+# # plt.xlabel('Samples')
+# # plt.savefig('a9_p4b.pdf')
+# # plt.show()
+# #for histogram
+# # alldata = [priordata, posteriordata]
+# # plt.hist(alldata, number of bins)
 # plt.show()
-#for histogram
-# alldata = [priordata, posteriordata]
-# plt.hist(alldata, number of bins)
-plt.show()
 
 
 """Problem 5:
