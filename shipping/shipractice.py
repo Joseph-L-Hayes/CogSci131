@@ -5,15 +5,20 @@ import pprint
 
 
 shippo.config.api_key = 'shippo_test_3d7ab3404e62fdee91aa2a6cce9b263c2479ec2d'
+api_key = 'shippo_test_3d7ab3404e62fdee91aa2a6cce9b263c2479ec2d'
+# header = {'Authorization': 'Bearer shippo_test_3d7ab3404e62fdee91aa2a6cce9b263c2479ec2d'}
 
-r = requests.get('https://api.goshippo.com/tracks/usps/9205590164917312751089')
+header={'Content-Type':'application/json',
+               'Authorization': 'Bearer shippo_test_3d7ab3404e62fdee91aa2a6cce9b263c2479ec2d'}
+
+r = requests.get('https://api.goshippo.com/tracks/shippo/SHIPPO_TRANSIT', headers=header)
 
 print(r.json())
 
 
-track = requests.get('https://api.trackingmore.com/v2')
-
-print(track.json())
+# track = requests.get('https://api.trackingmore.com/v2',headers=header)
+#
+# print(track.json())
 
 
 # parameters = {"lat": 40.71, "lon": -74} #ISS coords for NYC
@@ -27,3 +32,10 @@ print(track.json())
 #
 # pprint.pprint(data)
 # pprint.pprint(astros)
+
+
+
+#This works, not sure why python isn't
+# curl https://api.goshippo.com/tracks/shippo/SHIPPO_TRANSIT \
+#     -H "Authorization: ShippoToken shippo_test_3d7ab3404e62fdee91aa2a6cce9b263c2479ec2d" \
+#     -H "Content-Type: application/json"  \
