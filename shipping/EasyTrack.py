@@ -16,16 +16,24 @@ tracker2 = easypost.Tracker.create(
     carrier="ups"
 ) #works!
 
+tracker3 = easypost.Tracker.create(
+    tracking_code="4581466982",
+    carrier="dhl express"
+) #works!
+
+tracker4 = easypost.Tracker.create(
+    tracking_code="1ZR0967V0317476280"
+)#works without carrier
 
 # print(tracker)
-#est_delivery date is showing as null
+#est_delivery date is showing as None for all carriers, what is the issue?
 
 # for s in tracker["tracking_details"]:
 #     print(s["tracking_location"]["city"], s["source"])
 
 # print("del", tracker2["est_delivery_date"]) maybe doesn't work because already delivered
 
-for s in tracker2["tracking_details"]:
+for s in tracker4["tracking_details"]:
     tracking = s["tracking_location"]["city"]
     date = s["datetime"]
     if tracking != None:
