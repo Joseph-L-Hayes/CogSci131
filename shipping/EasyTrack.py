@@ -4,45 +4,26 @@ import pprint
 
 easypost.api_key = "EZAKb193184e1f024f9c95f111715747fde0WzgPIAuaif3aYAwDBwYkaA"
 
-#Fedex OB shirt
-tracker = easypost.Tracker.create(
-    tracking_code="167965771614",
-    carrier="fedex"
-) #works!
+track_numbers = [("fedex","167965771614"), ("ups","1Z9437070322066511"), ("dhl express","4581466982"), ("ups","1ZR0967V0317476280")]
 
-#UPS REI watch
-tracker2 = easypost.Tracker.create(
-    tracking_code="1Z9437070322066511",
-    carrier="ups"
-) #works!
+def track(track_id):
 
-tracker3 = easypost.Tracker.create(
-    tracking_code="4581466982",
-    carrier="dhl express"
-) #works!
+    tracker = easypost.Tracker.create(
+        tracking_code=track_id[1],
+        carrier=track_id[0]
+    )
 
-tracker4 = easypost.Tracker.create(
-    tracking_code="1ZR0967V0317476280"
-)#works without carrier
+    for s in tracker["tracking_details"]:
 
-# print(tracker)
-#est_delivery date is showing as None for all carriers, what is the issue?
+        tracking = s["tracking_location"]["city"]
+        date = s["datetime"]
 
-# for s in tracker["tracking_details"]:
-#     print(s["tracking_location"]["city"], s["source"])
+        print(str(date) + ':', str(tracking) + "," , s["message"])
 
-# print("del", tracker2["est_delivery_date"]) maybe doesn't work because already delivered
+for t in track_numbers:
+    track(t)
+    print()
 
-for s in tracker4["tracking_details"]:
-    tracking = s["tracking_location"]["city"]
-    date = s["datetime"]
-    if tracking != None:
-        print(date + ':', tracking + "," , s["message"])
-
-# print(tracker["carrier"])
-# print(tracker["tracking_code"])
-# print(tracker["status"])
-# print(tracker["tracking_details"][0]["status"])
 
 #Output from Fedex shipping number:
 # FedEx
@@ -211,3 +192,33 @@ for s in tracker4["tracking_details"]:
 # 2020-06-30T07:43:43Z: San Francisco, Loaded on Delivery Vehicle
 # 2020-06-30T08:40:55Z: San Francisco, Out For Delivery Today
 # 2020-06-30T14:16:02Z: SAN FRANCISCO, Delivered: Reception
+
+#Old code:
+#Fedex OB shirt
+# tracker = easypost.Tracker.create(
+#     tracking_code="167965771614",
+#     carrier="fedex"
+# ) #works!
+#
+# #UPS REI watch
+# tracker2 = easypost.Tracker.create(
+#     tracking_code="1Z9437070322066511",
+#     carrier="ups"
+# ) #works!
+#
+# tracker3 = easypost.Tracker.create(
+#     tracking_code="4581466982",
+#     carrier="dhl express"
+# ) #works!
+#
+# tracker4 = easypost.Tracker.create(
+#     tracking_code="1ZR0967V0317476280"
+# )#works without carrier
+
+#est_delivery date is showing as None for all carriers, what is the issue?
+
+# for s in tracker4["tracking_details"]:
+#     tracking = s["tracking_location"]["city"]
+#     date = s["datetime"]
+#     if tracking != None:
+#         print(date + ':', tracking + "," , s["message"])
