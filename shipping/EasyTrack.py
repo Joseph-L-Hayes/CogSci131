@@ -1,6 +1,7 @@
 import easypost
 import json
 import pprint
+import dateutil.parser
 
 easypost.api_key = "EZAKb193184e1f024f9c95f111715747fde0WzgPIAuaif3aYAwDBwYkaA"
 
@@ -13,12 +14,24 @@ def track(track_id):
         carrier=track_id[0]
     )
 
+    print("Estimated Delivery Date:", dateConvert(tracker["est_delivery_date"]))
+
     for s in tracker["tracking_details"]:
 
         tracking = s["tracking_location"]["city"]
-        date = s["datetime"]
+        date = dateConvert(s["datetime"])
 
         print(str(date) + ':', str(tracking) + "," , s["message"])
+
+def dateConvert(isoDate):
+    """Converts an iso 8601 date to more readable format."""
+
+    if isoDate != None:
+        return dateutil.parser.parse(isoDate)
+    else:
+        return 'Not Available'
+
+
 
 for t in track_numbers:
     track(t)
