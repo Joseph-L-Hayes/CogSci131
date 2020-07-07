@@ -4,17 +4,13 @@ import json
 import pprint
 
 
-shippo.config.api_key = 'shippo_test_3d7ab3404e62fdee91aa2a6cce9b263c2479ec2d'
-api_key = 'shippo_test_3d7ab3404e62fdee91aa2a6cce9b263c2479ec2d'
-# header = {'Authorization': 'Bearer shippo_test_3d7ab3404e62fdee91aa2a6cce9b263c2479ec2d'}
 
-header={'Content-Type':'application/json',
-               'Authorization': 'Bearer shippo_test_3d7ab3404e62fdee91aa2a6cce9b263c2479ec2d'}
+shippo.config.api_key = 'shippo_live_8fb047d7a367ae99239fabe2ab91e74a705da4ef'
 
-r = requests.get('https://api.goshippo.com/tracks/shippo/SHIPPO_TRANSIT', headers=header)
+tracking = shippo.Track.get_status('ups', '1ZR0967V0317476280')
 
-print(r.json())
-
+print(tracking)
+#works but Shippo says I need to add billing, so this may not be free.
 
 # track = requests.get('https://api.trackingmore.com/v2',headers=header)
 #
@@ -35,7 +31,19 @@ print(r.json())
 
 
 
-#This works, not sure why python isn't
-# curl https://api.goshippo.com/tracks/shippo/SHIPPO_TRANSIT \
-#     -H "Authorization: ShippoToken shippo_test_3d7ab3404e62fdee91aa2a6cce9b263c2479ec2d" \
+# This works, not sure why python isn't
+# curl https://api.goshippo.com/tracks/ups/1ZR0967V0317476280 \
+#     -H "Authorization: ShippoToken shippo_live_8fb047d7a367ae99239fabe2ab91e74a705da4ef" \
 #     -H "Content-Type: application/json"  \
+
+
+#Python requests scrap:
+# api_key = 'shippo_test_3d7ab3404e62fdee91aa2a6cce9b263c2479ec2d'
+# header = {'Authorization': 'Bearer shippo_test_3d7ab3404e62fdee91aa2a6cce9b263c2479ec2d'}
+
+# headers = {'Content-Type':'application/json',
+#                'Authorization': 'shippo_live_8fb047d7a367ae99239fabe2ab91e74a705da4efd'}
+
+# r = shippo.get('https://api.goshippo.com/tracks/ups/1ZR0967V0317476280')
+
+# print(r.json())
