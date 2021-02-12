@@ -2,6 +2,41 @@ import string
 from english_words import english_words_set
 import random
 
+vowels = {'a': 1, 'e': 1, 'i': 1, 'o': 1, 'u': 1}
+easyLetters = {'d': 2, 'g': 2, 'l': 1, 'n': 1, 'r': 1, 's': 1, 't': 1} #1 and 2 points
+medLetters = {'b': 3, 'c': 3, 'f': 4, 'h': 4, 'k': 5, 'm': 3, 'p': 3, 'v': 4, 'w': 4, 'y': 4} #3-5 points
+hardLetters = {'j': 8, 'q': 10, 'x': 8, 'z': 10} #6+ points
+
+
+class SpellingBee(object):
+    def __init__():
+        self.vowels = vowels
+        self.easyLetters = easyLetters
+        self.medLetters = medLetters
+        self.hardLetters = hardLetters
+        self.requiredLetter = getRequiredLetter(self.easyLetters, self.medLetters)
+        self.letters = getLetters(self.requiredLetter, 2, 2, 2, 0)
+        self.wordList = buildWords(self.requiredLetter, self.letters, english_words_set)
+        self.acceptedList = []
+
+        def showLetters(self):
+            return self.letters
+
+        def showRequired(self):
+            return self.requiredLetter
+
+        def user_input():
+            return raw_input('Enter a word': )
+
+        def check_word(word):
+            if len(word) < 4:
+                print('Word must be 4 or more characters')
+            elif self.requiredLetter not in word:
+                print('The must contain ' + self.requiredLetter)
+            
+
+
+
 reqLetter = 'p'
 optLetters = 'amlevd'
 wordList = ['palladium', 'palindrome', 'papa', 'hive', 'soda', 'enterprise', 'paddle', 'paddled', 'buck']
@@ -20,10 +55,6 @@ def buildWords(reqLetter, optLetters, wordsList): #this is for building a list o
     return acceptedWords
 
 
-vowels = {'a': 1, 'e': 1, 'i': 1, 'o': 1, 'u': 1}
-easyLetters = {'d': 2, 'g': 2, 'l': 1, 'n': 1, 'r': 1, 's': 1, 't': 1} #1 and 2 points
-medLetters = {'b': 3, 'c': 3, 'f': 4, 'h': 4, 'k': 5, 'm': 3, 'p': 3, 'v': 4, 'w': 4, 'y': 4} #3-5 points
-hardLetters = {'j': 8, 'q': 10, 'x': 8, 'z': 10} #6+ points
 consonants = [easyLetters, medLetters, hardLetters]
 
 def compareStrings(list1, list2):
