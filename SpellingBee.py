@@ -1,11 +1,10 @@
-import string
-from english_words import english_words_set
-import random
 import WordBuilder as wb
 
 class SpellingBee(object):
     def __init__(self):
         self.requiredLetter, self.letters, self.wordList = wb.main()
+        #need to generate the letters here, use func to choose next required letters
+        #from the available letters, then generate a new word list.
         self.acceptedList = []
 
     def showLetters(self):
@@ -16,8 +15,8 @@ class SpellingBee(object):
 
     def user_input(self):
         print()
-        print('Required Letter:', self.requiredLetter)
-        print('Optional Letters:', self.letters)
+        print('Required Letter:', self.showRequired())
+        print('All Letters:', self.showLetters())
         print()
         return input('(Type 1 to Quit, 2 to view your word list) Enter a word: ' )
 

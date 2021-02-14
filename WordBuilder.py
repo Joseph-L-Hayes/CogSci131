@@ -7,7 +7,7 @@ easyLetters = {'d': 2, 'g': 2, 'l': 1, 'n': 1, 'r': 1, 's': 1, 't': 1} #1 and 2 
 medLetters = {'b': 3, 'c': 3, 'f': 4, 'h': 4, 'k': 5, 'm': 3, 'p': 3, 'v': 4, 'w': 4, 'y': 4} #3-5 points
 hardLetters = {'j': 8, 'q': 10, 'x': 8, 'z': 10} #6+ points
 
-def buildWords(wordsList): #this is for building a list of words for the game
+def buildWords(wordsList):
     """Returns a list of words containing only the required letter and optional letters"""
     acceptedWords = []
     required_letter = getRequiredLetter(easyLetters, medLetters)
@@ -28,7 +28,7 @@ def buildWords(wordsList): #this is for building a list of words for the game
         return [required_letter, optional_letters, acceptedWords]
 
 def compareStrings(list1, list2):
-    """Returns True if list1 is a subset of list2, Else False"""
+    """Returns True if list1 is a subset of list2, else False"""
     return all(x in list2 for x in list1)
 
 
@@ -48,7 +48,6 @@ def getLetters(required, numVowel, numEasy, numMed, numHard):
     while count < numVowel:
         letter = random.choice(list(vowels.items()))[0]
         if letter not in letters:
-            # print(letter)
             letters += letter
             count += 1
 
@@ -57,7 +56,6 @@ def getLetters(required, numVowel, numEasy, numMed, numHard):
     while count < numEasy:
         letter = random.choice(list(easyLetters.items()))[0]
         if letter not in letters:
-            # print(letter)
             letters += letter
             count += 1
     count = 0
@@ -65,7 +63,6 @@ def getLetters(required, numVowel, numEasy, numMed, numHard):
     while count < numMed:
         letter = random.choice(list(medLetters.items()))[0]
         if letter not in letters:
-            # print(letter)
             letters += letter
             count += 1
 
@@ -74,7 +71,6 @@ def getLetters(required, numVowel, numEasy, numMed, numHard):
     while count < numHard: #may need a probability based method for getting hard
         letter = random.choice(list(hardLetters.items()))[0]
         if letter not in letters:
-            # print(letter)
             letters += letter
             count += 1
 
