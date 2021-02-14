@@ -9,7 +9,7 @@ hardLetters = {'j': 8, 'q': 10, 'x': 8, 'z': 10} #6+ points
 
 
 class SpellingBee(object):
-    def __init__():
+    def __init__(self):
         self.vowels = vowels
         self.easyLetters = easyLetters
         self.medLetters = medLetters
@@ -19,21 +19,21 @@ class SpellingBee(object):
         self.wordList = buildWords(self.requiredLetter, self.letters, english_words_set)
         self.acceptedList = []
 
-        def showLetters(self):
-            return self.letters
+    def showLetters(self):
+        return self.letters
 
-        def showRequired(self):
-            return self.requiredLetter
+    def showRequired(self):
+        return self.requiredLetter
 
-        def user_input():
-            return raw_input('Enter a word': )
+    def user_input():
+        return raw_input('Enter a word: ' )
 
-        def check_word(word):
-            if len(word) < 4:
-                print('Word must be 4 or more characters')
-            elif self.requiredLetter not in word:
-                print('The must contain ' + self.requiredLetter)
-            
+    def check_word(word):
+        if len(word) < 4:
+            print('Word must be 4 or more characters')
+        elif self.requiredLetter not in word:
+            print('The must contain ' + self.requiredLetter)
+
 
 
 
@@ -109,10 +109,15 @@ def getLetters(required, numVowel, numEasy, numMed, numHard):
 
     return ''.join(letters)
 
-reqLetter = getRequiredLetter(easyLetters, medLetters)
-optLetters = getLetters(reqLetter, 2, 2, 2, 0)
-print("optional: ",optLetters)
-print("required: ", reqLetter)
+# reqLetter = getRequiredLetter(easyLetters, medLetters)
+# optLetters = getLetters(reqLetter, 2, 2, 2, 0)
+# print("optional: ",optLetters)
+# print("required: ", reqLetter)
+#
+# wordList = buildWords(reqLetter, optLetters, english_words_set)
+# print(wordList)
 
-wordList = buildWords(reqLetter, optLetters, english_words_set)
-print(wordList)
+test = SpellingBee() #object/class is working so far!
+print(test.showRequired())
+print(test.showLetters())
+print(test.wordList)
