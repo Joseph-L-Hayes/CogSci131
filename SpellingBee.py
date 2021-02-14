@@ -15,42 +15,58 @@ class SpellingBee(object):
         return self.requiredLetter
 
     def user_input(self):
+        print()
         print('Required Letter:', self.requiredLetter)
         print('Optional Letters:', self.letters)
-        return input('(Type 1 to Quit) Enter a word: ' )
+        print()
+        return input('(Type 1 to Quit, 2 to view your word list) Enter a word: ' )
 
     def check_word(self, word):
-        # print('You are here!')
+
         if word == '1':
             return 1
-        if len(word) < 4:
-            print('One')
-            return 'Word must be 4 or more characters'
+
+        elif word == '2':
+            print(self.acceptedList)
+            return 0
+
+        elif len(word) < 4:
+            print('Word must be 4 or more characters')
+            return 0
+
         elif self.requiredLetter not in word:
-            print('Two')
-            return 'The must contain ' + self.requiredLetter
+            print('The must contain ' + self.requiredLetter)
+            return 0
+
         elif word in self.acceptedList:
-            print('Three')
-            return 'Word already found'
+            print('Word already found')
+            return 0
+
         elif word in self.wordList:
-            print('Four')
-            # print('Word accepted!')
             self.acceptedList += [word]
-            return 'Word accepted!'
+            print('Word accepted!')
+
+            if len(self.acceptedList) == len(self.wordList):
+                print('Game over, all words found')
+                return 1
+            else:
+                return 0
+
         else:
-            return 'What happened?'
+            print('Word is not in the word list')
+            return 0
 
 
 def runBee():
 
     testRun = SpellingBee()
+    run = 0
     input = None
 
-    while input != '1':
+    while run == 0:
         input = testRun.user_input()
         run = testRun.check_word(input)
-        print(run)
     print(testRun.acceptedList)
-        # print(testRun.wordList)
+    # print(testRun.wordList)
 
 runBee()

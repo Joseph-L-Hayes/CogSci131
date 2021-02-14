@@ -19,12 +19,12 @@ def buildWords(wordsList): #this is for building a list of words for the game
             result = word.translate(mytable).replace(' ', '')
             if len(result) == 0:
                 acceptedWords += [word]
-    print(len(acceptedWords))
 
     if len(acceptedWords) <= 10:
-        buildWords(wordsList)
+        return buildWords(wordsList)
 
     else:
+        print(acceptedWords)
         return [required_letter, optional_letters, acceptedWords]
 
 def compareStrings(list1, list2):
