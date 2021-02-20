@@ -1,4 +1,5 @@
 import WordBuilder as wb
+import string_utils
 
 class SpellingBee(object):
     def __init__(self):
@@ -13,12 +14,15 @@ class SpellingBee(object):
     def showRequired(self):
         return self.requiredLetter
 
+    def shuffleLetters(self):
+        self.letters = string_utils.shuffle(self.letters)
+
     def user_input(self):
         print()
         print('Required Letter:', self.showRequired())
         print('All Letters:', self.showLetters())
         print()
-        return input('(Type 1 to Quit, 2 to view your word list) Enter a word: ' )
+        return input('(Type 1 to Quit, 2 to view your word list, 3 to shuffle letters) Enter a word: ' )
 
     def check_word(self, word):
 
@@ -27,6 +31,10 @@ class SpellingBee(object):
 
         elif word == '2':
             print(self.acceptedList)
+            return 0
+
+        elif word == '3':
+            self.shuffleLetters()
             return 0
 
         elif len(word) < 4:
