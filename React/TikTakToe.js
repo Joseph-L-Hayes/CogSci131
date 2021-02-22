@@ -120,3 +120,5 @@ function calculateWinner(squares) {
   }
   return null;
 }
+
+//left off at the time travel section, still more to fill in above
