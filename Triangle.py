@@ -4,8 +4,7 @@ def triangle(n, k):
 
 	triangle(n - 1, k)
 	
-	if n == k:
-		stars = []
+	stars = []
 	if n < k:
 		stars = [' '] * (k - n)
 	stars += [' * '] * n
